@@ -1,24 +1,33 @@
 # FR-Badges
 
-Modern badge pack for media tags: **source, resolution, HDR, codec, bit depth and audio**. 31 badges in 11 styles, all transparent PNGs, with ready-to-use filter manifests.
+Modern badge pack for media tags: **source, resolution, HDR, codec, bit depth and audio**. 31 badges in 10 styles, all transparent PNGs, with ready-to-use filter manifests.
 
 ![FR-Badges Glass preview](Previews/preview-glass.png)
+
+## How to add in Nuvio
+
+1. Open Nuvio and go to **Profile**.
+2. Tap **Layout**.
+3. Open **Streams**.
+4. Find **Fusion badge URLs** and paste the manifest link of the style you want. Copy it from the [Usage](#usage) section below.
+5. Go back to your streams list. The new badges show on your stream tags.
+
+To switch styles, replace the link with another style's link. If the old badges still show, restart the app or clear its cache.
 
 ## Styles
 
 | Style | Look | Folder | Manifest |
 |---|---|---|---|
 | **Glass** | Dark tinted glass pills | `Badges` | `badges.json` |
-| **Solid** | Vivid gradient fills | `Badges-Solid` | `badges-solid.json` |
 | **Neon** | Glowing gradient text, no background (dark UIs) | `Badges-Neon` | `badges-neon.json` |
-| **Light** | Soft pastel pills (light UIs) | `Badges-Light` | `badges-light.json` |
+| **Solid** | Vivid gradient fills | `Badges-Solid` | `badges-solid.json` |
 | **Icon Dark** | Gradient icon tiles on dark glass | `Badges-Icon-Dark` | `badges-icon-dark.json` |
-| **Icon Light** | Gradient icon tiles on pastel | `Badges-Icon-Light` | `badges-icon-light.json` |
-| **Frost** | Translucent frosted glass for posters and backdrops | `Badges-Frost` | `badges-frost.json` |
-| **Minimal** | Flat dark pills with a colored dot | `Badges-Minimal` | `badges-minimal.json` |
-| **Tile** | Compact vertical icon tiles | `Badges-Tile` | `badges-tile.json` |
-| **Neon Icon** | Glowing gradient icons and text, no background (dark UIs) | `Badges-Neon-Icon` | `badges-neon-icon.json` |
 | **Split** | Colored icon segment joined to a dark label | `Badges-Split` | `badges-split.json` |
+| **Frost** | Translucent frosted glass for posters and backdrops | `Badges-Frost` | `badges-frost.json` |
+| **Neon Icon** | Glowing gradient icons and text, no background (dark UIs) | `Badges-Neon-Icon` | `badges-neon-icon.json` |
+| **Minimal** | Flat dark pills with a colored dot | `Badges-Minimal` | `badges-minimal.json` |
+| **Light** | Soft pastel pills (light UIs) | `Badges-Light` | `badges-light.json` |
+| **Icon Light** | Gradient icon tiles on pastel | `Badges-Icon-Light` | `badges-icon-light.json` |
 
 ## What's included
 
@@ -34,7 +43,7 @@ Modern badge pack for media tags: **source, resolution, HDR, codec, bit depth an
 
 ## Usage
 
-Copy the link for the style you want and import it as the filter manifest in your app. Use **one** style at a time.
+Copy the link for the style you want and use **one** style at a time. The guide above shows where to paste it.
 
 ### Glass
 
@@ -42,14 +51,6 @@ Copy the link for the style you want and import it as the filter manifest in you
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges.json
-```
-
-### Solid
-
-[![solid preview](Previews/preview-solid.png)](Previews/preview-solid.png)
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-solid.json
 ```
 
 ### Neon
@@ -60,12 +61,12 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-solid.json
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon.json
 ```
 
-### Light
+### Solid
 
-[![light preview](Previews/preview-light.png)](Previews/preview-light.png)
+[![solid preview](Previews/preview-solid.png)](Previews/preview-solid.png)
 
 ```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-solid.json
 ```
 
 ### Icon Dark
@@ -76,12 +77,12 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-dark.json
 ```
 
-### Icon Light
+### Split
 
-[![icon-light preview](Previews/preview-icon-light.png)](Previews/preview-icon-light.png)
+[![split preview](Previews/preview-split.png)](Previews/preview-split.png)
 
 ```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-light.json
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-split.json
 ```
 
 ### Frost
@@ -92,22 +93,6 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-light.j
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-frost.json
 ```
 
-### Minimal
-
-[![minimal preview](Previews/preview-minimal.png)](Previews/preview-minimal.png)
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-minimal.json
-```
-
-### Tile
-
-[![tile preview](Previews/preview-tile.png)](Previews/preview-tile.png)
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-tile.json
-```
-
 ### Neon Icon
 
 [![neon-icon preview](Previews/preview-neon-icon.png)](Previews/preview-neon-icon.png)
@@ -116,12 +101,28 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-tile.json
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon-icon.json
 ```
 
-### Split
+### Minimal
 
-[![split preview](Previews/preview-split.png)](Previews/preview-split.png)
+[![minimal preview](Previews/preview-minimal.png)](Previews/preview-minimal.png)
 
 ```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-split.json
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-minimal.json
+```
+
+### Light
+
+[![light preview](Previews/preview-light.png)](Previews/preview-light.png)
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
+```
+
+### Icon Light
+
+[![icon-light preview](Previews/preview-icon-light.png)](Previews/preview-icon-light.png)
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-light.json
 ```
 
 If the app caches images, clear its cache after switching styles.
