@@ -1,8 +1,8 @@
 # FR-Badges
 
-Modern badge pack for media tags: **source, resolution, HDR, codec, bit depth and audio**. 31 badges in 10 styles, all transparent PNGs, with ready-to-use filter manifests.
+Modern badge pack for **Nuvio**: 171 badges across 12 categories (resolution, dynamic range, codecs, audio, channels, sources, containers, streaming services, flags, editions and languages) in 10 styles. All badges are transparent PNGs with no extra margin, and each style has a ready-to-use filter manifest.
 
-![FR-Badges Glass preview](Previews/preview-glass.png)
+![FR-Badges Icon Dark preview](Previews/preview-icon-dark.png)
 
 ## How to add in Nuvio
 
@@ -18,7 +18,7 @@ To switch styles, replace the link with another style's link. If the old badges 
 
 | Style | Look | Folder | Manifest |
 |---|---|---|---|
-| **Glass** | Dark tinted glass pills | `Badges` | `badges.json` |
+| **Glass** | Dark tinted glass pills (text only) | `Badges` | `badges.json` |
 | **Neon** | Glowing gradient text, no background (dark UIs) | `Badges-Neon` | `badges-neon.json` |
 | **Solid** | Vivid gradient fills | `Badges-Solid` | `badges-solid.json` |
 | **Icon Dark** | Gradient icon tiles on dark glass | `Badges-Icon-Dark` | `badges-icon-dark.json` |
@@ -31,15 +31,22 @@ To switch styles, replace the link with another style's link. If the old badges 
 
 ## What's included
 
-| Group | Badges |
-|---|---|
-| Source | REMUX, Blu-ray, WEB-DL, WEBRip, HDTV, DVD Rip |
-| Resolution | 4K, 1080p, 720p, 480p |
-| Video Tech | Dolby Vision, HDR10+, HDR10, HDR, SDR, IMAX Enhanced, IMAX |
-| Video Codec | HEVC, AVC |
-| Bit Depth | 10-bit, 8-bit |
-| Audio Tech | Atmos, TrueHD, Dolby Digital+, Dolby Digital, DTS:X, DTS-HD MA, DTS-HD, DTS |
-| Audio Channels | 7.1, 5.1 |
+| Category | Count | Badges |
+|---|---|---|
+| Resolution | 8 | 8K, 4K, 1440p, 1080p, 720p, 576p, 480p, 360p |
+| 3D & Video Formats | 2 | 3D, HFR |
+| Dynamic Range | 12 | Dolby Vision (and DV P5/P7/P8, DV+HDR), HDR10+, HDR10, HDR, HLG, 12-bit, 10-bit, SDR |
+| Video Codec | 13 | VVC, AV1, HEVC, AVC, ProRes, VP9, VP8, VC-1, XviD, DivX, MPEG-2, MPEG-4, WMV |
+| Audio Codec | 18 | Atmos, TrueHD, DTS:X, DTS-HD MA/HRA, DTS-ES, DTS, DD+, DD, AC-4, FLAC, ALAC, PCM, AAC, Opus, Vorbis, MP3, WMA |
+| Audio Channels | 17 | 9.1.6 down to 1.0 Mono, including 7.1.4, 7.1.2, 5.1.4, 5.1.2 |
+| Release Source | 12 | REMUX, UHD Blu-ray, Blu-ray, BDRip, WEB-DL, WEBRip, HDTV, DVD, TVRip, CAM, SCR, Workprint |
+| Container Format | 5 | MKV, MP4, M2TS/TS, AVI, ISO |
+| Streaming Service | 22 | Netflix, Prime Video, Apple TV+, Disney+, Max, Hulu, Paramount+, Peacock, Crunchyroll, YouTube, JioHotstar, ZEE5, SonyLIV and more |
+| Audio & Subs | 10 | Multi/Dual Audio, Dubbed, Original, Multi-Sub, Subpack, Hardsub, CC, Commentary, Audio Description |
+| Editions & Cuts | 13 | IMAX, IMAX Enhanced, Criterion, Director's/Extended/Theatrical/Final Cut, Unrated, Special, Open Matte, Remastered, Hybrid, Proper/Repack |
+| Languages | 39 | 39 languages as text codes (ENG, MAL, HIN, TAM, TEL, JPN, KOR and more) |
+
+**Total: 171 badges per style.** Every badge has the matching regex pattern from the master pack, so tags match automatically.
 
 ## Usage
 
@@ -47,7 +54,7 @@ Copy the link for the style you want and use **one** style at a time. The guide 
 
 ### Glass
 
-[![glass preview](Previews/preview-glass.png)](Previews/preview-glass.png)
+[![Glass preview](Previews/preview-glass.png)](Previews/preview-glass.png)
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges.json
@@ -55,7 +62,7 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges.json
 
 ### Neon
 
-[![neon preview](Previews/preview-neon.png)](Previews/preview-neon.png)
+[![Neon preview](Previews/preview-neon.png)](Previews/preview-neon.png)
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon.json
@@ -63,7 +70,7 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon.json
 
 ### Solid
 
-[![solid preview](Previews/preview-solid.png)](Previews/preview-solid.png)
+[![Solid preview](Previews/preview-solid.png)](Previews/preview-solid.png)
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-solid.json
@@ -71,7 +78,7 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-solid.json
 
 ### Icon Dark
 
-[![icon-dark preview](Previews/preview-icon-dark.png)](Previews/preview-icon-dark.png)
+[![Icon Dark preview](Previews/preview-icon-dark.png)](Previews/preview-icon-dark.png)
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-dark.json
@@ -79,7 +86,7 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-dark.js
 
 ### Split
 
-[![split preview](Previews/preview-split.png)](Previews/preview-split.png)
+[![Split preview](Previews/preview-split.png)](Previews/preview-split.png)
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-split.json
@@ -87,7 +94,7 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-split.json
 
 ### Frost
 
-[![frost preview](Previews/preview-frost.png)](Previews/preview-frost.png)
+[![Frost preview](Previews/preview-frost.png)](Previews/preview-frost.png)
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-frost.json
@@ -95,7 +102,7 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-frost.json
 
 ### Neon Icon
 
-[![neon-icon preview](Previews/preview-neon-icon.png)](Previews/preview-neon-icon.png)
+[![Neon Icon preview](Previews/preview-neon-icon.png)](Previews/preview-neon-icon.png)
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon-icon.json
@@ -103,7 +110,7 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon-icon.js
 
 ### Minimal
 
-[![minimal preview](Previews/preview-minimal.png)](Previews/preview-minimal.png)
+[![Minimal preview](Previews/preview-minimal.png)](Previews/preview-minimal.png)
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-minimal.json
@@ -111,7 +118,7 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-minimal.json
 
 ### Light
 
-[![light preview](Previews/preview-light.png)](Previews/preview-light.png)
+[![Light preview](Previews/preview-light.png)](Previews/preview-light.png)
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
@@ -119,7 +126,7 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
 
 ### Icon Light
 
-[![icon-light preview](Previews/preview-icon-light.png)](Previews/preview-icon-light.png)
+[![Icon Light preview](Previews/preview-icon-light.png)](Previews/preview-icon-light.png)
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-light.json
@@ -127,8 +134,18 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-light.j
 
 If the app caches images, clear its cache after switching styles.
 
+## Badger-format manifests
+
+The `Badger-format` folder has the same badges in the "Badger Ultimate Master Pack" layout (a single `badges` list with categories), one file per style. Use these only if your app expects that layout:
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/Badger-format/pack-glass.json
+```
+
+Other styles use the same name pattern: `pack-neon.json`, `pack-solid.json`, `pack-icon-dark.json`, `pack-split.json`, `pack-frost.json`, `pack-neon-icon.json`, `pack-minimal.json`, `pack-light.json`, `pack-icon-light.json`.
+
 ## Notes
 
-- Badges are original designs with plain-text labels. They are not the official logos of Dolby, DTS, IMAX, Blu-ray Disc or others.
-- Every badge has a transparent margin, so rounded edges don't get clipped when an app crops to the image bounds.
-- Based on the original [Elite-Badges](https://github.com/leonevz/Elite-Badges) manifest structure.
+- Badges are original designs with plain-text labels. They are not the official logos of Dolby, DTS, IMAX, Blu-ray Disc, streaming services or others. Languages are shown as text codes, not flags.
+- The images have no transparent margin. Neon and Neon Icon have no background shape, so they are cropped tight to the text.
+- Based on the original [Elite-Badges](https://github.com/leonevz/Elite-Badges) manifest structure and the Badger Ultimate Master Pack patterns.
