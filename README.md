@@ -1,6 +1,6 @@
 # FR-Badges
 
-Modern badge pack for media tags: **source, resolution, HDR, codec, bit depth and audio**. 31 badges in 6 styles, all transparent PNGs, with ready-to-use filter manifests.
+Modern badge pack for media tags: **source, resolution, HDR, codec, bit depth and audio**. 31 badges in 11 styles, all transparent PNGs, with ready-to-use filter manifests.
 
 ![FR-Badges Glass preview](Previews/preview-glass.png)
 
@@ -14,6 +14,11 @@ Modern badge pack for media tags: **source, resolution, HDR, codec, bit depth an
 | **Light** | Soft pastel pills (light UIs) | `Badges-Light` | `badges-light.json` |
 | **Icon Dark** | Gradient icon tiles on dark glass | `Badges-Icon-Dark` | `badges-icon-dark.json` |
 | **Icon Light** | Gradient icon tiles on pastel | `Badges-Icon-Light` | `badges-icon-light.json` |
+| **Frost** | Translucent frosted glass for posters and backdrops | `Badges-Frost` | `badges-frost.json` |
+| **Minimal** | Flat dark pills with a colored dot | `Badges-Minimal` | `badges-minimal.json` |
+| **Tile** | Compact vertical icon tiles | `Badges-Tile` | `badges-tile.json` |
+| **Neon Icon** | Glowing gradient icons and text, no background (dark UIs) | `Badges-Neon-Icon` | `badges-neon-icon.json` |
+| **Split** | Colored icon segment joined to a dark label | `Badges-Split` | `badges-split.json` |
 
 ## What's included
 
@@ -77,6 +82,46 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-dark.js
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-light.json
+```
+
+### Frost
+
+[![frost preview](Previews/preview-frost.png)](Previews/preview-frost.png)
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-frost.json
+```
+
+### Minimal
+
+[![minimal preview](Previews/preview-minimal.png)](Previews/preview-minimal.png)
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-minimal.json
+```
+
+### Tile
+
+[![tile preview](Previews/preview-tile.png)](Previews/preview-tile.png)
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-tile.json
+```
+
+### Neon Icon
+
+[![neon-icon preview](Previews/preview-neon-icon.png)](Previews/preview-neon-icon.png)
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon-icon.json
+```
+
+### Split
+
+[![split preview](Previews/preview-split.png)](Previews/preview-split.png)
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-split.json
 ```
 
 If the app caches images, clear its cache after switching styles.
