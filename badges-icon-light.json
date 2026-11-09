@@ -56,7 +56,7 @@
       "id": "res-720p",
       "groupId": "resolution",
       "name": "720p HD",
-      "pattern": "(?i)\\b(720p|hd)\\b",
+      "pattern": "(?i)\\b(720p|720i)\\b",
       "imageURL": "https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/Badges-Icon-Light/res-720p.png",
       "tagColor": "#00000000",
       "borderColor": "#00000000",
