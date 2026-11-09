@@ -31,18 +31,57 @@ Previews: [Glass](Previews/preview-glass.png) · [Solid](Previews/preview-solid.
 
 ## Usage
 
-Import a manifest by its raw URL. Pick one style:
+Copy the link for the style you want and import it as the filter manifest in your app. Use **one** style at a time.
+
+### Glass
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges.json
+```
+
+[Preview](Previews/preview-glass.png)
+
+### Solid
+
+```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-solid.json
+```
+
+[Preview](Previews/preview-solid.png)
+
+### Neon
+
+```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon.json
+```
+
+[Preview](Previews/preview-neon.png)
+
+### Light
+
+```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
+```
+
+[Preview](Previews/preview-light.png)
+
+### Icon Dark
+
+```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-dark.json
+```
+
+[Preview](Previews/preview-icon-dark.png)
+
+### Icon Light
+
+```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-light.json
 ```
 
-Each manifest holds the filename patterns and image links for that style. If the app caches images, clear its cache after switching styles.
+[Preview](Previews/preview-icon-light.png)
+
+If the app caches images, clear its cache after switching styles.
 
 ## Notes
 
