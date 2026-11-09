@@ -15,8 +15,6 @@ Modern badge pack for media tags: **source, resolution, HDR, codec, bit depth an
 | **Icon Dark** | Gradient icon tiles on dark glass | `Badges-Icon-Dark` | `badges-icon-dark.json` |
 | **Icon Light** | Gradient icon tiles on pastel | `Badges-Icon-Light` | `badges-icon-light.json` |
 
-Previews: [Glass](Previews/preview-glass.png) · [Solid](Previews/preview-solid.png) · [Neon](Previews/preview-neon.png) · [Light](Previews/preview-light.png) · [Icon Dark](Previews/preview-icon-dark.png) · [Icon Light](Previews/preview-icon-light.png)
-
 ## What's included
 
 | Group | Badges |
@@ -35,51 +33,51 @@ Copy the link for the style you want and import it as the filter manifest in you
 
 ### Glass
 
+[![glass preview](Previews/preview-glass.png)](Previews/preview-glass.png)
+
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges.json
 ```
 
-[Preview](Previews/preview-glass.png)
-
 ### Solid
+
+[![solid preview](Previews/preview-solid.png)](Previews/preview-solid.png)
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-solid.json
 ```
 
-[Preview](Previews/preview-solid.png)
-
 ### Neon
+
+[![neon preview](Previews/preview-neon.png)](Previews/preview-neon.png)
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon.json
 ```
 
-[Preview](Previews/preview-neon.png)
-
 ### Light
+
+[![light preview](Previews/preview-light.png)](Previews/preview-light.png)
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
 ```
 
-[Preview](Previews/preview-light.png)
-
 ### Icon Dark
+
+[![icon-dark preview](Previews/preview-icon-dark.png)](Previews/preview-icon-dark.png)
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-dark.json
 ```
 
-[Preview](Previews/preview-icon-dark.png)
-
 ### Icon Light
+
+[![icon-light preview](Previews/preview-icon-light.png)](Previews/preview-icon-light.png)
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-light.json
 ```
-
-[Preview](Previews/preview-icon-light.png)
 
 If the app caches images, clear its cache after switching styles.
 
