@@ -2,7 +2,7 @@
 
 Modern badge pack for **Nuvio**: 243 badges across 14 groups (hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, flags, streaming platforms, debrid services and 83 languages) in 10 styles. All badges are transparent PNGs with no extra margin, and each style has a ready-to-use filter manifest.
 
-![FR-Badges Icon Dark preview](Previews/preview-icon-dark.png)
+![FR-Badges Icon Dark preview](Previews/preview-glass.png)
 
 ## How to add in Nuvio
 
