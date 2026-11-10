@@ -2,7 +2,7 @@
 
 Modern badge pack for **Nuvio**: 243 badges across 14 groups (hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, flags, streaming platforms, debrid services and 83 languages) in 10 styles. All badges are transparent PNGs with no extra margin, and each style has a ready-to-use filter manifest.
 
-![FR-Badges Icon Dark preview](Previews/preview-icon-dark.png)
+![FR-Badges Icon Dark preview](Previews/preview-glass.png)
 
 ## How to add in Nuvio
 
@@ -48,7 +48,7 @@ To switch styles, replace the link with another style's link. If the old badges 
 | Debrid & Caching | 5 | Real-Debrid, AllDebrid, Premiumize, TorBox, Debrid-Link |
 | Languages | 83 | 83 languages with native names |
 
-**Total: 243 badges per style.** Every badge uses the regex pattern from the master pack (v2.0.0), so tags match automatically.
+**Total: 243 badges per style.**
 
 ## Usage
 
@@ -136,18 +136,7 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-light.j
 
 If the app caches images, clear its cache after switching styles.
 
-## Badger-format manifests
-
-The `Badger-format` folder has the same badges in the "Badger Ultimate Master Pack" layout (a single `badges` list with categories), one file per style. Use these only if your app expects that layout:
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/Badger-format/pack-glass.json
-```
-
-Other styles use the same name pattern: `pack-neon.json`, `pack-solid.json`, `pack-icon-dark.json`, `pack-split.json`, `pack-frost.json`, `pack-neon-icon.json`, `pack-minimal.json`, `pack-light.json`, `pack-icon-light.json`.
-
 ## Notes
 
 - Badges are original designs with plain-text labels. They are not the official logos of Dolby, DTS, IMAX, Blu-ray Disc, streaming services or others.
 - The images have no transparent margin. Neon and Neon Icon have no background shape, so they are cropped tight to the text.
-- Based on the original [Elite-Badges](https://github.com/leonevz/Elite-Badges) manifest structure and the Badger Ultimate Master Pack patterns.
