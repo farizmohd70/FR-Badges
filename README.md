@@ -134,6 +134,22 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-light.json
 ```
 
+### Black & White
+
+[![Black & White preview](Previews/preview-black-white.png)](Previews/preview-black-white.png)
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-black-white.json
+```
+
+### White & Black
+
+[![White & Black preview](Previews/preview-white-black.png)](Previews/preview-white-black.png)
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-white-black.json
+```
+
 If the app caches images, clear its cache after switching styles.
 
 ## Notes
