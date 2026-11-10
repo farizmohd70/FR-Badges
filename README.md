@@ -1,18 +1,33 @@
-# FR-Badges
+<p align="center">
+  <img src="assets/banner.png" alt="FR-Badges: modern badge pack for Nuvio" width="100%">
+</p>
 
-Modern badge pack for **Nuvio**: 243 badges across 14 groups (hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, flags, streaming platforms, debrid services and 83 languages) in 12 styles. All badges are transparent PNGs with no extra margin, and each style has a ready-to-use filter manifest.
+<p align="center">
+  <img src="https://img.shields.io/badge/for-Nuvio-8b5cf6?style=for-the-badge" alt="for Nuvio">
+  <img src="https://img.shields.io/badge/badges-243-0ea5e9?style=for-the-badge" alt="badges 243">
+  <img src="https://img.shields.io/badge/styles-12-ec4899?style=for-the-badge" alt="styles 12">
+  <img src="https://img.shields.io/badge/languages-83-10b981?style=for-the-badge" alt="languages 83">
+</p>
 
-![FR-Badges Icon Dark preview](Previews/preview-glass.png)
+<p align="center"><b>Modern badge pack for Nuvio.</b><br>243 badges across 14 groups (hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, flags, streaming platforms, debrid services and 83 languages) in 12 styles. Every style has a ready-to-use filter manifest.</p>
 
-## How to add in Nuvio
+---
+
+## Quick start
 
 1. Open Nuvio and go to **Profile**.
 2. Tap **Layout**.
 3. Open **Streams**.
-4. Find **Fusion badge URLs** and paste the manifest link of the style you want. Copy it from the [Usage](#usage) section below.
+4. Find **Fusion badge URLs** and paste the manifest link of the style you want. Copy it from [Usage](#usage) below.
 5. Go back to your streams list. The new badges show on your stream tags.
 
-To switch styles, replace the link with another style's link. If the old badges still show, restart the app or clear its cache.
+> To switch styles, replace the link with another style's link. If the old badges still show, restart the app or clear its cache.
+
+## Gallery
+
+<table>
+<tr><td align="center"><a href="#glass"><img src="assets/gallery/glass.png" width="420" alt="Glass"></a><br><b>Glass</b></td><td align="center"><a href="#black--white"><img src="assets/gallery/black-white.png" width="420" alt="Black & White"></a><br><b>Black & White</b></td></tr><tr><td align="center"><a href="#white--black"><img src="assets/gallery/white-black.png" width="420" alt="White & Black"></a><br><b>White & Black</b></td><td align="center"><a href="#neon"><img src="assets/gallery/neon.png" width="420" alt="Neon"></a><br><b>Neon</b></td></tr><tr><td align="center"><a href="#solid"><img src="assets/gallery/solid.png" width="420" alt="Solid"></a><br><b>Solid</b></td><td align="center"><a href="#icon-dark"><img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark"></a><br><b>Icon Dark</b></td></tr><tr><td align="center"><a href="#split"><img src="assets/gallery/split.png" width="420" alt="Split"></a><br><b>Split</b></td><td align="center"><a href="#frost"><img src="assets/gallery/frost.png" width="420" alt="Frost"></a><br><b>Frost</b></td></tr><tr><td align="center"><a href="#neon-icon"><img src="assets/gallery/neon-icon.png" width="420" alt="Neon Icon"></a><br><b>Neon Icon</b></td><td align="center"><a href="#minimal"><img src="assets/gallery/minimal.png" width="420" alt="Minimal"></a><br><b>Minimal</b></td></tr><tr><td align="center"><a href="#light"><img src="assets/gallery/light.png" width="420" alt="Light"></a><br><b>Light</b></td><td align="center"><a href="#icon-light"><img src="assets/gallery/icon-light.png" width="420" alt="Icon Light"></a><br><b>Icon Light</b></td></tr>
+</table>
 
 ## Styles
 
@@ -58,87 +73,25 @@ Copy the link for the style you want and use **one** style at a time. The guide 
 
 ### Glass
 
+<details>
+<summary>Preview</summary>
+
 [![Glass preview](Previews/preview-glass.png)](Previews/preview-glass.png)
+
+</details>
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges.json
 ```
 
-### Neon
-
-[![Neon preview](Previews/preview-neon.png)](Previews/preview-neon.png)
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon.json
-```
-
-### Solid
-
-[![Solid preview](Previews/preview-solid.png)](Previews/preview-solid.png)
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-solid.json
-```
-
-### Icon Dark
-
-[![Icon Dark preview](Previews/preview-icon-dark.png)](Previews/preview-icon-dark.png)
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-dark.json
-```
-
-### Split
-
-[![Split preview](Previews/preview-split.png)](Previews/preview-split.png)
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-split.json
-```
-
-### Frost
-
-[![Frost preview](Previews/preview-frost.png)](Previews/preview-frost.png)
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-frost.json
-```
-
-### Neon Icon
-
-[![Neon Icon preview](Previews/preview-neon-icon.png)](Previews/preview-neon-icon.png)
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon-icon.json
-```
-
-### Minimal
-
-[![Minimal preview](Previews/preview-minimal.png)](Previews/preview-minimal.png)
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-minimal.json
-```
-
-### Light
-
-[![Light preview](Previews/preview-light.png)](Previews/preview-light.png)
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
-```
-
-### Icon Light
-
-[![Icon Light preview](Previews/preview-icon-light.png)](Previews/preview-icon-light.png)
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-light.json
-```
-
 ### Black & White
 
+<details>
+<summary>Preview</summary>
+
 [![Black & White preview](Previews/preview-black-white.png)](Previews/preview-black-white.png)
+
+</details>
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-black-white.json
@@ -146,15 +99,142 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-black-white.
 
 ### White & Black
 
+<details>
+<summary>Preview</summary>
+
 [![White & Black preview](Previews/preview-white-black.png)](Previews/preview-white-black.png)
+
+</details>
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-white-black.json
 ```
 
+### Neon
+
+<details>
+<summary>Preview</summary>
+
+[![Neon preview](Previews/preview-neon.png)](Previews/preview-neon.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon.json
+```
+
+### Solid
+
+<details>
+<summary>Preview</summary>
+
+[![Solid preview](Previews/preview-solid.png)](Previews/preview-solid.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-solid.json
+```
+
+### Icon Dark
+
+<details>
+<summary>Preview</summary>
+
+[![Icon Dark preview](Previews/preview-icon-dark.png)](Previews/preview-icon-dark.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-dark.json
+```
+
+### Split
+
+<details>
+<summary>Preview</summary>
+
+[![Split preview](Previews/preview-split.png)](Previews/preview-split.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-split.json
+```
+
+### Frost
+
+<details>
+<summary>Preview</summary>
+
+[![Frost preview](Previews/preview-frost.png)](Previews/preview-frost.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-frost.json
+```
+
+### Neon Icon
+
+<details>
+<summary>Preview</summary>
+
+[![Neon Icon preview](Previews/preview-neon-icon.png)](Previews/preview-neon-icon.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon-icon.json
+```
+
+### Minimal
+
+<details>
+<summary>Preview</summary>
+
+[![Minimal preview](Previews/preview-minimal.png)](Previews/preview-minimal.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-minimal.json
+```
+
+### Light
+
+<details>
+<summary>Preview</summary>
+
+[![Light preview](Previews/preview-light.png)](Previews/preview-light.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
+```
+
+### Icon Light
+
+<details>
+<summary>Preview</summary>
+
+[![Icon Light preview](Previews/preview-icon-light.png)](Previews/preview-icon-light.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-light.json
+```
+
 If the app caches images, clear its cache after switching styles.
+
+## License
+
+[MIT](LICENSE) © farizmohd70
 
 ## Notes
 
 - Badges are original designs with plain-text labels. They are not the official logos of Dolby, DTS, IMAX, Blu-ray Disc, streaming services or others.
-- The images have no transparent margin. Neon and Neon Icon have no background shape, so they are cropped tight to the text.
+- Images have no transparent margin, except the Neon style, which has a small one on the left and right so its two-line text is not cut by the app's rounded badge boundary. Neon and Neon Icon have no background shape, so they are cropped tight to the text.
+- Only one badge shows per attribute: one resolution, one codec, one HDR type, and so on.
