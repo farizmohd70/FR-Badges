@@ -1,6 +1,6 @@
 # FR-Badges
 
-Modern badge pack for **Nuvio**: 171 badges across 12 categories (resolution, dynamic range, codecs, audio, channels, sources, containers, streaming services, flags, editions and languages) in 10 styles. All badges are transparent PNGs with no extra margin, and each style has a ready-to-use filter manifest.
+Modern badge pack for **Nuvio**: 243 badges across 14 groups (hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, flags, streaming platforms, debrid services and 83 languages) in 10 styles. All badges are transparent PNGs with no extra margin, and each style has a ready-to-use filter manifest.
 
 ![FR-Badges Icon Dark preview](Previews/preview-icon-dark.png)
 
@@ -31,22 +31,24 @@ To switch styles, replace the link with another style's link. If the old badges 
 
 ## What's included
 
-| Category | Count | Badges |
+| Group | Count | Badges |
 |---|---|---|
+| Hero Badges | 5 | REMUX, 4K, Dolby Vision, Dolby Atmos, Cached |
 | Resolution | 8 | 8K, 4K, 1440p, 1080p, 720p, 576p, 480p, 360p |
-| 3D & Video Formats | 2 | 3D, HFR |
-| Dynamic Range | 12 | Dolby Vision (and DV P5/P7/P8, DV+HDR), HDR10+, HDR10, HDR, HLG, 12-bit, 10-bit, SDR |
-| Video Codec | 13 | VVC, AV1, HEVC, AVC, ProRes, VP9, VP8, VC-1, XviD, DivX, MPEG-2, MPEG-4, WMV |
-| Audio Codec | 18 | Atmos, TrueHD, DTS:X, DTS-HD MA/HRA, DTS-ES, DTS, DD+, DD, AC-4, FLAC, ALAC, PCM, AAC, Opus, Vorbis, MP3, WMA |
-| Audio Channels | 17 | 9.1.6 down to 1.0 Mono, including 7.1.4, 7.1.2, 5.1.4, 5.1.2 |
-| Release Source | 12 | REMUX, UHD Blu-ray, Blu-ray, BDRip, WEB-DL, WEBRip, HDTV, DVD, TVRip, CAM, SCR, Workprint |
-| Container Format | 5 | MKV, MP4, M2TS/TS, AVI, ISO |
-| Streaming Service | 22 | Netflix, Prime Video, Apple TV+, Disney+, Max, Hulu, Paramount+, Peacock, Crunchyroll, YouTube, JioHotstar, ZEE5, SonyLIV and more |
-| Audio & Subs | 10 | Multi/Dual Audio, Dubbed, Original, Multi-Sub, Subpack, Hardsub, CC, Commentary, Audio Description |
-| Editions & Cuts | 13 | IMAX, IMAX Enhanced, Criterion, Director's/Extended/Theatrical/Final Cut, Unrated, Special, Open Matte, Remastered, Hybrid, Proper/Repack |
-| Languages | 39 | 39 languages as text codes (ENG, MAL, HIN, TAM, TEL, JPN, KOR and more) |
+| 3D & Broadcast | 6 | 3D, HFR, 60 FPS, 50 FPS, Live TV, Interlaced |
+| Dynamic Range & Color | 12 | Dolby Vision, DV P7/P8, DV+HDR10, HDR10+, HDR10, HDR, HLG, 12/10/8-bit, SDR |
+| Video Codecs | 13 | VVC, AV1, HEVC, AVC, ProRes, VP9, VP8, VC-1, XviD, DivX, MPEG-4, MPEG-2, WMV |
+| Audio Codecs | 18 | Atmos, TrueHD, DTS:X, DTS-HD MA/HRA, DTS-ES, DTS, DD+, DD, AC-4, FLAC, ALAC, PCM, AAC, Opus, Vorbis, MP3, WMA |
+| Audio Channels | 12 | 9.1.6 down to 1.0 Mono, including 7.1.4, 7.1.2, 5.1.4, 5.1.2 |
+| Release Source | 8 | REMUX, UHD Blu-ray, Blu-ray, WEB-DL, WEBRip, HDTV, DVD, TVRip |
+| Containers | 5 | MKV, MP4, M2TS/TS, AVI, ISO |
+| Editions & Cuts | 13 | IMAX, IMAX Enhanced, Open Matte, Criterion, Director's/Extended/Theatrical/Final Cut, Special, Unrated, Hybrid, Remastered, Proper/Repack |
+| Audio & Subs Flags | 9 | Multi/Dual Audio, Dubbed, Original Audio, Multi-Sub, Subpack, CC, Commentary, Audio Description |
+| Streaming Platforms | 46 | Netflix, Prime Video, Apple TV+, Disney+, Max, Hulu, Paramount+, Peacock, JioHotstar, ZEE5, Crunchyroll and 35 more |
+| Debrid & Caching | 5 | Real-Debrid, AllDebrid, Premiumize, TorBox, Debrid-Link |
+| Languages | 83 | 83 languages with native names |
 
-**Total: 171 badges per style.** Every badge has the matching regex pattern from the master pack, so tags match automatically.
+**Total: 243 badges per style.** Every badge uses the regex pattern from the master pack (v2.0.0), so tags match automatically.
 
 ## Usage
 
@@ -146,6 +148,6 @@ Other styles use the same name pattern: `pack-neon.json`, `pack-solid.json`, `pa
 
 ## Notes
 
-- Badges are original designs with plain-text labels. They are not the official logos of Dolby, DTS, IMAX, Blu-ray Disc, streaming services or others. Languages are shown as text codes, not flags.
+- Badges are original designs with plain-text labels. They are not the official logos of Dolby, DTS, IMAX, Blu-ray Disc, streaming services or others.
 - The images have no transparent margin. Neon and Neon Icon have no background shape, so they are cropped tight to the text.
 - Based on the original [Elite-Badges](https://github.com/leonevz/Elite-Badges) manifest structure and the Badger Ultimate Master Pack patterns.
