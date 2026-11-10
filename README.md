@@ -1,6 +1,6 @@
 # FR-Badges
 
-Modern badge pack for **Nuvio**: 243 badges across 14 groups (hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, flags, streaming platforms, debrid services and 83 languages) in 10 styles. All badges are transparent PNGs with no extra margin, and each style has a ready-to-use filter manifest.
+Modern badge pack for **Nuvio**: 243 badges across 14 groups (hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, flags, streaming platforms, debrid services and 83 languages) in 12 styles. All badges are transparent PNGs with no extra margin, and each style has a ready-to-use filter manifest.
 
 ![FR-Badges Icon Dark preview](Previews/preview-glass.png)
 
@@ -28,6 +28,8 @@ To switch styles, replace the link with another style's link. If the old badges 
 | **Minimal** | Flat dark pills with a colored dot | `Badges-Minimal` | `badges-minimal.json` |
 | **Light** | Soft pastel pills (light UIs) | `Badges-Light` | `badges-light.json` |
 | **Icon Light** | Gradient icon tiles on pastel | `Badges-Icon-Light` | `badges-icon-light.json` |
+| **Black & White** | Black glass pills with white text | `Badges-Black-White` | `badges-black-white.json` |
+| **White & Black** | White glass pills with black text | `Badges-White-Black` | `badges-white-black.json` |
 
 ## What's included
 
