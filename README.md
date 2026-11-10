@@ -26,7 +26,12 @@
 ## Gallery
 
 <table>
-<tr><td align="center"><a href="#glass"><img src="assets/gallery/glass.png" width="420" alt="Glass"></a><br><b>Glass</b></td><td align="center"><a href="#black--white"><img src="assets/gallery/black-white.png" width="420" alt="Black & White"></a><br><b>Black & White</b></td></tr><tr><td align="center"><a href="#white--black"><img src="assets/gallery/white-black.png" width="420" alt="White & Black"></a><br><b>White & Black</b></td><td align="center"><a href="#neon"><img src="assets/gallery/neon.png" width="420" alt="Neon"></a><br><b>Neon</b></td></tr><tr><td align="center"><a href="#solid"><img src="assets/gallery/solid.png" width="420" alt="Solid"></a><br><b>Solid</b></td><td align="center"><a href="#icon-dark"><img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark"></a><br><b>Icon Dark</b></td></tr><tr><td align="center"><a href="#split"><img src="assets/gallery/split.png" width="420" alt="Split"></a><br><b>Split</b></td><td align="center"><a href="#frost"><img src="assets/gallery/frost.png" width="420" alt="Frost"></a><br><b>Frost</b></td></tr><tr><td align="center"><a href="#neon-icon"><img src="assets/gallery/neon-icon.png" width="420" alt="Neon Icon"></a><br><b>Neon Icon</b></td><td align="center"><a href="#minimal"><img src="assets/gallery/minimal.png" width="420" alt="Minimal"></a><br><b>Minimal</b></td></tr><tr><td align="center"><a href="#light"><img src="assets/gallery/light.png" width="420" alt="Light"></a><br><b>Light</b></td><td align="center"><a href="#icon-light"><img src="assets/gallery/icon-light.png" width="420" alt="Icon Light"></a><br><b>Icon Light</b></td></tr>
+<tr><td align="center"><a href="#glass"><img src="assets/gallery/glass.png" width="420" alt="Glass"></a><br><b>Glass</b></td><td align="center"><a href="#neon"><img src="assets/gallery/neon.png" width="420" alt="Neon"></a><br><b>Neon</b></td></tr>
+<tr><td align="center"><a href="#solid"><img src="assets/gallery/solid.png" width="420" alt="Solid"></a><br><b>Solid</b></td><td align="center"><a href="#frost"><img src="assets/gallery/frost.png" width="420" alt="Frost"></a><br><b>Frost</b></td></tr>
+<tr><td align="center"><a href="#black--white"><img src="assets/gallery/black-white.png" width="420" alt="Black & White"></a><br><b>Black & White</b></td><td align="center"><a href="#white--black"><img src="assets/gallery/white-black.png" width="420" alt="White & Black"></a><br><b>White & Black</b></td></tr>
+<tr><td align="center"><a href="#minimal"><img src="assets/gallery/minimal.png" width="420" alt="Minimal"></a><br><b>Minimal</b></td><td align="center"><a href="#icon-dark"><img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark"></a><br><b>Icon Dark</b></td></tr>
+<tr><td align="center"><a href="#split"><img src="assets/gallery/split.png" width="420" alt="Split"></a><br><b>Split</b></td><td align="center"><a href="#neon-icon"><img src="assets/gallery/neon-icon.png" width="420" alt="Neon Icon"></a><br><b>Neon Icon</b></td></tr>
+<tr><td align="center"><a href="#light"><img src="assets/gallery/light.png" width="420" alt="Light"></a><br><b>Light</b></td><td align="center"><a href="#icon-light"><img src="assets/gallery/icon-light.png" width="420" alt="Icon Light"></a><br><b>Icon Light</b></td></tr>
 </table>
 
 ## Styles
@@ -36,15 +41,15 @@
 | **Glass** | Dark tinted glass pills (text only) | `Badges` | `badges.json` |
 | **Neon** | Glowing gradient text, no background (dark UIs) | `Badges-Neon` | `badges-neon.json` |
 | **Solid** | Vivid gradient fills | `Badges-Solid` | `badges-solid.json` |
-| **Icon Dark** | Gradient icon tiles on dark glass | `Badges-Icon-Dark` | `badges-icon-dark.json` |
-| **Split** | Colored icon segment joined to a dark label | `Badges-Split` | `badges-split.json` |
 | **Frost** | Translucent frosted glass for posters and backdrops | `Badges-Frost` | `badges-frost.json` |
-| **Neon Icon** | Glowing gradient icons and text, no background (dark UIs) | `Badges-Neon-Icon` | `badges-neon-icon.json` |
-| **Minimal** | Flat dark pills with a colored dot | `Badges-Minimal` | `badges-minimal.json` |
-| **Light** | Soft pastel pills (light UIs) | `Badges-Light` | `badges-light.json` |
-| **Icon Light** | Gradient icon tiles on pastel | `Badges-Icon-Light` | `badges-icon-light.json` |
 | **Black & White** | Black glass pills with white text | `Badges-Black-White` | `badges-black-white.json` |
 | **White & Black** | White glass pills with black text | `Badges-White-Black` | `badges-white-black.json` |
+| **Minimal** | Flat dark pills with a colored dot | `Badges-Minimal` | `badges-minimal.json` |
+| **Icon Dark** | Gradient icon tiles on dark glass | `Badges-Icon-Dark` | `badges-icon-dark.json` |
+| **Split** | Colored icon segment joined to a dark label | `Badges-Split` | `badges-split.json` |
+| **Neon Icon** | Glowing gradient icons and text, no background (dark UIs) | `Badges-Neon-Icon` | `badges-neon-icon.json` |
+| **Light** | Soft pastel pills (light UIs) | `Badges-Light` | `badges-light.json` |
+| **Icon Light** | Gradient icon tiles on pastel | `Badges-Icon-Light` | `badges-icon-light.json` |
 
 ## What's included
 
@@ -73,6 +78,8 @@ Copy the link for the style you want and use **one** style at a time. The guide 
 
 ### Glass
 
+<img src="assets/gallery/glass.png" width="420" alt="Glass">
+
 <details>
 <summary>Preview</summary>
 
@@ -84,33 +91,9 @@ Copy the link for the style you want and use **one** style at a time. The guide 
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges.json
 ```
 
-### Black & White
-
-<details>
-<summary>Preview</summary>
-
-[![Black & White preview](Previews/preview-black-white.png)](Previews/preview-black-white.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-black-white.json
-```
-
-### White & Black
-
-<details>
-<summary>Preview</summary>
-
-[![White & Black preview](Previews/preview-white-black.png)](Previews/preview-white-black.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-white-black.json
-```
-
 ### Neon
+
+<img src="assets/gallery/neon.png" width="420" alt="Neon">
 
 <details>
 <summary>Preview</summary>
@@ -125,6 +108,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon.json
 
 ### Solid
 
+<img src="assets/gallery/solid.png" width="420" alt="Solid">
+
 <details>
 <summary>Preview</summary>
 
@@ -136,7 +121,69 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon.json
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-solid.json
 ```
 
+### Frost
+
+<img src="assets/gallery/frost.png" width="420" alt="Frost">
+
+<details>
+<summary>Preview</summary>
+
+[![Frost preview](Previews/preview-frost.png)](Previews/preview-frost.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-frost.json
+```
+
+### Black & White
+
+<img src="assets/gallery/black-white.png" width="420" alt="Black & White">
+
+<details>
+<summary>Preview</summary>
+
+[![Black & White preview](Previews/preview-black-white.png)](Previews/preview-black-white.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-black-white.json
+```
+
+### White & Black
+
+<img src="assets/gallery/white-black.png" width="420" alt="White & Black">
+
+<details>
+<summary>Preview</summary>
+
+[![White & Black preview](Previews/preview-white-black.png)](Previews/preview-white-black.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-white-black.json
+```
+
+### Minimal
+
+<img src="assets/gallery/minimal.png" width="420" alt="Minimal">
+
+<details>
+<summary>Preview</summary>
+
+[![Minimal preview](Previews/preview-minimal.png)](Previews/preview-minimal.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-minimal.json
+```
+
 ### Icon Dark
+
+<img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark">
 
 <details>
 <summary>Preview</summary>
@@ -151,6 +198,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-dark.js
 
 ### Split
 
+<img src="assets/gallery/split.png" width="420" alt="Split">
+
 <details>
 <summary>Preview</summary>
 
@@ -162,20 +211,9 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-dark.js
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-split.json
 ```
 
-### Frost
-
-<details>
-<summary>Preview</summary>
-
-[![Frost preview](Previews/preview-frost.png)](Previews/preview-frost.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-frost.json
-```
-
 ### Neon Icon
+
+<img src="assets/gallery/neon-icon.png" width="420" alt="Neon Icon">
 
 <details>
 <summary>Preview</summary>
@@ -188,20 +226,9 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-frost.json
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon-icon.json
 ```
 
-### Minimal
-
-<details>
-<summary>Preview</summary>
-
-[![Minimal preview](Previews/preview-minimal.png)](Previews/preview-minimal.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-minimal.json
-```
-
 ### Light
+
+<img src="assets/gallery/light.png" width="420" alt="Light">
 
 <details>
 <summary>Preview</summary>
@@ -215,6 +242,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
 ```
 
 ### Icon Light
+
+<img src="assets/gallery/icon-light.png" width="420" alt="Icon Light">
 
 <details>
 <summary>Preview</summary>
