@@ -4,12 +4,12 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/for-Nuvio-8b5cf6?style=for-the-badge" alt="for Nuvio">
-  <img src="https://img.shields.io/badge/badges-242-0ea5e9?style=for-the-badge" alt="badges 242">
+  <img src="https://img.shields.io/badge/badges-361-0ea5e9?style=for-the-badge" alt="badges 361">
   <img src="https://img.shields.io/badge/styles-14-ec4899?style=for-the-badge" alt="styles 14">
-  <img src="https://img.shields.io/badge/languages-82-10b981?style=for-the-badge" alt="languages 82">
+  <img src="https://img.shields.io/badge/languages-88-10b981?style=for-the-badge" alt="languages 88">
 </p>
 
-<p align="center"><b>Modern badge pack for Nuvio.</b><br>242 badges across 14 groups (hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, flags, streaming platforms, debrid services and 82 languages) in 14 styles. Every style has a ready-to-use filter manifest.</p>
+<p align="center"><b>Modern badge pack for Nuvio.</b><br>361 badges across 15 groups (hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, flags, streaming platforms, debrid services 88 languages and 88 subtitle languages) in 14 styles. Every style has a ready-to-use filter manifest.</p>
 
 ---
 
@@ -53,21 +53,22 @@
 | Group | Count | Badges |
 |---|---|---|
 | Hero Badges | 5 | REMUX, 4K, Dolby Vision, Dolby Atmos, Cached |
-| Editions & Cuts | 13 | IMAX, IMAX Enhanced, Open Matte, Criterion, Director's/Extended/Theatrical/Final Cut, Special, Unrated, Hybrid, Remastered, Proper/Repack |
-| Release Source | 8 | REMUX, UHD Blu-ray, Blu-ray, WEB-DL, WEBRip, HDTV, DVD, TVRip |
-| Resolution | 8 | 8K, 4K, 1440p, 1080p, 720p, 576p, 480p, 360p |
-| Dynamic Range & Color | 12 | Dolby Vision, DV P7/P8, DV+HDR10, HDR10+, HDR10, HDR, HLG, 12/10/8-bit, SDR |
+| Editions & Cuts | 18 | IMAX, IMAX Enhanced, Open Matte, Criterion, Director's/Extended/Theatrical/Final Cut, Special, Unrated, Hybrid, Remastered, Proper/Repack, SeaDex, Black & White, True-Hue, Uncensored, Regraded |
+| Release Source | 15 | REMUX, UHD Blu-ray, Blu-ray, WEB-DL, WEBRip, HDTV, DVD, TVRip, HDRip, HC HDRip, SCR, TC, TS, CAM, R5 |
+| Resolution | 10 | 8K, 4K, 1440p, 1080p, 720p, 576p, 480p, 360p, 240p, 144p |
+| Dynamic Range & Color | 15 | Dolby Vision, DV P7/P8, DV+HDR, DV+HDR10, DV+HDR10+, HDR10+, HDR10, HDR, HLG, 12/10/8-bit, SDR, AI Enhanced |
 | 3D & Broadcast | 6 | 3D, HFR, 60 FPS, 50 FPS, Live TV, Interlaced |
-| Audio Codecs | 18 | Atmos, TrueHD, DTS:X, DTS-HD MA/HRA, DTS-ES, DTS, DD+, DD, AC-4, FLAC, ALAC, PCM, AAC, Opus, Vorbis, MP3, WMA |
+| Audio Codecs | 26 | Atmos, TrueHD, DTS:X, DTS-HD MA/HRA, DTS-ES, DTS, DD+, DD, AC-4, FLAC, ALAC, PCM, AAC, Opus, Vorbis, MP3, WMA, plus combined Atmos TrueHD, Atmos Digital+, Atmos/TrueHD/DD+/DD with DV, DTS:X HD MA and DTS:X HD |
 | Video Codecs | 13 | VVC, AV1, HEVC, AVC, ProRes, VP9, VP8, VC-1, XviD, DivX, MPEG-4, MPEG-2, WMV |
 | Containers | 5 | MKV, MP4, M2TS/TS, AVI, ISO |
 | Audio Channels | 12 | 9.1.6 down to 1.0 Mono, including 7.1.4, 7.1.2, 5.1.4, 5.1.2 |
 | Streaming Platforms | 46 | Netflix, Prime Video, Apple TV+, Disney+, Max, Hulu, Paramount+, Peacock, JioHotstar, ZEE5, Crunchyroll and 35 more |
 | Debrid & Caching | 5 | Real-Debrid, AllDebrid, Premiumize, TorBox, Debrid-Link |
-| Languages | 82 | 82 languages with native names |
+| Languages | 88 | 88 languages with native names, including Latino, Cantonese, Hausa, Yoruba and English (US) / (UK) |
 | Audio & Subs Flags | 9 | Multi/Dual Audio, Dubbed, Original Audio, Multi-Sub, Subpack, CC, Commentary, Audio Description |
+| Subtitles | 88 | One subtitle badge for every language, such as "Hindi Subs" |
 
-**Total: 242 badges per style.**
+**Total: 361 badges per style.**
 
 ## Usage
 
@@ -294,3 +295,4 @@ If the app caches images, clear its cache after switching styles.
 - Badges are original designs with plain-text labels. They are not the official logos of Dolby, DTS, IMAX, Blu-ray Disc, streaming services or others.
 - Images have no transparent margin, except the Neon style, which has a small one on the left and right so its two-line text is not cut by the app's rounded badge boundary. Neon and Neon Icon have no background shape, so they are cropped tight to the text.
 - Only one badge shows per attribute: one resolution, one codec, one HDR type, and so on.
+- Language and subtitle badges never overlap: "Hindi Subs" shows the Hindi subtitle badge only, and "Hindi" without "subs" shows the Hindi language badge only.
