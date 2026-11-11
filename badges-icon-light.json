@@ -2471,19 +2471,6 @@
       "type": "filter"
     },
     {
-      "id": "lang-he",
-      "groupId": "languages",
-      "name": "עברית",
-      "pattern": "(?iu)(?:(?<![\\p{L}\\p{N}])(?:hebrew|עברית|ivrit|heb)(?![\\p{L}\\p{N}])|(?<![A-Za-z0-9])(?-i:IL|IW)(?![A-Za-z0-9])|[\\[(|/,]\\s*(?-i:HE)\\s*[\\])|/,]|🇮🇱)",
-      "imageURL": "https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/Badges-Icon-Light/lang-he.png",
-      "tagColor": "#00000000",
-      "borderColor": "#00000000",
-      "textColor": "#00000000",
-      "tagStyle": "filled and bordered",
-      "isEnabled": true,
-      "type": "filter"
-    },
-    {
       "id": "lang-fa",
       "groupId": "languages",
       "name": "فارسی",
