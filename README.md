@@ -75,6 +75,8 @@ Copy the link for the style you want and use **one** style at a time. The guide 
 
 ### Glass
 
+<img src="assets/gallery/glass.png" width="420" alt="Glass">
+
 <details>
 <summary>Preview</summary>
 
@@ -87,6 +89,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges.json
 ```
 
 ### Black & White
+
+<img src="assets/gallery/black-white.png" width="420" alt="Black & White">
 
 <details>
 <summary>Preview</summary>
@@ -101,6 +105,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-black-white.
 
 ### White & Black
 
+<img src="assets/gallery/white-black.png" width="420" alt="White & Black">
+
 <details>
 <summary>Preview</summary>
 
@@ -113,6 +119,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-white-black.
 ```
 
 ### Text White
+
+<img src="assets/gallery/text-white.png" width="420" alt="Text White">
 
 <details>
 <summary>Preview</summary>
@@ -127,6 +135,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-text-white.j
 
 ### Text Black
 
+<img src="assets/gallery/text-black.png" width="420" alt="Text Black">
+
 <details>
 <summary>Preview</summary>
 
@@ -139,6 +149,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-text-black.j
 ```
 
 ### Neon
+
+<img src="assets/gallery/neon.png" width="420" alt="Neon">
 
 <details>
 <summary>Preview</summary>
@@ -153,6 +165,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon.json
 
 ### Solid
 
+<img src="assets/gallery/solid.png" width="420" alt="Solid">
+
 <details>
 <summary>Preview</summary>
 
@@ -165,6 +179,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-solid.json
 ```
 
 ### Icon Dark
+
+<img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark">
 
 <details>
 <summary>Preview</summary>
@@ -179,6 +195,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-dark.js
 
 ### Split
 
+<img src="assets/gallery/split.png" width="420" alt="Split">
+
 <details>
 <summary>Preview</summary>
 
@@ -191,6 +209,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-split.json
 ```
 
 ### Frost
+
+<img src="assets/gallery/frost.png" width="420" alt="Frost">
 
 <details>
 <summary>Preview</summary>
@@ -205,6 +225,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-frost.json
 
 ### Neon Icon
 
+<img src="assets/gallery/neon-icon.png" width="420" alt="Neon Icon">
+
 <details>
 <summary>Preview</summary>
 
@@ -217,6 +239,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon-icon.js
 ```
 
 ### Minimal
+
+<img src="assets/gallery/minimal.png" width="420" alt="Minimal">
 
 <details>
 <summary>Preview</summary>
@@ -231,6 +255,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-minimal.json
 
 ### Light
 
+<img src="assets/gallery/light.png" width="420" alt="Light">
+
 <details>
 <summary>Preview</summary>
 
@@ -243,6 +269,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
 ```
 
 ### Icon Light
+
+<img src="assets/gallery/icon-light.png" width="420" alt="Icon Light">
 
 <details>
 <summary>Preview</summary>
