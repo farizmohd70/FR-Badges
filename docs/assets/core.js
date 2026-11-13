@@ -18,10 +18,15 @@ const PRESETS={
  indian:{name:'Indian languages',desc:'Essentials plus Indian languages and audio flags',ids:()=>CAT.lite.filter(id=>{const b=byId[id];return['hero','resolution','dynamic-range','audio-codec','video-codec'].includes(b.g)||(b.g==='languages'&&IND.includes(b.n))||(b.g==='audio-subs'&&/dual|multi|dubbed/i.test(b.id))})},
  audiophile:{name:'Audiophile',desc:'Audio codecs, channels, Atmos and lossless tags',ids:()=>CAT.badges.filter(b=>['audio-codec','audio-channels'].includes(b.g)||b.id==='hero-dolby-atmos'||b.id==='hero-remux').map(b=>b.id)},
  streaming:{name:'Streaming + debrid',desc:'Services, debrid providers and resolution',ids:()=>CAT.badges.filter(b=>['streaming','debrid','resolution'].includes(b.g)||b.g==='hero').map(b=>b.id)},
+ fast:{name:'Light and fast',desc:'About 30 badges, quickest to load',ids:()=>['hero-cached','res-8k','res-4k','res-1080p','res-720p','res-480p','source-remux','source-uhd-bluray','source-bluray','source-webdl','source-webrip','source-hdtv','source-cam','dr-dolby-vision','dr-hdr10plus','dr-hdr10','dr-hdr','dr-10bit','codec-av1','codec-hevc','codec-avc','acodec-atmos','acodec-truehd','acodec-dtsx','acodec-dtshd-ma','acodec-ddplus','ch-7-1','ch-5-1'].filter(i=>byId[i])},
+ langs:{name:'Essentials + languages',desc:'Essentials plus every language and subtitle badge',ids:()=>nodup(CAT.badges.filter(b=>['hero','resolution','dynamic-range','video-codec','audio-codec','source','audio-subs','languages','subtitles'].includes(b.g)).map(b=>b.id))},
+ picture:{name:'Best picture',desc:'Resolution, HDR, Dolby Vision, codecs and sources',ids:()=>CAT.badges.filter(b=>['hero','resolution','dynamic-range','video-codec','video-format','source'].includes(b.g)).map(b=>b.id)},
+ theater:{name:'Home theater',desc:'Picture and sound together, with speaker layouts',ids:()=>CAT.badges.filter(b=>['hero','resolution','dynamic-range','video-codec','source','audio-codec','audio-channels'].includes(b.g)).map(b=>b.id)},
+ cinephile:{name:'Cinephile',desc:'Editions like IMAX and Criterion, plus quality tags',ids:()=>CAT.badges.filter(b=>['hero','editions','source','resolution','dynamic-range'].includes(b.g)).map(b=>b.id)},
  everything:{name:'Everything',desc:'All 361 badges in the catalog',ids:()=>CAT.badges.map(b=>b.id)},
  empty:{name:'Blank',desc:'Start from nothing',ids:()=>[]}
 };
-['indian','audiophile','streaming'].forEach(k=>{const f=PRESETS[k].ids;PRESETS[k].ids=()=>nodup(f())});
+['indian','audiophile','streaming','picture','theater','cinephile'].forEach(k=>{const f=PRESETS[k].ids;PRESETS[k].ids=()=>nodup(f())});
 const S={name:'My FR Pack',style:'glass',sel:new Set(),over:{},gord:CAT.groups.map(g=>g.id),bord:{},bg:'dark'};
 CAT.groups.forEach(g=>S.bord[g.id]=byGroup[g.id].map(b=>b.id));
 const SAMPLES=[
