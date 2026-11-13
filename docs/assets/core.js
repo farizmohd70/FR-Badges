@@ -82,14 +82,25 @@ P.code=()=>{const n=CAT.badges.length,len=Math.ceil(n/4);let h='';for(let k=0;k<
 P.loadCode=c=>{const m=/^#?pk-(\d+)-([0-9a-f]+)$/i.exec((c||'').trim());if(!m||!STYLES[+m[1]])return null;const ids=[];const h=m[2];for(let k=0;k<h.length;k++){const v=parseInt(h[k],16);for(let j=0;j<4;j++){const i=k*4+j;if(v>>j&1&&CAT.badges[i])ids.push(CAT.badges[i].id)}}
  P.commit(()=>{S.style=STYLES[+m[1]].id;S.sel=new Set(ids)},'all');return ids.length};
 P.importText=t=>{t=(t||'').trim();if(!t)return{err:'Nothing to import'};const c=P.loadCode(t);if(c!=null)return{n:c,unknown:0,kind:'share code'};
- let ids=[],unk=0,style=null;
- try{const j=JSON.parse(t);const arr=j.filters||j.badges||(Array.isArray(j)?j:null);if(!arr)return{err:'No filters found in that JSON'};
+ let items=[],unk=0,gseq=[];
+ try{const j=JSON.parse(t);const arr=j.filters||j.badges||(Array.isArray(j)?j:null);if(!arr)return{err:'No badges found in that JSON'};
   const fm={};STYLES.forEach(s=>fm[s.folder]=s.id);
   arr.forEach(f=>{const id=typeof f==='string'?f:f.id;let b=byId[id];if(!b&&f.imageURL){const fn=f.imageURL.split('/').pop();b=CAT.badges.find(x=>x.f===fn)}
-   if(b){ids.push(b.id);if(f.imageURL&&!style){const m=/\/(Badges[^/]*)\//.exec(f.imageURL);if(m&&fm[m[1]])style=fm[m[1]]}}else unk++});
- }catch(e){t.split(/[\s,;]+/).filter(Boolean).forEach(x=>byId[x]?ids.push(x):unk++)}
- if(!ids.length)return{err:'No known badge ids found',unknown:unk};
- P.commit(()=>{S.sel=new Set(ids);if(style)S.style=style},'all');return{n:ids.length,unknown:unk,kind:'manifest'}};
+   if(!b){unk++;return}if(items.some(x=>x.id===b.id))return;
+   let st=null;if(f&&f.imageURL){const m=/\/(Badges[^/]*)\//.exec(f.imageURL);if(m&&fm[m[1]])st=fm[m[1]]}
+   items.push({id:b.id,st});if(!gseq.includes(b.g))gseq.push(b.g)});
+ }catch(e){t.split(/[\s,;]+/).filter(Boolean).forEach(x=>{if(byId[x]&&!items.some(i=>i.id===x)){items.push({id:x,st:null});if(!gseq.includes(byId[x].g))gseq.push(byId[x].g)}else if(!byId[x])unk++})}
+ if(!items.length)return{err:'None of these badges are in the FR catalog',unknown:unk};
+ const cnt={};items.forEach(i=>{if(i.st)cnt[i.st]=(cnt[i.st]||0)+1});const base=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a])[0]||S.style;
+ P.commit(()=>{S.sel=new Set(items.map(i=>i.id));S.style=base;S.over={};items.forEach(i=>{if(i.st&&i.st!==base)S.over[i.id]=i.st});
+  S.gord=gseq.concat(CAT.groups.map(g=>g.id).filter(x=>!gseq.includes(x)));
+  CAT.groups.forEach(g=>{const mine=items.filter(i=>byId[i.id].g===g.id).map(i=>i.id);S.bord[g.id]=mine.concat(byGroup[g.id].map(b=>b.id).filter(x=>!mine.includes(x)))})},'all');
+ return{n:items.length,unknown:unk,kind:'manifest'}};
+P.importAny=async t=>{t=(t||'').trim();if(!t)return{err:'Paste a link, JSON or share code first'};
+ if(/^https?:\/\//i.test(t)&&!/\s/.test(t)){let u=t;const g=/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/(.+)$/.exec(u);if(g)u='https://raw.githubusercontent.com/'+g[1]+'/'+g[2]+'/'+g[3];
+  let txt;try{const r=await fetch(u);if(!r.ok)return{err:'That link did not open ('+r.status+'). Check the address.'};txt=await r.text()}catch(e){return{err:'That site does not allow loading from here. Open the link, copy the text, and paste the text instead.'}}
+  return P.importText(txt)}
+ return P.importText(t)};
 /* matching */
 P.match=(text,onlySel)=>{const out=[];const list=onlySel?P.ordered():CAT.badges;for(const b of list){if(b.re){try{if(b.re.test(text))out.push(b)}catch(e){}}}return out};
 P.suggest=()=>{const c={};P.samples.forEach(t=>P.match(t,false).forEach(b=>{if(!S.sel.has(b.id))c[b.id]=(c[b.id]||0)+1}));return Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([id,n])=>({b:byId[id],n}))};
