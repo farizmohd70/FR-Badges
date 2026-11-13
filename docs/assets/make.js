@@ -36,18 +36,29 @@ function v1(){const ids=demoIds();
 function v2(){const counts={};P.CAT.badges.forEach(b=>{if(S.sel.has(b.id))counts[b.g]=(counts[b.g]||0)+1});
  $('#view').innerHTML=`<h2>Choose your badges</h2><p class="sub">Tap a badge to add it. Tap again to remove it.</p>
  <div id="big"></div><div class="bar"><input type="search" id="q" placeholder="Search, like 4K or Atmos" value="${esc(q)}"><button class="b2" id="all">Pick all shown</button><button class="b2" id="none">Clear shown</button></div>
- <div class="chips" id="chips"></div><div class="grid" id="grid"></div>`;
+ <div class="chips" id="chips"></div><div id="grid"></div>`;
  const ch=[['all','All']].concat(P.CAT.groups.map(g=>[g.id,g.name]));
  $('#chips').innerHTML=ch.map(([id,n])=>`<button class="chip ${grp===id?'on':''}" data-g="${id}">${esc(n)}${id==='all'?'':`<i>${counts[id]||0}</i>`}</button>`).join('');
  $('#chips').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{grp=b.dataset.g;v2()});
  const list=()=>P.filter(q,{group:grp});
- const draw=()=>{const l=list();$('#grid').innerHTML=l.length?l.map(b=>`<button class="tile ${S.sel.has(b.id)?'on':''}" data-id="${b.id}"><div class="im" style="background:${P.bgOf(b.id)}">${P.img(b.id)}</div><div class="n">${esc(b.n)}</div></button>`).join(''):'<div class="empty" style="grid-column:1/-1">Nothing found. Try a different word.</div>';
-  $('#grid').querySelectorAll('.tile').forEach(t=>t.onclick=()=>P.toggle(t.dataset.id))};
+ const tile=b=>`<button class="tile ${S.sel.has(b.id)?'on':''}" data-id="${b.id}"><div class="im" style="background:${P.bgOf(b.id)}">${P.img(b.id)}</div><div class="n">${esc(b.n)}</div></button>`;
+ const draw=()=>{const l=list();let h='';
+  if(!l.length)h='<div class="empty">Nothing found. Try a different word.</div>';
+  else if(grp!=='all')h=`<div class="grid">${l.map(tile).join('')}</div>`;
+  else P.CAT.groups.forEach(g=>{const gl=l.filter(b=>b.g===g.id);if(!gl.length)return;
+   h+=`<div class="sec" data-sec="${g.id}"><div class="sh"><span class="dot" style="background:${g.color}"></span><b>${esc(g.name)}</b><span class="c"></span><button class="lnk" data-pa="${g.id}">Pick all</button><button class="lnk" data-pc="${g.id}">Clear</button></div><div class="grid">${gl.map(tile).join('')}</div></div>`});
+  $('#grid').innerHTML=h;
+  $('#grid').querySelectorAll('.tile').forEach(t=>t.onclick=()=>P.toggle(t.dataset.id));
+  const ids=g=>[...$('#grid').querySelectorAll('[data-sec="'+g+'"] .tile')].map(t=>t.dataset.id);
+  $('#grid').querySelectorAll('[data-pa]').forEach(x=>x.onclick=()=>P.setMany(ids(x.dataset.pa),true));
+  $('#grid').querySelectorAll('[data-pc]').forEach(x=>x.onclick=()=>P.setMany(ids(x.dataset.pc),false));
+  secCounts()};
  draw();
  $('#q').oninput=e=>{q=e.target.value;draw()};
  $('#all').onclick=()=>P.setMany(list().map(b=>b.id),true);
  $('#none').onclick=()=>P.setMany(list().map(b=>b.id),false)}
 
+function secCounts(){document.querySelectorAll('.sec').forEach(s=>{const t=s.querySelectorAll('.tile'),n=s.querySelectorAll('.tile.on').length;s.querySelector('.c').textContent=n+' of '+t.length+' picked'})}
 /* 3 order */
 function v3(){const act=P.activeGroups();
  if(!act.length){$('#view').innerHTML=`<h2>Set the order</h2><p class="sub">You have not picked any badges yet.</p><button class="b2 pri" id="g2">Choose badges</button>`;$('#g2').onclick=()=>go(1);return}
@@ -93,7 +104,7 @@ $('#back').onclick=()=>go(step-1);$('#next').onclick=()=>go(step+1);
 $('#undo').onclick=()=>P.undo();
 $('#helpB').onclick=()=>$('#help').showModal();$('#helpX').onclick=()=>$('#help').close();
 P.on(why=>{renderSteps();
- if(why==='sel'&&step===1){document.querySelectorAll('.tile').forEach(t=>t.classList.toggle('on',S.sel.has(t.dataset.id)));
+ if(why==='sel'&&step===1){document.querySelectorAll('.tile').forEach(t=>t.classList.toggle('on',S.sel.has(t.dataset.id)));secCounts();
   const c={};P.CAT.badges.forEach(b=>{if(S.sel.has(b.id))c[b.g]=(c[b.g]||0)+1});document.querySelectorAll('.chip[data-g]').forEach(x=>{const i=x.querySelector('i');if(i&&x.dataset.g!=='all')i.textContent=c[x.dataset.g]||0});return}
  if(why==='name'||why==='saved'||why==='samples')return;
  [v1,v2,v3,v4][step]();stat()});
