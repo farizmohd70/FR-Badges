@@ -22,8 +22,13 @@ function render(){renderSteps();[v1,v2,v3,v4][step]();stat()}
 function v1(){const ids=demoIds();
  $('#view').innerHTML=`<h2>Pick a look</h2><p class="sub">This is how your badges will appear next to each stream.</p>
  <div class="cards">${P.STYLES.map(s=>`<button class="card ${S.style===s.id?'on':''}" data-st="${s.id}"><div class="sw" style="background:${P.bgCol(s.id)}">${ids.map(i=>P.img(i,'',s.id)).join('')}</div><div class="t">${s.name}</div><div class="d">${esc(s.note)}</div></button>`).join('')}</div>
+ <h3>Already have a pack?</h3><p class="hint">Paste a pack link, its JSON or a share code to edit it here. Badges that are not in the FR catalog are skipped.</p>
+ <textarea id="imp" style="height:76px" placeholder="https://raw.githubusercontent.com/.../badges.json" aria-label="Pack link, JSON or share code"></textarea>
+ <div class="bar" style="margin-top:8px"><button class="b2 pri" id="go">Open in editor</button><span class="hint" id="msg" style="margin:0" role="status"></span></div>
  <h3>Start from</h3><p class="hint">You can add or remove badges in the next step.</p>
  <div class="cards">${START.map(([k,n,d])=>`<button class="card" data-p="${k}"><div class="t">${n}</div><div class="d">${d}</div></button>`).join('')}</div>`;
+ $('#go').onclick=async()=>{const b=$('#go');b.disabled=true;$('#msg').textContent='Loading...';const r=await P.importAny($('#imp').value);b.disabled=false;
+  if(r.err){$('#msg').textContent=r.err;return}P.toast('Loaded '+r.n+' badges'+(r.unknown?', skipped '+r.unknown+' not in the catalog':''));go(1)};
  document.querySelectorAll('[data-st]').forEach(b=>b.onclick=()=>P.setStyle(b.dataset.st));
  document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const n=P.preset(b.dataset.p);P.toast(n+' badges picked');go(1)})}
 
@@ -72,8 +77,7 @@ function v4(){const kb=(P.bytes()/1024).toFixed(0);
  <details><summary>More options</summary>
   <div class="bar" style="margin-top:12px"><button class="b2" id="sv">Save in this browser</button><button class="b2" id="cj">Copy JSON</button><button class="b2" id="cc">Copy share code</button></div>
   <p class="hint">Share code: <code id="code">${esc(P.code())}</code></p>
-  <p class="hint">Have a pack to load? Paste a share code or JSON.</p>
-  <textarea id="imp" placeholder="Paste here"></textarea><div class="bar" style="margin-top:8px"><button class="b2" id="go">Load it</button><span class="hint" id="msg" style="margin:0"></span></div></details>`;
+</details>`;
  $('#pv').style.background=P.bgCol(S.style);$('#pv').innerHTML=P.samples.slice(0,6).map(t=>`<div class="s"><div>${esc(t)}</div><div class="bd">${P.match(t,true).map(b=>P.img(b.id)).join('')||'<span style="color:#9aa0ad;font-size:13px">No badges match this one</span>'}</div></div>`).join('');
  $('#nm').oninput=e=>P.rename(e.target.value||'My FR Pack');
  const placeholder=/YOUR-/.test(window.FR_WORKER||'');
@@ -82,7 +86,7 @@ function v4(){const kb=(P.bytes()/1024).toFixed(0);
  $('#cj').onclick=()=>P.copy(P.manifestText(),'JSON copied');
  $('#cc').onclick=()=>P.copy(P.code(),'Code copied');
  $('#sv').onclick=()=>P.toast(P.save()?'Saved':'Could not save here');
- $('#go').onclick=()=>{const r=P.importText($('#imp').value);$('#msg').textContent=r.err||('Loaded '+r.n+' badges');if(!r.err)v4stat()}}
+ }
 const v4stat=()=>{stat();renderSteps()};
 
 $('#back').onclick=()=>go(step-1);$('#next').onclick=()=>go(step+1);
