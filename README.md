@@ -49,6 +49,9 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 
 ## Styles
 
+<details>
+<summary>Show styles</summary>
+
 | Style | Look | Folder | Manifest |
 |---|---|---|---|
 | **Glass** | Dark tinted glass pills (text only) | `Badges` | `badges.json` |
@@ -66,7 +69,12 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 | **Text White** | White text only, no background | `Badges-Text-White` | `badges-text-white.json` |
 | **Text Black** | Black text only, no background | `Badges-Text-Black` | `badges-text-black.json` |
 
+</details>
+
 ## What's included
+
+<details>
+<summary>Show what's included</summary>
 
 | Group | Count | Badges |
 |---|---|---|
@@ -87,6 +95,8 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 | Subtitles | 134 | One subtitle badge for every language, such as "Hindi Subs" (full language name only) |
 
 **Total: 453 badges per style.** The ready-made manifests (`badges.json` and the style files) are the Lite pack with 290 of them. The rest are available when you build your own pack on the [website](https://farizmohd70.github.io/FR-Badges/make.html).
+
+</details>
 
 ## Usage
 
