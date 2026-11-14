@@ -10,10 +10,10 @@ let badRe=0;
 CAT.badges.forEach((b,i)=>{b.i=i;byId[b.id]=b;byGroup[b.g].push(b);const[bd,f]=flags(b.p);b.re=null;
  try{b.re=new RegExp(bd,f)}catch(e){try{b.re=new RegExp(bd,f+'u')}catch(e2){badRe++}}
  b.hay=(b.id+' '+b.n).toLowerCase();});
-const IND=['മലയാളം','தமிழ்','हिन्दी','తెలుగు','ಕನ್ನಡ','বাংলা','मराठी','ગુજરાતી','ਪੰਜਾਬੀ','اردو','नेपाली','অসমীয়া','ଓଡ଼ିଆ','සිංහල','English'];
+const IND=['മലയാളം','தமிழ்','हिन्दी','తెలుగు','ಕನ್ನಡ','বাংলা','मराठी','ગુજરાતી','ਪੰਜਾਬੀ','اردو','नेपाली','অসমীয়া','ଓଡ଼ିଆ','සිංහල','भोजपुरी','मैथिली','कोंकणी','ᱥᱟᱱᱛᱟᱲᱤ','डोगरी','कॉशुर','ತುಳು','संस्कृतम्','ꯃꯤꯇꯩꯂꯣꯟ','English'];
 const nodup=ids=>{if(ids.includes('res-4k'))ids=ids.filter(i=>i!=='hero-4k');const names=new Map();ids.forEach(i=>{const b=byId[i];if(b.g!=='hero')names.set(b.n.toLowerCase(),1)});return ids.filter(i=>{const b=byId[i];return b.g!=='hero'||!names.has(b.n.toLowerCase())})};
 const PRESETS={
- lite:{name:'Lite',desc:'The 244 badges of the main FR pack',ids:()=>CAT.lite},
+ lite:{name:'Lite',desc:'The 290 badges of the main FR pack',ids:()=>CAT.lite},
  essentials:{name:'Essentials',desc:'Resolution, HDR, codecs and the hero tags',ids:()=>nodup(CAT.lite.filter(id=>['hero','resolution','dynamic-range','video-codec','audio-codec','source'].includes(byId[id].g)))},
  indian:{name:'Indian languages',desc:'Essentials plus Indian languages and audio flags',ids:()=>CAT.lite.filter(id=>{const b=byId[id];return['hero','resolution','dynamic-range','audio-codec','video-codec'].includes(b.g)||(b.g==='languages'&&IND.includes(b.n))||(b.g==='audio-subs'&&/dual|multi|dubbed/i.test(b.id))})},
  audiophile:{name:'Audiophile',desc:'Audio codecs, channels, Atmos and lossless tags',ids:()=>CAT.badges.filter(b=>['audio-codec','audio-channels'].includes(b.g)||b.id==='hero-dolby-atmos'||b.id==='hero-remux').map(b=>b.id)},
@@ -24,7 +24,7 @@ const PRESETS={
  picture:{name:'Best picture',desc:'Resolution, HDR, Dolby Vision, codecs and sources',ids:()=>CAT.badges.filter(b=>['hero','resolution','dynamic-range','video-codec','video-format','source'].includes(b.g)).map(b=>b.id)},
  theater:{name:'Home theater',desc:'Picture and sound together, with speaker layouts',ids:()=>CAT.badges.filter(b=>['hero','resolution','dynamic-range','video-codec','source','audio-codec','audio-channels'].includes(b.g)).map(b=>b.id)},
  cinephile:{name:'Cinephile',desc:'Editions like IMAX and Criterion, plus quality tags',ids:()=>CAT.badges.filter(b=>['hero','editions','source','resolution','dynamic-range'].includes(b.g)).map(b=>b.id)},
- everything:{name:'Everything',desc:'All 361 badges in the catalog',ids:()=>CAT.badges.map(b=>b.id)},
+ everything:{name:'Everything',desc:'All 453 badges in the catalog',ids:()=>CAT.badges.map(b=>b.id)},
  empty:{name:'Blank',desc:'Start from nothing',ids:()=>[]}
 };
 ['indian','audiophile','streaming','picture','theater','cinephile'].forEach(k=>{const f=PRESETS[k].ids;PRESETS[k].ids=()=>nodup(f())});
