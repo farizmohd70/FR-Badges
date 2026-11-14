@@ -4,12 +4,14 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/for-Nuvio-8b5cf6?style=for-the-badge" alt="for Nuvio">
-  <img src="https://img.shields.io/badge/badges-290-0ea5e9?style=for-the-badge" alt="badges 290">
+  <img src="https://img.shields.io/badge/badges-453-0ea5e9?style=for-the-badge" alt="badges 453">
   <img src="https://img.shields.io/badge/styles-14-ec4899?style=for-the-badge" alt="styles 14">
-  <img src="https://img.shields.io/badge/languages-124-10b981?style=for-the-badge" alt="languages 124">
+  <img src="https://img.shields.io/badge/languages-134-10b981?style=for-the-badge" alt="languages 134">
 </p>
 
-<p align="center"><b>Modern badge pack for Nuvio.</b><br>290 badges across 15 groups (hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, flags, streaming platforms, debrid services, 124 languages and 10 subtitle languages) in 14 styles. Every style has a ready-to-use filter manifest.</p>
+<p align="center"><b>Modern badge pack for Nuvio.</b><br>453 badges in 14 styles: hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, streaming platforms, debrid services, 134 languages and 134 subtitle badges. Every style has a ready-to-use filter manifest, and the website lets you build your own pack.</p>
+
+<p align="center"><a href="https://farizmohd70.github.io/FR-Badges/"><b>Website</b></a> · <a href="https://farizmohd70.github.io/FR-Badges/make.html"><b>Make your pack</b></a></p>
 
 ---
 
@@ -23,7 +25,23 @@
 
 > To switch styles, replace the link with another style's link. If the old badges still show, restart the app or clear its cache.
 
+## Website
+
+**https://farizmohd70.github.io/FR-Badges/**
+
+The site shows every style live and lets you build a pack without editing any files.
+
+1. Open **[Make your pack](https://farizmohd70.github.io/FR-Badges/make.html)**.
+2. Pick a look (14 styles), then a starting set of badges. The Lite pack is a good start.
+3. Tap the badges you want. You can search or browse by group, and mix styles per badge.
+4. Set the order. Nuvio shows badges in that order.
+5. Copy your link and paste it into Nuvio under **Fusion badge URLs**. Clear the cache afterwards.
+
+You can also reopen an existing pack from its link, JSON or share code and keep editing it.
+
 ## Gallery
+
+Tap a style to jump to its link and the full preview sheet. Every preview sheet shows all badges of that style on a grey background.
 
 <table>
 <tr><td align="center"><a href="#glass"><img src="assets/gallery/glass.png" width="420" alt="Glass"></a><br><b>Glass</b></td><td align="center"><a href="#black--white"><img src="assets/gallery/black-white.png" width="420" alt="Black & White"></a><br><b>Black & White</b></td></tr><tr><td align="center"><a href="#white--black"><img src="assets/gallery/white-black.png" width="420" alt="White & Black"></a><br><b>White & Black</b></td><td align="center"><a href="#neon"><img src="assets/gallery/neon.png" width="420" alt="Neon"></a><br><b>Neon</b></td></tr><tr><td align="center"><a href="#solid"><img src="assets/gallery/solid.png" width="420" alt="Solid"></a><br><b>Solid</b></td><td align="center"><a href="#icon-dark"><img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark"></a><br><b>Icon Dark</b></td></tr><tr><td align="center"><a href="#split"><img src="assets/gallery/split.png" width="420" alt="Split"></a><br><b>Split</b></td><td align="center"><a href="#frost"><img src="assets/gallery/frost.png" width="420" alt="Frost"></a><br><b>Frost</b></td></tr><tr><td align="center"><a href="#neon-icon"><img src="assets/gallery/neon-icon.png" width="420" alt="Neon Icon"></a><br><b>Neon Icon</b></td><td align="center"><a href="#minimal"><img src="assets/gallery/minimal.png" width="420" alt="Minimal"></a><br><b>Minimal</b></td></tr><tr><td align="center"><a href="#light"><img src="assets/gallery/light.png" width="420" alt="Light"></a><br><b>Light</b></td><td align="center"><a href="#icon-light"><img src="assets/gallery/icon-light.png" width="420" alt="Icon Light"></a><br><b>Icon Light</b></td></tr><tr><td align="center"><a href="#text-white"><img src="assets/gallery/text-white.png" width="420" alt="Text White"></a><br><b>Text White</b></td><td align="center"><a href="#text-black"><img src="assets/gallery/text-black.png" width="420" alt="Text Black"></a><br><b>Text Black</b></td></tr>
@@ -53,22 +71,22 @@
 | Group | Count | Badges |
 |---|---|---|
 | Hero Badges | 5 | REMUX, 4K, Dolby Vision, Dolby Atmos, Cached |
-| Editions & Cuts | 14 | IMAX, IMAX Enhanced, Open Matte, Criterion, Director's/Extended/Theatrical/Final Cut, Special, Unrated, Hybrid, Remastered, Proper/Repack, SeaDex |
-| Release Source | 14 | REMUX, UHD Blu-ray, Blu-ray, WEB-DL, WEBRip, HDTV, DVD, TVRip, HDRip, HC HDRip, SCR, TC, TS, CAM |
-| Resolution | 8 | 8K, 4K, 1440p, 1080p, 720p, 576p, 480p, 360p |
-| Dynamic Range & Color | 13 | Dolby Vision, DV P7/P8, DV+HDR10, DV+HDR10+, HDR10+, HDR10, HDR, HLG, 12/10/8-bit, SDR |
+| Editions & Cuts | 18 | IMAX, IMAX Enhanced, Open Matte, Criterion, Director's/Extended/Theatrical/Final Cut, Special, Unrated, Hybrid, Remastered, Proper/Repack, SeaDex, Black & White, True-Hue, Uncensored, Regraded |
+| Release Source | 15 | REMUX, UHD Blu-ray, Blu-ray, WEB-DL, WEBRip, HDTV, DVD, TVRip, HDRip, HC HDRip, SCR, TC, TS, CAM, R5 |
+| Resolution | 10 | 8K, 4K, 1440p, 1080p, 720p, 576p, 480p, 360p, 240p, 144p |
+| Dynamic Range & Color | 15 | Dolby Vision, DV P7/P8, DV+HDR10, DV+HDR10+, HDR10+, HDR10, HDR, HLG, 12/10/8-bit, SDR, AI Enhanced |
 | 3D & Broadcast | 6 | 3D, HFR, 60 FPS, 50 FPS, Live TV, Interlaced |
-| Audio Codecs | 18 | Atmos, TrueHD, DTS:X, DTS-HD MA/HRA, DTS-ES, DTS, DD+, DD, AC-4, FLAC, ALAC, PCM, AAC, Opus, Vorbis, MP3, WMA |
-| Video Codecs | 10 | VVC, AV1, HEVC, AVC, ProRes, VP9, VP8, VC-1, XviD, DivX |
-| Containers | 4 | MKV, MP4, M2TS/TS, AVI |
-| Audio Channels | 10 | 7.1.4 down to 1.0 Mono, including 7.1.2, 5.1.4, 5.1.2 |
-| Streaming Platforms | 40 | Netflix, Prime Video, Apple TV+, Disney+, Max, Hulu, Paramount+, Peacock, JioHotstar, ZEE5, Crunchyroll and 29 more |
+| Audio Codecs | 26 | Atmos, TrueHD, DTS:X, DTS-HD MA/HRA, DTS-ES, DTS, DD+, DD, AC-4, FLAC, ALAC, PCM, AAC, Opus, Vorbis, MP3, WMA, plus combined Atmos and Dolby Vision badges |
+| Video Codecs | 13 | VVC, AV1, HEVC, AVC, ProRes, VP9, VP8, VC-1, XviD, DivX, MPEG-4, MPEG-2, WMV |
+| Containers | 5 | MKV, MP4, M2TS/TS, AVI, ISO |
+| Audio Channels | 12 | 9.1.6 and 9.1.4 down to 1.0 Mono, including 7.1.4, 7.1.2, 5.1.4, 5.1.2 |
+| Streaming Platforms | 46 | Netflix, Prime Video, Apple TV+, Disney+, Max, Hulu, Paramount+, Peacock, YouTube, JioHotstar, ZEE5, Crunchyroll, BBC iPlayer, Canal+, Tubi, MUBI and 30 more |
 | Debrid & Caching | 5 | Real-Debrid, AllDebrid, Premiumize, TorBox, Debrid-Link |
-| Languages | 124 | 124 languages with native names, including Latino, Cantonese, Hausa, Yoruba, English (US) / (UK), and lesser-used ones like Javanese, Cebuano, Amharic, Somali, Bhojpuri, Sanskrit, Igbo, Xhosa and Maori |
+| Languages | 134 | 134 languages with native names and flags, including regional versions (English US/UK, Portuguese Brazil, Spanish Spain, French Canada, Chinese Simplified), and lesser-used ones like Javanese, Cebuano, Amharic, Somali, Bhojpuri, Sanskrit, Igbo, Xhosa, Scottish Gaelic and Maori |
 | Audio & Subs Flags | 9 | Multi/Dual Audio, Dubbed, Original Audio, Multi-Sub, Subpack, CC, Commentary, Audio Description |
-| Subtitles | 10 | Subtitle badges for English, Malayalam, Tamil, Hindi, Telugu, Kannada, Japanese, Korean, Spanish and French, such as "Hindi Subs" |
+| Subtitles | 134 | One subtitle badge for every language, such as "Hindi Subs" (full language name only) |
 
-**Total: 290 badges per style.**
+**Total: 453 badges per style.** The ready-made manifests (`badges.json` and the style files) are the Lite pack with 290 of them. The rest are available when you build your own pack on the [website](https://farizmohd70.github.io/FR-Badges/make.html).
 
 ## Usage
 
@@ -293,6 +311,6 @@ If the app caches images, clear its cache after switching styles.
 ## Notes
 
 - Badges are original designs with plain-text labels. They are not the official logos of Dolby, DTS, IMAX, Blu-ray Disc, streaming services or others.
-- Images have no transparent margin, except the Neon style, which has a small one on the left and right so its two-line text is not cut by the app's rounded badge boundary. Neon and Neon Icon have no background shape, so they are cropped tight to the text.
+- All badges are sized for Nuvio's 16dp badge height, so text fills the chip and edges stay clear of its rounded corners. Images have no transparent margin, except the Neon style, which has a small one on the left and right so its two-line text is not cut by the app's rounded badge boundary. Neon and Neon Icon have no background shape, so they are cropped tight to the text.
 - Only one badge shows per attribute: one resolution, one codec, one HDR type, and so on.
 - Language and subtitle badges never overlap: "Hindi Subs" shows the Hindi subtitle badge only, and "Hindi" without "subs" shows the Hindi language badge only.
