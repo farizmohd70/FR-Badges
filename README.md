@@ -4,12 +4,12 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/for-Nuvio-8b5cf6?style=for-the-badge" alt="for Nuvio">
-  <img src="https://img.shields.io/badge/badges-244-0ea5e9?style=for-the-badge" alt="badges 244">
+  <img src="https://img.shields.io/badge/badges-290-0ea5e9?style=for-the-badge" alt="badges 290">
   <img src="https://img.shields.io/badge/styles-14-ec4899?style=for-the-badge" alt="styles 14">
-  <img src="https://img.shields.io/badge/languages-78-10b981?style=for-the-badge" alt="languages 78">
+  <img src="https://img.shields.io/badge/languages-124-10b981?style=for-the-badge" alt="languages 124">
 </p>
 
-<p align="center"><b>Modern badge pack for Nuvio.</b><br>244 badges across 15 groups (hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, flags, streaming platforms, debrid services, 78 languages and 10 subtitle languages) in 14 styles. Every style has a ready-to-use filter manifest.</p>
+<p align="center"><b>Modern badge pack for Nuvio.</b><br>290 badges across 15 groups (hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, flags, streaming platforms, debrid services, 124 languages and 10 subtitle languages) in 14 styles. Every style has a ready-to-use filter manifest.</p>
 
 ---
 
@@ -64,11 +64,11 @@
 | Audio Channels | 10 | 7.1.4 down to 1.0 Mono, including 7.1.2, 5.1.4, 5.1.2 |
 | Streaming Platforms | 40 | Netflix, Prime Video, Apple TV+, Disney+, Max, Hulu, Paramount+, Peacock, JioHotstar, ZEE5, Crunchyroll and 29 more |
 | Debrid & Caching | 5 | Real-Debrid, AllDebrid, Premiumize, TorBox, Debrid-Link |
-| Languages | 78 | 78 languages with native names, including Latino, Cantonese, Hausa, Yoruba and English (US) / (UK) |
+| Languages | 124 | 124 languages with native names, including Latino, Cantonese, Hausa, Yoruba, English (US) / (UK), and lesser-used ones like Javanese, Cebuano, Amharic, Somali, Bhojpuri, Sanskrit, Igbo, Xhosa and Maori |
 | Audio & Subs Flags | 9 | Multi/Dual Audio, Dubbed, Original Audio, Multi-Sub, Subpack, CC, Commentary, Audio Description |
 | Subtitles | 10 | Subtitle badges for English, Malayalam, Tamil, Hindi, Telugu, Kannada, Japanese, Korean, Spanish and French, such as "Hindi Subs" |
 
-**Total: 244 badges per style.**
+**Total: 290 badges per style.**
 
 ## Usage
 
