@@ -2,7 +2,7 @@ window.LANDING={"f":{"source-uhd-bluray":"source-uhd-bluray.png","source-webrip"
 
 const RAW="https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/",FD=Object.fromEntries(window.STYLES_DATA.map(s=>[s.id,s.folder]));
 const D=window.LANDING;
-const ST=window.STYLES_DATA.map(s=>[s.id,s.name,s.note,s.bg]);const BG=id=>ST.find(s=>s[0]===id)[3]==='light'?'#e9ebf0':'transparent';
+const ST=window.STYLES_DATA.map(s=>[s.id,s.name,s.note,s.bg]);const BG=id=>'#4a4e57';
 const ROWS=[
  [['Night.Harbor.2024.'],['2160p','res-4k'],['.'],['UHD.BluRay','source-uhd-bluray'],['.'],['REMUX','source-remux'],['.'],['DV.HDR10+','dr-dv-hdr10plus'],['.'],['TrueHD.Atmos','acodec-atmos'],['.'],['7.1','ch-7-1'],['.'],['HEVC','codec-hevc'],['-GRP']],
  [['Night.Harbor.2024.'],['1080p','res-1080p'],['.'],['NF','stream-netflix'],['.'],['WEB-DL','source-webdl'],['.'],['DDP5.1','acodec-ddplus'],['.'],['H.264','codec-avc'],['-GRP']],
