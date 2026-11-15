@@ -72,6 +72,31 @@ function fromRanges(code) {
   return items;
 }
 
+// code "x<base64url>": deflated JSON {c: another code, p: {badgeId: custom regex}}. Custom patterns replace the default ones.
+async function inflate(s) {
+  s = s.replace(/-/g, '+').replace(/_/g, '/');
+  const bin = atob(s + '='.repeat((4 - (s.length % 4)) % 4));
+  const ds = new DecompressionStream('deflate-raw');
+  const w = ds.writable.getWriter(); w.write(Uint8Array.from(bin, c => c.charCodeAt(0))).catch(() => {}); w.close().catch(() => {});
+  return new Uint8Array(await new Response(ds.readable).arrayBuffer());
+}
+async function resolveCode(code) {
+  const plain = fromMask(code) || fromRanges(code) || (await fromList(code));
+  if (plain || code[0] !== 'x') return plain;
+  let j;
+  try { j = JSON.parse(new TextDecoder().decode(await inflate(code.slice(1)))); } catch (e) { return null; }
+  if (!j || typeof j.c !== 'string' || j.c[0] === 'x') return null;
+  const items = await resolveCode(j.c);
+  if (!items) return null;
+  const pats = j.p && typeof j.p === 'object' ? j.p : {};
+  let n = 0;
+  return items.map(it => {
+    const p = pats[it.b.id];
+    if (typeof p !== 'string' || !p.trim() || p.length > 2000 || ++n > 400) return it;
+    return { ...it, pat: p };
+  });
+}
+
 // code "o<base64url>": deflated list of numbers. First is the style, then one per badge, in order:
 // catalogIndex * 32 + (0 for the pack style, or the style number + 1 for a single badge).
 async function fromList(code) {
@@ -99,8 +124,8 @@ function manifest(items) {
   const groups = [];
   items.forEach(({ b }) => { if (!groups.includes(b.g)) groups.push(b.g); });
   return {
-    filters: items.map(({ b, style }) => ({
-      id: b.id, groupId: b.g, name: b.n, pattern: b.p,
+    filters: items.map(({ b, style, pat }) => ({
+      id: b.id, groupId: b.g, name: b.n, pattern: pat || b.p,
       imageURL: RAW + STYLES[style] + '/' + b.f,
       tagColor: '#00000000', borderColor: '#00000000', textColor: '#00000000',
       tagStyle: 'filled and bordered', isEnabled: true, type: 'filter',
@@ -120,7 +145,7 @@ export default {
     if (!m) return new Response('FR Badges pack links. Make one at https://farizmohd70.github.io/FR-Badges/make.html', { headers: { 'content-type': 'text/plain; charset=utf-8' } });
     try {
       await loadStyles();
-      const items = fromMask(m[1]) || fromRanges(m[1]) || (await fromList(m[1]));
+      const items = await resolveCode(m[1]);
       if (!items) return fail('This pack link is not valid.');
       if (!items.length) return fail('This pack has no badges.');
       return new Response(JSON.stringify(manifest(items)), { headers: HEAD });

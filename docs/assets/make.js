@@ -62,18 +62,34 @@ function v2(){const oc=document.getElementById('chips');if(oc)chipX=oc.scrollLef
 
 function secCounts(){document.querySelectorAll('.sec').forEach(s=>{const t=s.querySelectorAll('.tile'),n=s.querySelectorAll('.tile.on').length;s.querySelector('.c').textContent=n+' of '+t.length+' picked'})}
 /* 3 order */
+let editing=null,lastTest='';
+function peHtml(id){const t=lastTest||(P.samples.find(x=>{try{return P.testPat(P.byId[id].p,x)}catch(e){return false}})||P.samples[0]);lastTest=t;
+ return`<div class="pe"><label for="pt">Regex pattern for ${esc(P.byId[id].n)}</label><textarea id="pt" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off">${esc(P.pat(id))}</textarea>
+ <label for="pq">Test it on a stream title</label><input type="text" id="pq" value="${esc(t)}" spellcheck="false">
+ <div class="pr" id="pr"></div>
+ <div class="bar"><button class="b2 pri sm" id="ps">Save</button><button class="b2 sm" id="pz">Reset to default</button><button class="b2 sm" id="px">Close</button></div>
+ <p class="hint">Nuvio tests this pattern on each stream title. Start with <code>(?i)</code> to ignore capital letters. A custom pattern makes your link a little longer.</p></div>`}
+function peBind(){if(!editing)return;const id=editing,pt=$('#pt'),pq=$('#pq'),pr=$('#pr');if(!pt)return;
+ const upd=()=>{lastTest=pq.value;const e=P.checkPat(pt.value);if(e){pr.className='pr bad';pr.textContent='Not a valid pattern: '+e;$('#ps').disabled=true;return}
+  $('#ps').disabled=false;let m;try{m=P.testPat(pt.value,pq.value)}catch(x){m=false}pr.className='pr '+(m?'ok':'no');pr.textContent=m?'Matches this title, so the badge will show.':'Does not match this title.'};
+ pt.oninput=upd;pq.oninput=upd;upd();
+ $('#ps').onclick=()=>{const y=scrollY;editing=null;P.setPat(id,pt.value);P.toast('Pattern saved');scrollTo(0,y)};
+ $('#pz').onclick=()=>{pt.value=P.byId[id].p;upd()};
+ $('#px').onclick=()=>{const y=scrollY;editing=null;v3();scrollTo(0,y)}}
 function v3(){const act=P.activeGroups();
  if(!act.length){$('#view').innerHTML=`<h2>Set the order</h2><p class="sub">You have not picked any badges yet.</p><button class="b2 pri" id="g2">Choose badges</button>`;$('#g2').onclick=()=>go(1);return}
  $('#view').innerHTML=`<h2>Set the order</h2><p class="sub">Nuvio shows badges in this order, top to bottom. Use the arrows to move things.</p>
  <div id="big"></div>
  <div class="bar"><button class="b2 sm" id="rst">Reset order</button>${Object.keys(S.over).length?'<button class="b2 sm" id="rso">Use one style for all</button>':''}</div>
  ${act.map((g,gi)=>{const ids=P.groupSel(g),c=P.gInfo[g];return`<div class="grp"><div class="gh"><span class="dot" style="background:${c.color}"></span>${esc(c.name)}<span class="c">${ids.length}</span><button class="ib" data-gm="${g}" data-d="-1" aria-label="Move group up" ${gi===0?'disabled':''}>↑</button><button class="ib" data-gm="${g}" data-d="1" aria-label="Move group down" ${gi===act.length-1?'disabled':''}>↓</button></div>
- ${ids.map((id,i)=>`<div class="row"><div class="im" style="background:${P.bgOf(id)}">${P.img(id)}</div><div class="n">${esc(P.byId[id].n)}</div><select class="sty" data-so="${id}" aria-label="Style">${P.STYLES.map(x=>`<option value="${x.id}" ${P.styleOf(id)===x.id?'selected':''}>${x.name}</option>`).join('')}</select><button class="ib" data-bm="${id}" data-d="-1" aria-label="Move up" ${i===0?'disabled':''}>↑</button><button class="ib" data-bm="${id}" data-d="1" aria-label="Move down" ${i===ids.length-1?'disabled':''}>↓</button><button class="ib" data-rm="${id}" aria-label="Remove">✕</button></div>`).join('')}</div>`}).join('')}`;
+ ${ids.map((id,i)=>`<div class="rw"><div class="row"><div class="im" style="background:${P.bgOf(id)}">${P.img(id)}</div><div class="n">${esc(P.byId[id].n)}${S.pat[id]!=null?' <span class="ed">edited</span>':''}</div><select class="sty" data-so="${id}" aria-label="Style">${P.STYLES.map(x=>`<option value="${x.id}" ${P.styleOf(id)===x.id?'selected':''}>${x.name}</option>`).join('')}</select><button class="ib" data-bm="${id}" data-d="-1" aria-label="Move up" ${i===0?'disabled':''}>↑</button><button class="ib" data-bm="${id}" data-d="1" aria-label="Move down" ${i===ids.length-1?'disabled':''}>↓</button><button class="ib${S.pat[id]!=null?' on':''}" data-pe="${id}" aria-label="Edit pattern" title="Edit pattern">{}</button><button class="ib" data-rm="${id}" aria-label="Remove">✕</button></div>${editing===id?peHtml(id):''}</div>`).join('')}</div>`}).join('')}`;
   const mv=(fn)=>{const y=scrollY;fn();scrollTo(0,y)};
  document.querySelectorAll('[data-gm]').forEach(b=>b.onclick=()=>mv(()=>P.moveGroup(b.dataset.gm,+b.dataset.d)));
  document.querySelectorAll('[data-bm]').forEach(b=>b.onclick=()=>mv(()=>P.moveBadge(b.dataset.bm,+b.dataset.d)));
  document.querySelectorAll('[data-so]').forEach(x=>x.onchange=()=>mv(()=>P.setOver(x.dataset.so,x.value)));
  document.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>mv(()=>P.toggle(b.dataset.rm)));
+ document.querySelectorAll('[data-pe]').forEach(b=>b.onclick=()=>{const y=scrollY;editing=editing===b.dataset.pe?null:b.dataset.pe;v3();scrollTo(0,y);if(editing){const t=$('#pt');if(t)t.scrollIntoView({block:'nearest'})}});
+ peBind();
  $('#rst').onclick=()=>P.resetOrder();
  if($('#rso'))$('#rso').onclick=()=>P.clearOver();
  }

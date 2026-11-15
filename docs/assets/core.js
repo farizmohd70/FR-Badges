@@ -28,7 +28,7 @@ const PRESETS={
  empty:{name:'Blank',desc:'Start from nothing',ids:()=>[]}
 };
 ['indian','audiophile','streaming','picture','theater','cinephile'].forEach(k=>{const f=PRESETS[k].ids;PRESETS[k].ids=()=>nodup(f())});
-const S={name:'My FR Pack',style:'glass',sel:new Set(),over:{},gord:CAT.groups.map(g=>g.id),bord:{},bg:'dark'};
+const S={name:'My FR Pack',style:'glass',sel:new Set(),over:{},pat:{},gord:CAT.groups.map(g=>g.id),bord:{},bg:'dark'};
 CAT.groups.forEach(g=>S.bord[g.id]=byGroup[g.id].map(b=>b.id));
 const SAMPLES=[
  'Night.Harbor.2024.2160p.UHD.BluRay.REMUX.DV.HDR10+.HEVC.TrueHD.Atmos.7.1-GRP',
@@ -40,8 +40,8 @@ const SAMPLES=[
 ];
 const P={CAT,S,STYLES,PRESETS,byId,byGroup,gInfo,samples:SAMPLES.slice(),badRe,RAW};
 let undo=[],redo=[],subs=[],busy=false;
-const snap=()=>JSON.stringify({name:S.name,style:S.style,sel:[...S.sel],over:S.over,gord:S.gord,bord:S.bord});
-const restore=s=>{const o=JSON.parse(s);S.name=o.name;S.style=o.style;S.sel=new Set(o.sel);S.over=o.over;S.gord=o.gord;S.bord=o.bord};
+const snap=()=>JSON.stringify({name:S.name,style:S.style,sel:[...S.sel],over:S.over,pat:S.pat,gord:S.gord,bord:S.bord});
+const restore=s=>{const o=JSON.parse(s);S.name=o.name;S.style=o.style;S.sel=new Set(o.sel);S.over=o.over;S.pat=o.pat||{};S.gord=o.gord;S.bord=o.bord};
 P.on=f=>subs.push(f);
 function emit(why){subs.forEach(f=>{try{f(why)}catch(e){console.error(e)}});syncHash()}
 const FAM={};CAT.badges.forEach(b=>{const m=/^(.+)-(1l|code|name)$/.exec(b.id);if(m&&byId[m[1]]&&['oneline','lang-code','lang-name'].includes(b.g)){(FAM[m[1]]=FAM[m[1]]||[m[1]]).push(b.id)}});
@@ -77,7 +77,7 @@ P.dropBadge=(id,beforeId)=>P.commit(()=>{if(id===beforeId||byId[id].g!==byId[bef
 P.dropGroup=(g,beforeG)=>P.commit(()=>{if(g===beforeG)return;const a=S.gord;a.splice(a.indexOf(g),1);a.splice(a.indexOf(beforeG),0,g)},'order');
 P.resetOrder=()=>P.commit(()=>{S.gord=CAT.groups.map(g=>g.id);CAT.groups.forEach(g=>S.bord[g.id]=byGroup[g.id].map(b=>b.id))},'order');
 P.manifest=()=>{const bs=P.ordered(),gs=P.activeGroups();
- return{filters:bs.map(b=>({id:b.id,groupId:b.g,name:b.n,pattern:b.p,imageURL:P.rawUrl(b.id),tagColor:'#00000000',borderColor:'#00000000',textColor:'#00000000',tagStyle:'filled and bordered',isEnabled:true,type:'filter'})),
+ return{filters:bs.map(b=>({id:b.id,groupId:b.g,name:b.n,pattern:P.pat(b.id),imageURL:P.rawUrl(b.id),tagColor:'#00000000',borderColor:'#00000000',textColor:'#00000000',tagStyle:'filled and bordered',isEnabled:true,type:'filter'})),
  groups:gs.map(g=>({id:g,name:gInfo[g].name,color:gInfo[g].color,borderColor:gInfo[g].border||gInfo[g].color,isExpanded:true}))}};
 P.manifestText=()=>JSON.stringify(P.manifest(),null,2);
 P.bytes=()=>new Blob([JSON.stringify(P.manifest())]).size;
@@ -106,7 +106,13 @@ P.importAny=async t=>{t=(t||'').trim();if(!t)return{err:'Paste a link, JSON or s
   return P.importText(txt)}
  return P.importText(t)};
 /* matching */
-P.match=(text,onlySel)=>{const out=[];const list=onlySel?P.ordered():CAT.badges;for(const b of list){if(b.re){try{if(b.re.test(text))out.push(b)}catch(e){}}}return out};
+const reC={};
+P.reFor=id=>{const p=S.pat[id];if(p==null)return byId[id].re;if(p in reC)return reC[p];let r=null;const[bd,f]=flags(p);try{r=new RegExp(bd,f)}catch(e){try{r=new RegExp(bd,f+'u')}catch(e2){}}return reC[p]=r};
+P.pat=id=>S.pat[id]!=null?S.pat[id]:byId[id].p;
+P.checkPat=p=>{if(!(p||'').trim())return'The pattern is empty';const[bd,f]=flags(p);try{new RegExp(bd,f);return''}catch(e){try{new RegExp(bd,f+'u');return''}catch(e2){return e2.message}}};
+P.testPat=(p,t)=>{const[bd,f]=flags(p);let r;try{r=new RegExp(bd,f)}catch(e){r=new RegExp(bd,f+'u')}return r.test(t)};
+P.setPat=(id,p)=>P.commit(()=>{p=(p||'').trim();if(!p||p===byId[id].p)delete S.pat[id];else S.pat[id]=p},'pat');
+P.match=(text,onlySel)=>{const out=[];const list=onlySel?P.ordered():CAT.badges;for(const b of list){const r=P.reFor(b.id);if(r){try{if(r.test(text))out.push(b)}catch(e){}}}return out};
 P.suggest=()=>{const c={};P.samples.forEach(t=>P.match(t,false).forEach(b=>{if(!S.sel.has(b.id))c[b.id]=(c[b.id]||0)+1}));return Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([id,n])=>({b:byId[id],n}))};
 P.health=()=>{const sel=P.ordered(),issues=[];const t0=performance.now();let reps=3;for(let r=0;r<reps;r++)P.samples.forEach(t=>sel.forEach(b=>{if(b.re)b.re.test(t)}));
  const ms=(performance.now()-t0)/reps/Math.max(1,P.samples.length);const per=P.samples.map(t=>({t,n:P.match(t,true).length}));
@@ -136,11 +142,14 @@ const b64=u=>btoa(String.fromCharCode(...u)).replace(/\+/g,'-').replace(/\//g,'_
 const isDefaultOrder=()=>{if(Object.keys(S.over).length)return false;const def=[];CAT.groups.forEach(g=>byGroup[g.id].forEach(b=>{if(S.sel.has(b.id))def.push(b.id)}));const cur=P.ordered().map(b=>b.id);return def.length===cur.length&&def.every((x,i)=>x===cur[i])};
 const rangesCode=()=>{const idx=[];CAT.badges.forEach((b,i)=>{if(S.sel.has(b.id))idx.push(i)});const v=[],put=x=>{while(x>=128){v.push(x&127|128);x>>=7}v.push(x)};let last=0,k=0;while(k<idx.length){let a=idx[k],z=a;while(k+1<idx.length&&idx[k+1]===z+1){z++;k++}k++;put(a-last);put(z-a);last=z}return'r'+STYLES.findIndex(s=>s.id===S.style)+'-'+b64(new Uint8Array(v))};
 P.rangesCode=rangesCode;
-P.packCode=async()=>{if(isDefaultOrder()){const r=rangesCode(),m='m'+P.code().slice(3);return r.length<m.length?r:m}
+const baseCode=async()=>{if(isDefaultOrder()){const r=rangesCode(),m='m'+P.code().slice(3);return r.length<m.length?r:m}
  const sx=s=>STYLES.findIndex(x=>x.id===s),n=[sx(S.style)];P.ordered().forEach(b=>{const o=S.over[b.id];n.push(b.i*32+(o?sx(o)+1:0))});
  const raw=[];n.forEach(v=>{while(v>=128){raw.push(v&127|128);v>>=7}raw.push(v)});
  const cs=new CompressionStream('deflate-raw'),w=cs.writable.getWriter();w.write(new Uint8Array(raw));w.close();
  return'o'+b64(new Uint8Array(await new Response(cs.readable).arrayBuffer()))};
+P.packCode=async()=>{const base=await baseCode();const pat={};let n=0;S.sel.forEach(id=>{if(S.pat[id]!=null){pat[id]=S.pat[id];n++}});if(!n)return base;
+ const raw=new TextEncoder().encode(JSON.stringify({c:base,p:pat}));const cs=new CompressionStream('deflate-raw'),w=cs.writable.getWriter();w.write(raw);w.close();
+ return'x'+b64(new Uint8Array(await new Response(cs.readable).arrayBuffer()))};
 P.packUrl=async()=>(window.FR_WORKER||'').replace(/\/$/,'')+'/p/'+await P.packCode()+'.json';
 /* utils */
 P.copy=(text,msg)=>{const done=()=>P.toast(msg||'Copied');

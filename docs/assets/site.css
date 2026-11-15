@@ -166,3 +166,14 @@ dialog::backdrop{background:#0009}
 .sh b{font-size:17px;letter-spacing:-.01em}
 .sh .c{flex:1;color:var(--mute);font-size:14px}
 .sh .lnk{padding:4px 6px;font-size:14px;color:var(--ac)}
+
+.rw+.rw{border-top:1px solid var(--line)}
+.rw .row{border-top:0}
+.ib.on{border-color:var(--ac);color:var(--ac)}
+.ed{font-size:12px;color:var(--ac);border:1px solid var(--ac);border-radius:6px;padding:1px 6px;margin-left:6px}
+.pe{padding:10px 12px 14px;display:grid;gap:8px;border-top:1px dashed var(--line)}
+.pe label{font-size:14px;color:var(--mute)}
+.pe textarea{font-family:var(--f-m,monospace);font-size:13px;width:100%;resize:vertical}
+.pe input{width:100%}
+.pr{font-size:14px;padding:8px 10px;border-radius:8px;border:1px solid var(--line)}
+.pr.ok{border-color:#43A047;color:#66bb6a}.pr.no{color:var(--mute)}.pr.bad{border-color:#e53935;color:#ef5350}
