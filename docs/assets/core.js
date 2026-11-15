@@ -24,7 +24,7 @@ const PRESETS={
  picture:{name:'Best picture',desc:'Resolution, HDR, Dolby Vision, codecs and sources',ids:()=>CAT.badges.filter(b=>['hero','resolution','dynamic-range','video-codec','video-format','source'].includes(b.g)).map(b=>b.id)},
  theater:{name:'Home theater',desc:'Picture and sound together, with speaker layouts',ids:()=>CAT.badges.filter(b=>['hero','resolution','dynamic-range','video-codec','source','audio-codec','audio-channels'].includes(b.g)).map(b=>b.id)},
  cinephile:{name:'Cinephile',desc:'Editions like IMAX and Criterion, plus quality tags',ids:()=>CAT.badges.filter(b=>['hero','editions','source','resolution','dynamic-range'].includes(b.g)).map(b=>b.id)},
- everything:{name:'Everything',desc:'All 453 badges in the catalog',ids:()=>CAT.badges.filter(b=>b.g!=='oneline').map(b=>b.id)},
+ everything:{name:'Everything',desc:'All 453 badges in the catalog',ids:()=>CAT.badges.filter(b=>!['oneline','lang-code','lang-name'].includes(b.g)).map(b=>b.id)},
  empty:{name:'Blank',desc:'Start from nothing',ids:()=>[]}
 };
 ['indian','audiophile','streaming','picture','theater','cinephile'].forEach(k=>{const f=PRESETS[k].ids;PRESETS[k].ids=()=>nodup(f())});
@@ -44,7 +44,11 @@ const snap=()=>JSON.stringify({name:S.name,style:S.style,sel:[...S.sel],over:S.o
 const restore=s=>{const o=JSON.parse(s);S.name=o.name;S.style=o.style;S.sel=new Set(o.sel);S.over=o.over;S.gord=o.gord;S.bord=o.bord};
 P.on=f=>subs.push(f);
 function emit(why){subs.forEach(f=>{try{f(why)}catch(e){console.error(e)}});syncHash()}
-P.commit=(fn,why)=>{const a=snap();fn();if(snap()!==a){undo.push(a);if(undo.length>100)undo.shift();redo=[]}emit(why||'sel')};
+const FAM={};CAT.badges.forEach(b=>{const m=/^(.+)-(1l|code|name)$/.exec(b.id);if(m&&byId[m[1]]&&['oneline','lang-code','lang-name'].includes(b.g)){(FAM[m[1]]=FAM[m[1]]||[m[1]]).push(b.id)}});
+const famOf={};Object.values(FAM).forEach(a=>a.forEach(i=>famOf[i]=a));
+const ORD={};CAT.badges.forEach((b,i)=>ORD[b.id]=i);
+function oneOfEach(before){const seen=new Set(),swaps=[];[...S.sel].forEach(id=>{const f=famOf[id];if(!f||seen.has(f))return;seen.add(f);const on=f.filter(x=>S.sel.has(x));if(on.length<2)return;const nw=on.filter(x=>!before.has(x));const pool=nw.length?nw:on;const keep=pool.sort((x,y)=>ORD[x]-ORD[y])[0];on.forEach(x=>{if(x!==keep){S.sel.delete(x);if(before.has(x))swaps.push([x,keep])}})});if(swaps.length&&P.toast)P.toast(swaps.length>1?'Swapped '+swaps.length+' badges for their other version (one version of each)':'Swapped '+byId[swaps[0][0]].n+' for '+byId[swaps[0][1]].n+' (one version of each)')}
+P.commit=(fn,why)=>{const a=snap(),before=new Set(S.sel);fn();oneOfEach(before);if(snap()!==a){undo.push(a);if(undo.length>100)undo.shift();redo=[]}emit(why||'sel')};
 P.undo=()=>{if(!undo.length)return false;redo.push(snap());restore(undo.pop());emit('all');return true};
 P.redo=()=>{if(!redo.length)return false;undo.push(snap());restore(redo.pop());emit('all');return true};
 P.canUndo=()=>undo.length>0;P.canRedo=()=>redo.length>0;
