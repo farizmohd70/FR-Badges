@@ -51,6 +51,27 @@ function fromMask(code) {
   return items;
 }
 
+// code "r<style>-<base64url>": the same kind of selection, written as ranges of catalog positions (much shorter).
+// numbers, in order: gap from the previous range's end (or from 0), then range length - 1; each as a 7-bit varint.
+function fromRanges(code) {
+  const m = /^r(\d+)-([A-Za-z0-9_-]+)$/.exec(code);
+  if (!m || !STYLES[+m[1]]) return null;
+  const s = m[2].replace(/-/g, '+').replace(/_/g, '/');
+  let bin; try { bin = atob(s + '='.repeat((4 - (s.length % 4)) % 4)); } catch (e) { return null; }
+  const nums = []; let v = 0, sh = 0;
+  for (let i = 0; i < bin.length; i++) { const x = bin.charCodeAt(i); v |= (x & 127) << sh; if (x & 128) sh += 7; else { nums.push(v); v = 0; sh = 0; } }
+  const items = []; let last = 0;
+  for (let k = 0; k + 1 < nums.length; k += 2) {
+    const a = last + nums[k], z = a + nums[k + 1];
+    for (let i = a; i <= z && i < CAT.badges.length; i++) items.push({ b: CAT.badges[i], style: +m[1] });
+    last = z;
+  }
+  const rank = {};
+  CAT.groups.forEach((g, i) => (rank[g.id] = i));
+  items.sort((a, b) => rank[a.b.g] - rank[b.b.g] || CAT.badges.indexOf(a.b) - CAT.badges.indexOf(b.b));
+  return items;
+}
+
 // code "o<base64url>": deflated list of numbers. First is the style, then one per badge, in order:
 // catalogIndex * 32 + (0 for the pack style, or the style number + 1 for a single badge).
 async function fromList(code) {
@@ -99,7 +120,7 @@ export default {
     if (!m) return new Response('FR Badges pack links. Make one at https://farizmohd70.github.io/FR-Badges/make.html', { headers: { 'content-type': 'text/plain; charset=utf-8' } });
     try {
       await loadStyles();
-      const items = fromMask(m[1]) || (await fromList(m[1]));
+      const items = fromMask(m[1]) || fromRanges(m[1]) || (await fromList(m[1]));
       if (!items) return fail('This pack link is not valid.');
       if (!items.length) return fail('This pack has no badges.');
       return new Response(JSON.stringify(manifest(items)), { headers: HEAD });

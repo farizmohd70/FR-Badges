@@ -134,7 +134,9 @@ P.openSaved=n=>{const x=P.saved().find(y=>y.name===n);if(!x)return;P.loadCode(x.
 /* worker url (demo) */
 const b64=u=>btoa(String.fromCharCode(...u)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 const isDefaultOrder=()=>{if(Object.keys(S.over).length)return false;const def=[];CAT.groups.forEach(g=>byGroup[g.id].forEach(b=>{if(S.sel.has(b.id))def.push(b.id)}));const cur=P.ordered().map(b=>b.id);return def.length===cur.length&&def.every((x,i)=>x===cur[i])};
-P.packCode=async()=>{if(isDefaultOrder())return'm'+P.code().slice(3);
+const rangesCode=()=>{const idx=[];CAT.badges.forEach((b,i)=>{if(S.sel.has(b.id))idx.push(i)});const v=[],put=x=>{while(x>=128){v.push(x&127|128);x>>=7}v.push(x)};let last=0,k=0;while(k<idx.length){let a=idx[k],z=a;while(k+1<idx.length&&idx[k+1]===z+1){z++;k++}k++;put(a-last);put(z-a);last=z}return'r'+STYLES.findIndex(s=>s.id===S.style)+'-'+b64(new Uint8Array(v))};
+P.rangesCode=rangesCode;
+P.packCode=async()=>{if(isDefaultOrder()){const r=rangesCode(),m='m'+P.code().slice(3);return r.length<m.length?r:m}
  const sx=s=>STYLES.findIndex(x=>x.id===s),n=[sx(S.style)];P.ordered().forEach(b=>{const o=S.over[b.id];n.push(b.i*32+(o?sx(o)+1:0))});
  const raw=[];n.forEach(v=>{while(v>=128){raw.push(v&127|128);v>>=7}raw.push(v)});
  const cs=new CompressionStream('deflate-raw'),w=cs.writable.getWriter();w.write(new Uint8Array(raw));w.close();
