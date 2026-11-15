@@ -33,13 +33,15 @@ function v1(){const ids=demoIds();
  document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const n=P.preset(b.dataset.p);P.toast(n+' badges picked');go(1)})}
 
 /* 2 badges */
-function v2(){const counts={};P.CAT.badges.forEach(b=>{if(S.sel.has(b.id))counts[b.g]=(counts[b.g]||0)+1});
+let chipX=0;
+function v2(){const oc=document.getElementById('chips');if(oc)chipX=oc.scrollLeft;const oy=window.scrollY;const counts={};P.CAT.badges.forEach(b=>{if(S.sel.has(b.id))counts[b.g]=(counts[b.g]||0)+1});
  $('#view').innerHTML=`<h2>Choose your badges</h2><p class="sub">Tap a badge to add it. Tap again to remove it.</p>
  <div id="big"></div><div class="bar"><input type="search" id="q" placeholder="Search, like 4K or Atmos" value="${esc(q)}"><button class="b2" id="all">Pick all shown</button><button class="b2" id="none">Clear shown</button></div>
  <div class="chips" id="chips"></div><div id="grid"></div>`;
  const ch=[['all','All']].concat(P.CAT.groups.map(g=>[g.id,g.name]));
  $('#chips').innerHTML=ch.map(([id,n])=>`<button class="chip ${grp===id?'on':''}" data-g="${id}">${esc(n)}${id==='all'?'':`<i>${counts[id]||0}</i>`}</button>`).join('');
  $('#chips').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{grp=b.dataset.g;v2()});
+ {const c=$('#chips');c.scrollLeft=chipX;const on=c.querySelector('.chip.on');if(on){const l=on.offsetLeft-c.offsetLeft,r=l+on.offsetWidth;if(l<c.scrollLeft)c.scrollLeft=l-8;else if(r>c.scrollLeft+c.clientWidth)c.scrollLeft=r-c.clientWidth+8}window.scrollTo(0,oy)}
  const list=()=>P.filter(q,{group:grp});
  const tile=b=>`<button class="tile ${S.sel.has(b.id)?'on':''}" data-id="${b.id}"><div class="im" style="background:${P.bgOf(b.id)}">${P.img(b.id)}</div><div class="n">${esc(b.n)}</div></button>`;
  const draw=()=>{const l=list();let h='';
