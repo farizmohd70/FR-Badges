@@ -4,12 +4,12 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/for-Nuvio-8b5cf6?style=for-the-badge" alt="for Nuvio">
-  <img src="https://img.shields.io/badge/badges-453-0ea5e9?style=for-the-badge" alt="badges 453">
+  <img src="https://img.shields.io/badge/badges-463-0ea5e9?style=for-the-badge" alt="badges 463">
   <img src="https://img.shields.io/badge/styles-14-ec4899?style=for-the-badge" alt="styles 14">
   <img src="https://img.shields.io/badge/languages-134-10b981?style=for-the-badge" alt="languages 134">
 </p>
 
-<p align="center"><b>Modern badge pack for Nuvio.</b><br>453 badges in 14 styles: hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, streaming platforms, debrid services, 134 languages and 134 subtitle badges. Every style has a ready-to-use filter manifest, and the website lets you build your own pack.</p>
+<p align="center"><b>Modern badge pack for Nuvio.</b><br>463 badges in 14 styles: hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, streaming platforms, debrid services, 134 languages and 134 subtitle badges. Every style has a ready-to-use filter manifest, and the website lets you build your own pack.</p>
 
 <p align="center"><a href="https://farizmohd70.github.io/FR-Badges/"><b>Website</b></a> · <a href="https://farizmohd70.github.io/FR-Badges/make.html"><b>Make your pack</b></a></p>
 
@@ -94,7 +94,7 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 | Audio & Subs Flags | 9 | Multi/Dual Audio, Dubbed, Original Audio, Multi-Sub, Subpack, CC, Commentary, Audio Description |
 | Subtitles | 134 | One subtitle badge for every language, such as "Hindi Subs" (full language name only) |
 
-**Total: 453 badges per style.** The ready-made manifests (`badges.json` and the style files) are the Lite pack with 290 of them. The rest are available when you build your own pack on the [website](https://farizmohd70.github.io/FR-Badges/make.html).
+**Total: 463 badges per style.** The ready-made manifests (`badges.json` and the style files) are the Lite pack with 219 of them. The rest are available when you build your own pack on the [website](https://farizmohd70.github.io/FR-Badges/make.html).
 
 </details>
 
