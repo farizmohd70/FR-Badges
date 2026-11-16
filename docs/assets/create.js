@@ -35,6 +35,11 @@ $('#pre').innerHTML=PRE.map((p,i)=>{const q=pf(p),bgc=q.tr?'transparent':(q.gd==
 const v=id=>{const e=$('#'+id);return e.type==='checkbox'?e.checked:e.value};
 const set=(id,x)=>{const e=$('#'+id);if(e.type==='checkbox')e.checked=!!x;else e.value=x};
 let cvW=0;
+/* tabs */
+function tab(t){document.querySelectorAll('.cr-tabs [data-t]').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});document.querySelectorAll('.cr-p').forEach(p=>p.classList.toggle('on',p.dataset.p===t));
+ const bar=$('.cr-tabs');if(bar){const a=bar.querySelector('.on');if(a)bar.scrollLeft=a.offsetLeft-12}}
+document.querySelectorAll('.cr-tabs [data-t]').forEach(b=>b.onclick=()=>tab(b.dataset.t));
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{tab(b.dataset.go);const y=$('.cr-tabs').getBoundingClientRect().top+scrollY-(($('#pvbox')||{}).offsetHeight||0)-12;scrollTo({top:Math.max(0,y),behavior:'smooth'})});
 function draw(cv,o,scaleOut){
  const ctx=cv.getContext('2d');
  const fam=`"${o.font}", system-ui, sans-serif`;

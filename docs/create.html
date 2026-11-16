@@ -11,53 +11,71 @@
  <nav><a href="community">Community made</a><a href="make">Make a pack</a></nav></div></div>
 <main class="w cr">
  <h1 class="cr-h">Make a badge</h1>
- <p class="sub">Design a badge, test its pattern, and share it. Everything here is sized for Nuvio: the badge is 16dp tall and the width is limited.</p>
-<div class="cr-box cr-sticky" id="pvbox"><div class="cr-pv" id="pv"><canvas id="cv" aria-label="Badge preview"></canvas></div>
- <div class="cr-row"><span class="hint" id="meta"></span></div>
+ <p class="sub">Design it, test the pattern, share it. Sized for Nuvio.</p>
+
+ <div class="cr-box cr-sticky" id="pvbox"><div class="cr-pv" id="pv"><canvas id="cv" aria-label="Badge preview"></canvas></div>
+  <div class="cr-row"><span class="hint" id="meta"></span></div></div>
+
+ <div class="cr-tabs" role="tablist" aria-label="Badge settings">
+  <button role="tab" class="on" data-t="looks">Looks</button><button role="tab" data-t="text">Text</button><button role="tab" data-t="bg">Colours</button><button role="tab" data-t="shape">Shape</button><button role="tab" data-t="pat">Pattern</button><button role="tab" data-t="share">Share</button>
  </div>
- <div class="cr-grid">
-  <div class="cr-col">
-   <div class="cr-box"><h3 style="margin-top:0">Start from an existing badge</h3>
-    <p class="hint">Pick one of the badges in the pack to reuse its pattern, then give it your own look. Your badge goes in the same group.</p>
-    <input type="search" id="bq" placeholder="Search badges, like Atmos or 1080p" aria-label="Search badges">
-    <select id="base" aria-label="Existing badge"></select></div>
-   <div class="cr-box"><h3 style="margin-top:0">Pattern</h3>
-    <p class="hint">Nuvio shows the badge when this pattern matches a stream title. <code>(?i)</code> ignores capital letters.</p>
-    <textarea id="pat" rows="3" spellcheck="false" autocapitalize="off" autocomplete="off">(?i)\bhello\b</textarea>
-    <input type="text" id="tt" value="Night Harbor 2024 1080p WEB-DL Hello" spellcheck="false" aria-label="Test title">
-    <div class="pr" id="pr"></div></div>
-  </div>
-  <div class="cr-col">
-   <div class="cr-box"><h3 style="margin-top:0">Look</h3>
-    <div class="cr-pre" id="pre"></div>
-    <label>Text<input type="text" id="txt" maxlength="24" value="HELLO"></label>
-    <label>Symbol before the text (optional)<input type="text" id="sym" maxlength="4" placeholder="for example ★ or 🇬🇧"></label>
-    <div class="cr-2"><label>Font<select id="font"></select></label><label>Weight<select id="wt"><option value="400">Regular</option><option value="700" selected>Bold</option><option value="800">Extra bold</option></select></label></div>
-    <label>Text size <span id="szv"></span><input type="range" id="sz" min="60" max="170" value="120"></label>
-    <label>Letter spacing <span id="lsv"></span><input type="range" id="ls" min="0" max="20" value="0"></label>
-    <div class="cr-2"><label>Text colour<input type="color" id="fg" value="#ffffff"></label><label>Case<select id="cs"><option value="n">As typed</option><option value="u" selected>UPPERCASE</option></select></label></div>
-    <label class="cr-ck"><input type="checkbox" id="tr"> Transparent background (text only badge)</label>
-    <div class="cr-2"><label>Background<input type="color" id="bg1" value="#1f3a8a"></label><label>Second colour<input type="color" id="bg2" value="#1f3a8a"></label></div>
-    <label>Gradient<select id="gd"><option value="none">None (one colour)</option><option value="h">Left to right</option><option value="v">Top to bottom</option><option value="d">Diagonal</option></select></label>
-    <div class="cr-2"><label>Border colour<input type="color" id="bc" value="#ffffff"></label><label>Border width <span id="bwv"></span><input type="range" id="bw" min="0" max="14" value="0"></label></div>
-    <label>Corner roundness <span id="rdv"></span><input type="range" id="rd" min="0" max="120" value="90"></label>
-    <p class="hint" style="margin:-4px 0 0">90 matches the rounded corners of Nuvio's own badges (6dp). 120 is a full pill.</p>
-    <label>Space on the left and right <span id="pxv"></span> <span class="hint" style="margin:0">(default 72)</span><input type="range" id="px" min="0" max="160" value="72"></label>
-    <div><button type="button" class="b2 sm" id="pxr">Reset space to 72</button></div>
-    <label>Background opacity <span id="bgov"></span><input type="range" id="bgo" min="0" max="100" value="100"></label>
-    <label class="cr-ck"><input type="checkbox" id="gl"> Glossy shine on the top half</label>
-    <div class="cr-2"><label>Text outline <span id="towv"></span><input type="range" id="tow" min="0" max="14" value="0"></label><label>Outline colour<input type="color" id="toc" value="#000000"></label></div>
-    <label class="cr-ck"><input type="checkbox" id="sh" checked> Soft shadow behind the text</label>
-   </div>
-   <div class="cr-box"><h3 style="margin-top:0">Share</h3>
-    <label>Where does it belong?<select id="gp"></select></label>
-    <label>Badge name<input type="text" id="nm" maxlength="40" value="Hello" placeholder="For example Hello"></label>
-    <div id="ts"></div>
-    <div class="bar"><button class="b2" id="dl">Download PNG</button><button class="b2 pri" id="sub">Share with the community</button></div>
-    <div class="pr" id="res" hidden></div>
-    <p class="hint">Shared badges are public and anonymous, and appear on the Community made page. Please keep them friendly and do not copy other people's logos.</p></div>
-  </div>
- </div>
+
+ <section class="cr-p on" data-p="looks" role="tabpanel">
+  <h3>Pick a look</h3><div class="cr-pre" id="pre"></div>
+  <h3>Or start from a pack badge</h3>
+  <p class="hint">Reuses its pattern, and your badge joins the same group.</p>
+  <input type="search" id="bq" placeholder="Search badges, like Atmos or 1080p" aria-label="Search badges">
+  <select id="base" aria-label="Existing badge"></select>
+  <div class="cr-nx"><button class="b2 pri" data-go="text">Next: Text</button></div>
+ </section>
+
+ <section class="cr-p" data-p="text" role="tabpanel">
+  <label class="f">Text<input type="text" id="txt" maxlength="24" value="HELLO"></label>
+  <label class="f"><span>Symbol before the text <small>optional</small></span><input type="text" id="sym" maxlength="4" placeholder="★ or 🇬🇧"></label>
+  <div class="cr-2"><label class="f">Font<select id="font"></select></label><label class="f">Weight<select id="wt"><option value="400">Regular</option><option value="700" selected>Bold</option><option value="800">Extra bold</option></select></label></div>
+  <label class="f s">Size <span id="szv"></span><input type="range" id="sz" min="60" max="170" value="120"></label>
+  <label class="f s">Letter spacing <span id="lsv"></span><input type="range" id="ls" min="0" max="20" value="0"></label>
+  <div class="cr-2"><label class="f">Case<select id="cs"><option value="n">As typed</option><option value="u" selected>UPPERCASE</option></select></label><label class="f">Text colour<input type="color" id="fg" value="#ffffff"></label></div>
+  <div class="cr-2"><label class="f s">Outline <span id="towv"></span><input type="range" id="tow" min="0" max="14" value="0"></label><label class="f">Outline colour<input type="color" id="toc" value="#000000"></label></div>
+  <label class="cr-ck"><input type="checkbox" id="sh" checked> Soft shadow behind the text</label>
+  <div class="cr-nx"><button class="b2" data-go="looks">Back</button><button class="b2 pri" data-go="bg">Next: Colours</button></div>
+ </section>
+
+ <section class="cr-p" data-p="bg" role="tabpanel">
+  <label class="cr-ck"><input type="checkbox" id="tr"> Transparent background (text only badge)</label>
+  <div class="cr-2"><label class="f">Colour<input type="color" id="bg1" value="#1f3a8a"></label><label class="f">Second colour<input type="color" id="bg2" value="#1f3a8a"></label></div>
+  <label class="f">Gradient<select id="gd"><option value="none">None (one colour)</option><option value="h">Left to right</option><option value="v">Top to bottom</option><option value="d">Diagonal</option></select></label>
+  <label class="f s">Opacity <span id="bgov"></span><input type="range" id="bgo" min="0" max="100" value="100"></label>
+  <label class="cr-ck"><input type="checkbox" id="gl"> Glossy shine on the top half</label>
+  <div class="cr-2"><label class="f">Border colour<input type="color" id="bc" value="#ffffff"></label><label class="f s">Border width <span id="bwv"></span><input type="range" id="bw" min="0" max="14" value="0"></label></div>
+  <div class="cr-nx"><button class="b2" data-go="text">Back</button><button class="b2 pri" data-go="shape">Next: Shape</button></div>
+ </section>
+
+ <section class="cr-p" data-p="shape" role="tabpanel">
+  <label class="f s">Corner roundness <span id="rdv"></span><input type="range" id="rd" min="0" max="120" value="90"></label>
+  <p class="hint">90 matches Nuvio's own badges (6dp). 120 is a full pill.</p>
+  <label class="f s">Space on the left and right <span id="pxv"></span><input type="range" id="px" min="0" max="160" value="72"></label>
+  <div><button type="button" class="b2 sm" id="pxr">Reset space to 72</button></div>
+  <div class="cr-nx"><button class="b2" data-go="bg">Back</button><button class="b2 pri" data-go="pat">Next: Pattern</button></div>
+ </section>
+
+ <section class="cr-p" data-p="pat" role="tabpanel">
+  <p class="hint">Nuvio shows the badge when this pattern matches a stream title. <code>(?i)</code> ignores capital letters.</p>
+  <textarea id="pat" rows="3" spellcheck="false" autocapitalize="off" autocomplete="off">(?i)\bhello\b</textarea>
+  <label class="f">Test it on a title<input type="text" id="tt" value="Night Harbor 2024 1080p WEB-DL Hello" spellcheck="false"></label>
+  <div class="pr" id="pr"></div>
+  <div class="cr-nx"><button class="b2" data-go="shape">Back</button><button class="b2 pri" data-go="share">Next: Share</button></div>
+ </section>
+
+ <section class="cr-p" data-p="share" role="tabpanel">
+  <label class="f">Badge name<input type="text" id="nm" maxlength="40" value="Hello" placeholder="For example Hello"></label>
+  <label class="f">Where does it belong?<select id="gp"></select></label>
+  <div id="ts"></div>
+  <div class="bar"><button class="b2" id="dl">Download PNG</button><button class="b2 pri" id="sub">Share with the community</button></div>
+  <div class="pr" id="res" hidden></div>
+  <p class="hint">Shared badges are public and anonymous. Keep them friendly and do not copy other people's logos.</p>
+  <div class="cr-nx"><button class="b2" data-go="pat">Back</button></div>
+ </section>
 </main>
 <div id="toast" role="status"></div>
 <script src="assets/config.js?v=20261116"></script>
