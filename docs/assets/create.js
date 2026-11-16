@@ -3,12 +3,12 @@
 const $=s=>document.querySelector(s),H=240,MAXR=5.7,MINR=1.25;
 const FONTS=['Inter','Poppins','Montserrat','Rubik','Space Grotesk','Oswald','Barlow Condensed','Bebas Neue','Anton','Playfair Display','Roboto Mono'];
 const PRE=[
- {n:'Deep blue',bg1:'#1f3a8a',bg2:'#0b1d52',gd:'v',fg:'#ffffff',bc:'#ffffff',bw:0,rd:48,sh:1},
- {n:'Neon',bg1:'#0a0c10',bg2:'#0a0c10',gd:'none',fg:'#39ff88',bc:'#39ff88',bw:8,rd:48,sh:0},
- {n:'Light',bg1:'#ffffff',bg2:'#e6e9f0',gd:'v',fg:'#13161b',bc:'#c8ceda',bw:4,rd:48,sh:0},
- {n:'Sunset',bg1:'#ff512f',bg2:'#dd2476',gd:'h',fg:'#ffffff',bc:'#ffffff',bw:0,rd:60,sh:1},
- {n:'Gold',bg1:'#f7d36b',bg2:'#c58f1d',gd:'v',fg:'#2b1a00',bc:'#fff2b8',bw:6,rd:36,sh:0},
- {n:'Black and white',bg1:'#000000',bg2:'#000000',gd:'none',fg:'#ffffff',bc:'#ffffff',bw:6,rd:24,sh:0}
+ {n:'Deep blue',bg1:'#1f3a8a',bg2:'#0b1d52',gd:'v',fg:'#ffffff',bc:'#ffffff',bw:0,px:72,rd:90,sh:1},
+ {n:'Neon',bg1:'#0a0c10',bg2:'#0a0c10',gd:'none',fg:'#39ff88',bc:'#39ff88',bw:8,px:72,rd:90,sh:0},
+ {n:'Light',bg1:'#ffffff',bg2:'#e6e9f0',gd:'v',fg:'#13161b',bc:'#c8ceda',bw:4,px:72,rd:90,sh:0},
+ {n:'Sunset',bg1:'#ff512f',bg2:'#dd2476',gd:'h',fg:'#ffffff',bc:'#ffffff',bw:0,px:72,rd:90,sh:1},
+ {n:'Gold',bg1:'#f7d36b',bg2:'#c58f1d',gd:'v',fg:'#2b1a00',bc:'#fff2b8',bw:6,px:72,rd:90,sh:0},
+ {n:'Black and white',bg1:'#000000',bg2:'#000000',gd:'none',fg:'#ffffff',bc:'#ffffff',bw:6,px:72,rd:90,sh:0}
 ];
 const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2200)};
 const GR=(window.CAT?window.CAT.groups:[]).filter(g=>!['oneline','lang-code','lang-name'].includes(g.id)).map(g=>[g.id,g.name]).concat([['community','Other']]);
@@ -22,7 +22,7 @@ function draw(cv,o,scaleOut){
  const ctx=cv.getContext('2d');
  const fam=`"${o.font}", system-ui, sans-serif`;
  const txt=o.cs==='u'?o.txt.toUpperCase():o.txt;
- let size=o.sz,padX=H*0.3;
+ let size=o.sz,padX=+o.px;
  const meas=sz=>{ctx.font=`${o.wt} ${sz}px ${fam}`;try{ctx.letterSpacing=o.ls+'px'}catch(e){}
   const tw=ctx.measureText(txt).width-(o.ls||0);let sw=0,gap=0;if(o.sym){ctx.font=`400 ${sz}px ${fam}`;sw=ctx.measureText(o.sym).width;gap=sz*0.22;ctx.font=`${o.wt} ${sz}px ${fam}`}
   return{tw,sw,gap,w:Math.ceil(padX*2+tw+sw+gap)}};
@@ -48,14 +48,14 @@ function draw(cv,o,scaleOut){
  ctx.shadowColor='transparent';
  return{W,size}
 }
-const opts=()=>({txt:v('txt')||' ',sym:v('sym').trim(),font:v('font'),wt:v('wt'),sz:+v('sz'),ls:+v('ls'),fg:v('fg'),cs:v('cs'),bg1:v('bg1'),bg2:v('bg2'),gd:v('gd'),bc:v('bc'),bw:+v('bw'),rd:+v('rd'),sh:v('sh')});
+const opts=()=>({txt:v('txt')||' ',sym:v('sym').trim(),font:v('font'),wt:v('wt'),sz:+v('sz'),ls:+v('ls'),fg:v('fg'),cs:v('cs'),bg1:v('bg1'),bg2:v('bg2'),gd:v('gd'),bc:v('bc'),bw:+v('bw'),rd:+v('rd'),px:+v('px'),sh:v('sh')});
 let busy=0;
 async function render(){
  const o=opts();const my=++busy;
  try{await Promise.all([document.fonts.load(`${o.wt} 40px "${o.font}"`,o.txt),document.fonts.load(`400 40px "${o.font}"`,o.sym||'A')])}catch(e){}
  if(my!==busy)return;
  const cv=$('#cv'),r=draw(cv,o);
- $('#szv').textContent=o.sz;$('#lsv').textContent=o.ls;$('#bwv').textContent=o.bw;$('#rdv').textContent=o.rd;
+ $('#szv').textContent=o.sz;$('#lsv').textContent=o.ls;$('#bwv').textContent=o.bw;$('#rdv').textContent=o.rd;$('#pxv').textContent=o.px;
  const ratio=r.W/H;
  $('#meta').textContent=`${r.W} × ${H} px, width is ${ratio.toFixed(2)}× the height (Nuvio limit 5.75)`+(r.size<o.sz?'. The text was shrunk to fit.':'');
  cv.style.height='clamp(48px,18vw,96px)';
@@ -69,11 +69,11 @@ function check(){const p=$('#pat').value.trim(),pr=$('#pr');
  if(!p){pr.className='pr bad';pr.textContent='Add a pattern.';return false}
  let r;try{r=rx(p)}catch(e){pr.className='pr bad';pr.textContent='Not a valid pattern: '+e.message;return false}
  const m=r.test($('#tt').value);pr.className='pr '+(m?'ok':'no');pr.textContent=m?'Matches this title, so the badge will show.':'Does not match this title.';return true}
-['txt','sym','font','wt','sz','ls','fg','cs','bg1','bg2','gd','bc','bw','rd','sh'].forEach(id=>{$('#'+id).addEventListener('input',render);$('#'+id).addEventListener('change',render)});
+['txt','sym','font','wt','sz','ls','fg','cs','bg1','bg2','gd','bc','bw','rd','px','sh'].forEach(id=>{$('#'+id).addEventListener('input',render);$('#'+id).addEventListener('change',render)});
 ['pat','tt'].forEach(id=>$('#'+id).addEventListener('input',check));
 $('#txt').addEventListener('input',()=>{const n=$('#nm');if(!n.dataset.t){n.value=v('txt').slice(0,40)}});
 $('#nm').addEventListener('input',()=>{$('#nm').dataset.t=1});
-$('#pre').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;const p=PRE[+b.dataset.p];Object.keys(p).forEach(k=>{if(k!=='n')set(k,k==='sh'?p[k]:p[k])});render()};
+$('#pre').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;const p=PRE[+b.dataset.p];Object.keys(p).forEach(k=>{if(k!=='n')set(k,p[k])});render()};
 const blob=()=>new Promise(r=>$('#cv').toBlob(r,'image/png'));
 $('#dl').onclick=async()=>{const b=await blob();const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(($('#nm').value||'badge').trim().replace(/[^\w-]+/g,'-')||'badge')+'.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
 /* robot check, only when a Turnstile key is set in config.js */
