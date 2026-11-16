@@ -2,19 +2,36 @@
 (()=>{
 const $=s=>document.querySelector(s),H=240,MAXR=5.7,MINR=1.25;
 const FONTS=['Inter','Poppins','Montserrat','Rubik','Space Grotesk','Oswald','Barlow Condensed','Bebas Neue','Anton','Playfair Display','Roboto Mono'];
+const DEF={bg1:'#1f3a8a',bg2:'#1f3a8a',gd:'none',fg:'#ffffff',bc:'#ffffff',bw:0,px:72,rd:90,sh:0,tr:0,bgo:100,gl:0,tow:0,toc:'#000000'};
 const PRE=[
- {n:'Deep blue',bg1:'#1f3a8a',bg2:'#0b1d52',gd:'v',fg:'#ffffff',bc:'#ffffff',bw:0,px:72,rd:90,sh:1},
- {n:'Neon',bg1:'#0a0c10',bg2:'#0a0c10',gd:'none',fg:'#39ff88',bc:'#39ff88',bw:8,px:72,rd:90,sh:0},
- {n:'Light',bg1:'#ffffff',bg2:'#e6e9f0',gd:'v',fg:'#13161b',bc:'#c8ceda',bw:4,px:72,rd:90,sh:0},
- {n:'Sunset',bg1:'#ff512f',bg2:'#dd2476',gd:'h',fg:'#ffffff',bc:'#ffffff',bw:0,px:72,rd:90,sh:1},
- {n:'Gold',bg1:'#f7d36b',bg2:'#c58f1d',gd:'v',fg:'#2b1a00',bc:'#fff2b8',bw:6,px:72,rd:90,sh:0},
- {n:'Black and white',bg1:'#000000',bg2:'#000000',gd:'none',fg:'#ffffff',bc:'#ffffff',bw:6,px:72,rd:90,sh:0}
+ {n:'Glass',bg1:'#3d4f86',bg2:'#151a34',gd:'v',bc:'#ffffff',bw:3,gl:1,sh:1},
+ {n:'Solid blue',bg1:'#2563eb',sh:1},
+ {n:'Deep blue',bg1:'#1f3a8a',bg2:'#0b1d52',gd:'v',sh:1},
+ {n:'Light',bg1:'#ffffff',bg2:'#e6e9f0',gd:'v',fg:'#13161b',bc:'#c8ceda',bw:4},
+ {n:'Neon green',bg1:'#0a0c10',fg:'#39ff88',bc:'#39ff88',bw:8},
+ {n:'Neon pink',bg1:'#12081a',fg:'#ff4fd8',bc:'#ff4fd8',bw:8},
+ {n:'Frost',bg1:'#ffffff',bgo:22,bc:'#ffffff',bw:3,sh:1},
+ {n:'Minimal',bg1:'#14161b',fg:'#e6e9f0',bc:'#2b2f38',bw:4},
+ {n:'Black and white',bg1:'#000000',bc:'#ffffff',bw:6,rd:24},
+ {n:'White and black',bg1:'#ffffff',fg:'#000000',bc:'#000000',bw:6,rd:24},
+ {n:'Text white',tr:1,sh:1},
+ {n:'Text black',tr:1,fg:'#000000'},
+ {n:'Outline',tr:1,bc:'#ffffff',bw:8},
+ {n:'Comic text',tr:1,tow:7,toc:'#000000',sh:0},
+ {n:'Sunset',bg1:'#ff512f',bg2:'#dd2476',gd:'h',rd:90,sh:1},
+ {n:'Ocean',bg1:'#00c6ff',bg2:'#0072ff',gd:'h',sh:1},
+ {n:'Forest',bg1:'#11998e',bg2:'#38ef7d',gd:'h',fg:'#06231a'},
+ {n:'Purple',bg1:'#7f00ff',bg2:'#e100ff',gd:'h',gl:1,sh:1},
+ {n:'Red alert',bg1:'#ff1f1f',bg2:'#7a0000',gd:'v',gl:1,sh:1},
+ {n:'Gold',bg1:'#f7d36b',bg2:'#c58f1d',gd:'v',fg:'#2b1a00',bc:'#fff2b8',bw:6,rd:70},
+ {n:'Sticker',bg1:'#ffe14d',fg:'#111111',bc:'#111111',bw:8}
 ];
 const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2200)};
 const GR=(window.CAT?window.CAT.groups:[]).filter(g=>!['oneline','lang-code','lang-name'].includes(g.id)).map(g=>[g.id,g.name]).concat([['community','Other']]);
 $('#gp').innerHTML=GR.map(([i,n])=>`<option value="${i}">${n}</option>`).join('');
 $('#font').innerHTML=FONTS.map(f=>`<option value="${f}" style="font-family:'${f}'">${f}</option>`).join('');
-$('#pre').innerHTML=PRE.map((p,i)=>`<button class="b2 sm" data-p="${i}">${p.n}</button>`).join('');
+const pf=p=>({...DEF,...p});
+$('#pre').innerHTML=PRE.map((p,i)=>{const q=pf(p),bgc=q.tr?'transparent':(q.gd==='none'?q.bg1:`linear-gradient(${q.gd==='h'?'90deg':'180deg'},${q.bg1},${q.bg2})`);return `<button class="b2 sm" data-p="${i}" style="background:${q.tr?'#4a4e57':bgc};opacity:1;color:${q.fg};border:${Math.min(q.bw,3)||1}px solid ${q.bw?q.bc:'transparent'};-webkit-text-stroke:0">${p.n}</button>`}).join('');
 const v=id=>{const e=$('#'+id);return e.type==='checkbox'?e.checked:e.value};
 const set=(id,x)=>{const e=$('#'+id);if(e.type==='checkbox')e.checked=!!x;else e.value=x};
 let cvW=0;
@@ -35,7 +52,8 @@ function draw(cv,o,scaleOut){
  ctx.beginPath();ctx.roundRect(ins,ins,W-bw,H-bw,Math.max(0,r-ins));
  let fill=o.bg1;
  if(o.gd!=='none'){const g=o.gd==='h'?ctx.createLinearGradient(0,0,W,0):o.gd==='v'?ctx.createLinearGradient(0,0,0,H):ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,o.bg1);g.addColorStop(1,o.bg2);fill=g}
- if(!o.tr){ctx.fillStyle=fill;ctx.fill()}
+ if(!o.tr){ctx.save();ctx.globalAlpha=o.bgo/100;ctx.fillStyle=fill;ctx.fill();ctx.restore()}
+ if(o.gl&&!o.tr){ctx.save();ctx.beginPath();ctx.roundRect(ins,ins,W-bw,H-bw,Math.max(0,r-ins));ctx.clip();const g2=ctx.createLinearGradient(0,0,0,H*0.6);g2.addColorStop(0,'rgba(255,255,255,.34)');g2.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=g2;ctx.fillRect(0,0,W,H*0.6);ctx.restore()}
  if(bw>0){ctx.lineWidth=bw;ctx.strokeStyle=o.bc;ctx.stroke()}
  ctx.font=`${o.wt} ${size}px ${fam}`;try{ctx.letterSpacing=o.ls+'px'}catch(e){}
  ctx.textBaseline='alphabetic';ctx.fillStyle=o.fg;
@@ -43,19 +61,20 @@ function draw(cv,o,scaleOut){
  const mt=ctx.measureText('H'),capH=mt.actualBoundingBoxAscent||size*0.7,y=H/2+capH/2;
  if(o.sh){ctx.shadowColor='rgba(0,0,0,.35)';ctx.shadowBlur=H*0.04;ctx.shadowOffsetY=H*0.02}
  let x=x0;
- if(o.sym){ctx.font=`400 ${size}px ${fam}`;try{ctx.letterSpacing='0px'}catch(e){}ctx.fillText(o.sym,x,y);x+=m.sw+m.gap;ctx.font=`${o.wt} ${size}px ${fam}`;try{ctx.letterSpacing=o.ls+'px'}catch(e){}}
+ if(o.sym){ctx.font=`400 ${size}px ${fam}`;try{ctx.letterSpacing='0px'}catch(e){}if(o.tow>0){ctx.lineJoin='round';ctx.lineWidth=o.tow*2;ctx.strokeStyle=o.toc;ctx.strokeText(o.sym,x,y)}ctx.fillText(o.sym,x,y);x+=m.sw+m.gap;ctx.font=`${o.wt} ${size}px ${fam}`;try{ctx.letterSpacing=o.ls+'px'}catch(e){}}
+ if(o.tow>0){ctx.lineJoin='round';ctx.lineWidth=o.tow*2;ctx.strokeStyle=o.toc;ctx.strokeText(txt,x,y)}
  ctx.fillText(txt,x,y);
  ctx.shadowColor='transparent';
  return{W,size}
 }
-const opts=()=>({txt:v('txt')||' ',sym:v('sym').trim(),font:v('font'),wt:v('wt'),sz:+v('sz'),ls:+v('ls'),fg:v('fg'),cs:v('cs'),bg1:v('bg1'),bg2:v('bg2'),gd:v('gd'),bc:v('bc'),bw:+v('bw'),rd:+v('rd'),px:+v('px'),sh:v('sh'),tr:v('tr')});
+const opts=()=>({txt:v('txt')||' ',sym:v('sym').trim(),font:v('font'),wt:v('wt'),sz:+v('sz'),ls:+v('ls'),fg:v('fg'),cs:v('cs'),bg1:v('bg1'),bg2:v('bg2'),gd:v('gd'),bc:v('bc'),bw:+v('bw'),rd:+v('rd'),px:+v('px'),sh:v('sh'),tr:v('tr'),bgo:+v('bgo'),gl:v('gl'),tow:+v('tow'),toc:v('toc')});
 let busy=0;
 async function render(){
  const o=opts();const my=++busy;
  try{await Promise.all([document.fonts.load(`${o.wt} 40px "${o.font}"`,o.txt),document.fonts.load(`400 40px "${o.font}"`,o.sym||'A')])}catch(e){}
  if(my!==busy)return;
  const cv=$('#cv'),r=draw(cv,o);
- $('#szv').textContent=o.sz;$('#lsv').textContent=o.ls;$('#bwv').textContent=o.bw;$('#rdv').textContent=o.rd;$('#pxv').textContent=o.px;
+ $('#szv').textContent=o.sz;$('#lsv').textContent=o.ls;$('#bwv').textContent=o.bw;$('#rdv').textContent=o.rd;$('#pxv').textContent=o.px;$('#bgov').textContent=o.bgo+'%';$('#towv').textContent=o.tow;
  const ratio=r.W/H;
  $('#meta').textContent=`${r.W} × ${H} px, width is ${ratio.toFixed(2)}× the height (Nuvio limit 5.75)`+(r.size<o.sz?'. The text was shrunk to fit.':'');
  cv.style.height='clamp(48px,18vw,96px)';
@@ -68,7 +87,7 @@ function check(){const p=$('#pat').value.trim(),pr=$('#pr');
  if(!p){pr.className='pr bad';pr.textContent='Add a pattern.';return false}
  let r;try{r=rx(p)}catch(e){pr.className='pr bad';pr.textContent='Not a valid pattern: '+e.message;return false}
  const m=r.test($('#tt').value);pr.className='pr '+(m?'ok':'no');pr.textContent=m?'Matches this title, so the badge will show.':'Does not match this title.';return true}
-['txt','sym','font','wt','sz','ls','fg','cs','bg1','bg2','gd','bc','bw','rd','px','sh','tr'].forEach(id=>{$('#'+id).addEventListener('input',render);$('#'+id).addEventListener('change',render)});
+['txt','sym','font','wt','sz','ls','fg','cs','bg1','bg2','gd','bc','bw','rd','px','sh','tr','bgo','gl','tow','toc'].forEach(id=>{$('#'+id).addEventListener('input',render);$('#'+id).addEventListener('change',render)});
 ['pat','tt'].forEach(id=>$('#'+id).addEventListener('input',check));
 $('#txt').addEventListener('input',()=>{const n=$('#nm');if(!n.dataset.t){n.value=v('txt').slice(0,40)}});
 $('#nm').addEventListener('input',()=>{$('#nm').dataset.t=1});
@@ -84,7 +103,7 @@ $('#base').onchange=()=>{const b=BASEOK.find(x=>x.id===$('#base').value);if(!b)r
  if([...$('#gp').options].some(o=>o.value===b.g))$('#gp').value=b.g;
  render();toast('Pattern copied from '+b.n)};
 $('#pxr').onclick=()=>{set('px',72);render()};
-$('#pre').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;const p=PRE[+b.dataset.p];Object.keys(p).forEach(k=>{if(k!=='n')set(k,p[k])});render()};
+$('#pre').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;const p=PRE[+b.dataset.p];const q=pf(p);Object.keys(DEF).forEach(k=>set(k,q[k]));render()};
 const blob=()=>new Promise(r=>$('#cv').toBlob(r,'image/png'));
 $('#dl').onclick=async()=>{const b=await blob();const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(($('#nm').value||'badge').trim().replace(/[^\w-]+/g,'-')||'badge')+'.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
 /* robot check, only when a Turnstile key is set in config.js */
