@@ -256,3 +256,8 @@ dialog::backdrop{background:#0009}
 .mi{background:#4a4e57;border-radius:8px;min-height:56px;display:grid;place-items:center;padding:6px}.mi img{height:36px;max-width:100%;object-fit:contain}
 .mn2{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cr-p h3 small{font-weight:400;color:var(--mute);font-size:12px;margin-left:4px}
+
+.warn{color:var(--warn);font-weight:600}
+.sw{display:flex;flex-wrap:wrap;gap:8px}.swb{width:34px;height:34px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0}
+.f input[type=file]{font:inherit;font-size:14px;width:100%}
+[hidden]{display:none!important}
