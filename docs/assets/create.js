@@ -59,8 +59,7 @@ async function render(){
  const ratio=r.W/H;
  $('#meta').textContent=`${r.W} × ${H} px, width is ${ratio.toFixed(2)}× the height (Nuvio limit 5.75)`+(r.size<o.sz?'. The text was shrunk to fit.':'');
  cv.style.height='clamp(48px,18vw,96px)';
- const mini=document.createElement('canvas');mini.width=cv.width;mini.height=cv.height;mini.getContext('2d').drawImage(cv,0,0);
- mini.style.cssText='height:16px;display:block;image-rendering:auto';$('#mini').replaceChildren(mini);
+
  check();
 }
 function flags(p){const m=/^\(\?([a-z]+)\)/.exec(p);let f='',b=p;if(m){b=p.slice(m[0].length);for(const c of m[1])if('ims'.includes(c)&&!f.includes(c))f+=c}return[b,f]}
@@ -73,6 +72,7 @@ function check(){const p=$('#pat').value.trim(),pr=$('#pr');
 ['pat','tt'].forEach(id=>$('#'+id).addEventListener('input',check));
 $('#txt').addEventListener('input',()=>{const n=$('#nm');if(!n.dataset.t){n.value=v('txt').slice(0,40)}});
 $('#nm').addEventListener('input',()=>{$('#nm').dataset.t=1});
+$('#pxr').onclick=()=>{set('px',72);render()};
 $('#pre').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;const p=PRE[+b.dataset.p];Object.keys(p).forEach(k=>{if(k!=='n')set(k,p[k])});render()};
 const blob=()=>new Promise(r=>$('#cv').toBlob(r,'image/png'));
 $('#dl').onclick=async()=>{const b=await blob();const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(($('#nm').value||'badge').trim().replace(/[^\w-]+/g,'-')||'badge')+'.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
