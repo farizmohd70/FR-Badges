@@ -225,3 +225,25 @@ dialog::backdrop{background:#0009}
 .cr-sticky 
 .f small{display:inline;margin-left:6px}
 .cr-pre .b2{min-height:44px;box-sizing:border-box;display:flex;align-items:center;line-height:1.15}
+/* styled dropdowns */
+.ui-native{position:absolute!important;opacity:0!important;pointer-events:none!important;width:1px!important;height:1px!important;overflow:hidden}
+.ui-sel{display:inline-flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;cursor:pointer;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font:inherit;min-width:0;max-width:100%}
+.ui-sel span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.ui-sel svg{flex:none;color:var(--mute);transition:transform .15s}
+.ui-sel[aria-expanded=true]{border-color:var(--ac)}.ui-sel[aria-expanded=true] svg{transform:rotate(180deg)}
+.ui-sel:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.ui-sel:disabled{opacity:.5;cursor:default}
+.cr-p .ui-sel,.f .ui-sel{width:100%}
+.ui-sel.ssel{background:var(--stage2);color:var(--stink);border-color:var(--stline);padding:6px 10px;font:500 13px var(--f-d)}
+.ui-back{position:fixed;inset:0;z-index:90}
+.ui-pop{position:fixed;z-index:91;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 40px rgba(0,0,0,.28);padding:6px;overflow-y:auto;overscroll-behavior:contain;outline:none}
+.ui-o{padding:11px 12px;border-radius:8px;cursor:pointer;font-size:15px;outline:none;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ui-o:hover,.ui-o:focus{background:color-mix(in srgb,var(--ac) 14%,transparent)}
+.ui-o.on{color:var(--ac);font-weight:700}.ui-o.on::after{content:"";width:6px;height:11px;border:solid currentColor;border-width:0 2px 2px 0;transform:rotate(45deg) translateY(-2px);flex:none}
+.ui-o.off{opacity:.4;cursor:default}
+.ui-gh{padding:10px 12px 4px;font-size:12px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.04em}
+.ui-sheet{left:0;right:0;bottom:0;top:auto;max-height:70vh;border-radius:18px 18px 0 0;padding:10px 10px calc(14px + env(safe-area-inset-bottom));animation:uis .18s ease-out}
+.ui-sheet::before{content:"";display:block;width:38px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 8px}
+.ui-sheet+*{}
+@keyframes uis{from{transform:translateY(30px);opacity:0}}
+@media (max-width:640px){.ui-back{background:rgba(0,0,0,.45)}}
