@@ -247,3 +247,12 @@ dialog::backdrop{background:#0009}
 .ui-sheet+*{}
 @keyframes uis{from{transform:translateY(30px);opacity:0}}
 @media (max-width:640px){.ui-back.dim{background:rgba(0,0,0,.45)}}
+
+.cr-tools{display:flex;gap:6px;flex-wrap:wrap}.cr-tools .b2{padding:6px 12px;font-size:13px}.cr-tools .b2:disabled{opacity:.4;cursor:default}
+.ln{font-size:13px;margin-top:6px;word-break:break-word}.ln.y{color:#43a047}.ln.n{color:var(--mute)}.ln b{display:inline-block;width:16px}
+.f textarea{width:100%}
+.mn{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.mc{border:1px solid var(--line);border-radius:10px;padding:10px;display:grid;gap:8px;background:var(--bg)}
+.mi{background:#4a4e57;border-radius:8px;min-height:56px;display:grid;place-items:center;padding:6px}.mi img{height:36px;max-width:100%;object-fit:contain}
+.mn2{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cr-p h3 small{font-weight:400;color:var(--mute);font-size:12px;margin-left:4px}
