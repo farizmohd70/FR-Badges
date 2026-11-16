@@ -17,6 +17,10 @@
  </div>
  <div class="cr-grid">
   <div class="cr-col">
+   <div class="cr-box"><h3 style="margin-top:0">Start from an existing badge</h3>
+    <p class="hint">Pick one of the badges in the pack to reuse its pattern, then give it your own look. Your badge goes in the same group.</p>
+    <input type="search" id="bq" placeholder="Search badges, like Atmos or 1080p" aria-label="Search badges">
+    <select id="base" aria-label="Existing badge"></select></div>
    <div class="cr-box"><h3 style="margin-top:0">Pattern</h3>
     <p class="hint">Nuvio shows the badge when this pattern matches a stream title. <code>(?i)</code> ignores capital letters.</p>
     <textarea id="pat" rows="3" spellcheck="false" autocapitalize="off" autocomplete="off">(?i)\bhello\b</textarea>
@@ -32,6 +36,7 @@
     <label>Text size <span id="szv"></span><input type="range" id="sz" min="60" max="170" value="120"></label>
     <label>Letter spacing <span id="lsv"></span><input type="range" id="ls" min="0" max="20" value="0"></label>
     <div class="cr-2"><label>Text colour<input type="color" id="fg" value="#ffffff"></label><label>Case<select id="cs"><option value="n">As typed</option><option value="u" selected>UPPERCASE</option></select></label></div>
+    <label class="cr-ck"><input type="checkbox" id="tr"> Transparent background (text only badge)</label>
     <div class="cr-2"><label>Background<input type="color" id="bg1" value="#1f3a8a"></label><label>Second colour<input type="color" id="bg2" value="#1f3a8a"></label></div>
     <label>Gradient<select id="gd"><option value="none">None (one colour)</option><option value="h">Left to right</option><option value="v">Top to bottom</option><option value="d">Diagonal</option></select></label>
     <div class="cr-2"><label>Border colour<input type="color" id="bc" value="#ffffff"></label><label>Border width <span id="bwv"></span><input type="range" id="bw" min="0" max="14" value="0"></label></div>

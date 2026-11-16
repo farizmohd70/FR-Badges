@@ -35,7 +35,7 @@ function draw(cv,o,scaleOut){
  ctx.beginPath();ctx.roundRect(ins,ins,W-bw,H-bw,Math.max(0,r-ins));
  let fill=o.bg1;
  if(o.gd!=='none'){const g=o.gd==='h'?ctx.createLinearGradient(0,0,W,0):o.gd==='v'?ctx.createLinearGradient(0,0,0,H):ctx.createLinearGradient(0,0,W,H);g.addColorStop(0,o.bg1);g.addColorStop(1,o.bg2);fill=g}
- ctx.fillStyle=fill;ctx.fill();
+ if(!o.tr){ctx.fillStyle=fill;ctx.fill()}
  if(bw>0){ctx.lineWidth=bw;ctx.strokeStyle=o.bc;ctx.stroke()}
  ctx.font=`${o.wt} ${size}px ${fam}`;try{ctx.letterSpacing=o.ls+'px'}catch(e){}
  ctx.textBaseline='alphabetic';ctx.fillStyle=o.fg;
@@ -48,7 +48,7 @@ function draw(cv,o,scaleOut){
  ctx.shadowColor='transparent';
  return{W,size}
 }
-const opts=()=>({txt:v('txt')||' ',sym:v('sym').trim(),font:v('font'),wt:v('wt'),sz:+v('sz'),ls:+v('ls'),fg:v('fg'),cs:v('cs'),bg1:v('bg1'),bg2:v('bg2'),gd:v('gd'),bc:v('bc'),bw:+v('bw'),rd:+v('rd'),px:+v('px'),sh:v('sh')});
+const opts=()=>({txt:v('txt')||' ',sym:v('sym').trim(),font:v('font'),wt:v('wt'),sz:+v('sz'),ls:+v('ls'),fg:v('fg'),cs:v('cs'),bg1:v('bg1'),bg2:v('bg2'),gd:v('gd'),bc:v('bc'),bw:+v('bw'),rd:+v('rd'),px:+v('px'),sh:v('sh'),tr:v('tr')});
 let busy=0;
 async function render(){
  const o=opts();const my=++busy;
@@ -68,10 +68,21 @@ function check(){const p=$('#pat').value.trim(),pr=$('#pr');
  if(!p){pr.className='pr bad';pr.textContent='Add a pattern.';return false}
  let r;try{r=rx(p)}catch(e){pr.className='pr bad';pr.textContent='Not a valid pattern: '+e.message;return false}
  const m=r.test($('#tt').value);pr.className='pr '+(m?'ok':'no');pr.textContent=m?'Matches this title, so the badge will show.':'Does not match this title.';return true}
-['txt','sym','font','wt','sz','ls','fg','cs','bg1','bg2','gd','bc','bw','rd','px','sh'].forEach(id=>{$('#'+id).addEventListener('input',render);$('#'+id).addEventListener('change',render)});
+['txt','sym','font','wt','sz','ls','fg','cs','bg1','bg2','gd','bc','bw','rd','px','sh','tr'].forEach(id=>{$('#'+id).addEventListener('input',render);$('#'+id).addEventListener('change',render)});
 ['pat','tt'].forEach(id=>$('#'+id).addEventListener('input',check));
 $('#txt').addEventListener('input',()=>{const n=$('#nm');if(!n.dataset.t){n.value=v('txt').slice(0,40)}});
 $('#nm').addEventListener('input',()=>{$('#nm').dataset.t=1});
+/* start from an existing badge */
+const BASEOK=(window.CAT?window.CAT.badges:[]).filter(b=>!['oneline','lang-code','lang-name'].includes(b.g));
+const GNAME={};(window.CAT?window.CAT.groups:[]).forEach(g=>GNAME[g.id]=g.name);
+function fillBase(){const q=$('#bq').value.trim().toLowerCase();const by={};
+ BASEOK.filter(b=>!q||(b.n+' '+b.id).toLowerCase().includes(q)).forEach(b=>(by[b.g]=by[b.g]||[]).push(b));
+ $('#base').innerHTML='<option value="">'+(Object.keys(by).length?'Choose a badge...':'Nothing found')+'</option>'+Object.keys(by).map(g=>`<optgroup label="${(GNAME[g]||g).replace(/"/g,'')}">${by[g].map(b=>`<option value="${b.id}">${b.n.replace(/[<&]/g,'')}</option>`).join('')}</optgroup>`).join('')}
+$('#bq').oninput=fillBase;fillBase();
+$('#base').onchange=()=>{const b=BASEOK.find(x=>x.id===$('#base').value);if(!b)return;
+ $('#pat').value=b.p;set('txt',b.n.slice(0,24));$('#nm').value=(b.n+' (my style)').slice(0,40);$('#nm').dataset.t=1;
+ if([...$('#gp').options].some(o=>o.value===b.g))$('#gp').value=b.g;
+ render();toast('Pattern copied from '+b.n)};
 $('#pxr').onclick=()=>{set('px',72);render()};
 $('#pre').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;const p=PRE[+b.dataset.p];Object.keys(p).forEach(k=>{if(k!=='n')set(k,p[k])});render()};
 const blob=()=>new Promise(r=>$('#cv').toBlob(r,'image/png'));
