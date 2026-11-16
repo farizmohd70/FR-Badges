@@ -40,7 +40,7 @@ function comHtml(){const l=comAll();if(!l.length)return `<div class="empty">${CO
  return `<p class="hint">Badges shared by other people. <a href="community">See them all</a> or <a href="create">make your own</a>. They are added to the end of your pack.</p><div class="grid">${l.map(b=>`<button class="tile ${S.com[b.id]?'on':''}" data-com="${b.id}"><div class="im" style="background:#4a4e57"><img src="${P.comUrl(b.id)}" alt="" loading="lazy" style="max-height:30px;max-width:90%"></div><div class="n">${esc(b.n)}</div></button>`).join('')}</div>`}
 function v2(){const oc=document.getElementById('chips');if(oc)chipX=oc.scrollLeft;const oy=window.scrollY;const counts={};P.CAT.badges.forEach(b=>{if(S.sel.has(b.id))counts[b.g]=(counts[b.g]||0)+1});
  $('#view').innerHTML=`<h2>Choose your badges</h2><p class="sub">Tap a badge to add it. Tap again to remove it.</p>
- <div id="big"></div><div class="bar"><input type="search" id="q" placeholder="Search, like 4K or Atmos" value="${esc(q)}"><button class="b2" id="all">Pick all shown</button><button class="b2" id="none">Clear shown</button></div>
+ <div id="big"></div><div class="bar"><input type="search" id="q" placeholder="Search, like 4K or Atmos" value="${esc(q)}"><button class="b2" id="all">Pick all shown</button><button class="b2" id="none">Clear shown</button><a class="b2" href="create" style="text-decoration:none;display:inline-flex;align-items:center">Create your own badge</a></div>
  <div class="chips" id="chips"></div><div id="grid"></div>`;
  const ch=[['all','All']].concat(P.CAT.groups.map(g=>[g.id,g.name]),[['community','Community made']]);
  counts.community=P.comCount();
