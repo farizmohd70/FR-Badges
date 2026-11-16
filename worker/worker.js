@@ -238,7 +238,7 @@ export default {
     }
     if (req.method === 'OPTIONS') return new Response(null, { headers: HEAD });
     const m = /^\/p\/([A-Za-z0-9_-]+)(?:\.json)?$/.exec(url.pathname);
-    if (!m) return new Response('FR Badges pack links. Make one at https://farizmohd70.github.io/FR-Badges/make.html', { headers: { 'content-type': 'text/plain; charset=utf-8' } });
+    if (!m) return new Response('FR Badges pack links. Make one at https://farizmohd70.github.io/FR-Badges/make', { headers: { 'content-type': 'text/plain; charset=utf-8' } });
     try {
       await loadStyles();
       const items = await resolveCode(m[1]);

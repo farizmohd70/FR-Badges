@@ -11,14 +11,14 @@
 
 <div class="w">
  <div class="top"><a class="logo" href="#top"><i></i>FR Badges</a>
-  <nav><a href="#looks">Looks</a><a href="#whats-in-it">What's in it</a><a href="#how">How it works</a><a href="community.html">Community made</a><a class="keep" href="https://github.com/farizmohd70/FR-Badges" target="_blank" rel="noopener">GitHub</a></nav></div>
+  <nav><a href="#looks">Looks</a><a href="#whats-in-it">What's in it</a><a href="#how">How it works</a><a href="community">Community made</a><a class="keep" href="https://github.com/farizmohd70/FR-Badges" target="_blank" rel="noopener">GitHub</a></nav></div>
 </div>
 
 <div class="w" id="top"><div class="hero">
  <div>
   <h1>Read every stream at a glance.</h1>
   <p class="lede">Release names like <code style="font-family:var(--f-m);font-size:.88em">2160p.REMUX.DV.Atmos</code> are hard to scan. FR Badges turns them into small, clear badges inside Nuvio, so you pick the right stream in a second.</p>
-  <div class="cta"><a class="btn p" href="make.html">Make your pack</a><a class="btn" href="https://github.com/farizmohd70/FR-Badges" target="_blank" rel="noopener">View on GitHub</a></div>
+  <div class="cta"><a class="btn p" href="make">Make your pack</a><a class="btn" href="https://github.com/farizmohd70/FR-Badges" target="_blank" rel="noopener">View on GitHub</a></div>
   <ul class="facts"><li><b>731</b>badges</li><li><b>14</b>looks</li><li><b>Free</b>and open source</li></ul>
  </div>
  <div>
@@ -56,14 +56,14 @@
 
 <div class="w"><section id="community">
  <h2>Community made</h2>
- <p class="sec-l">Badges made and shared by other people. Add them to your pack, or <a href="create.html">make one of your own</a>: pick the font, size and colours, test the pattern, and share it.</p>
+ <p class="sec-l">Badges made and shared by other people. Add them to your pack, or <a href="create">make one of your own</a>: pick the font, size and colours, test the pattern, and share it.</p>
  <div class="cm-grid" id="cmhome"></div>
- <div class="cta" style="margin-top:14px"><a class="btn p" href="community.html">See all community badges</a><a class="btn" href="create.html">Make a badge</a></div>
+ <div class="cta" style="margin-top:14px"><a class="btn p" href="community">See all community badges</a><a class="btn" href="create">Make a badge</a></div>
 </section></div>
 
 <div class="w"><div class="end">
  <div><h2>Start with the Lite pack.</h2><p>290 badges that cover what most people want. Build your own when you are ready.</p></div>
- <div class="cta"><a class="btn p" href="make.html">Make your pack</a><a class="btn" href="https://github.com/farizmohd70/FR-Badges" target="_blank" rel="noopener">Get the files</a></div>
+ <div class="cta"><a class="btn p" href="make">Make your pack</a><a class="btn" href="https://github.com/farizmohd70/FR-Badges" target="_blank" rel="noopener">Get the files</a></div>
 </div>
 <footer><span>FR Badges</span><span>Not affiliated with Nuvio.</span><a href="https://github.com/farizmohd70/FR-Badges" target="_blank" rel="noopener">github.com/farizmohd70/FR-Badges</a></footer></div>
 
@@ -74,5 +74,5 @@
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 fetch(B+'index.json').then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){var l=(j.badges||[]).filter(function(b){return /^[0-9a-f]{12}$/.test(b.id)}).slice(0,6);
 if(!l.length){L.innerHTML='<p class="hint">No badges yet. Be the first to make one.</p>';return}
-L.innerHTML=l.map(function(b){return '<a class="cm-card" href="community.html" style="text-decoration:none;color:inherit"><div class="im"><img loading="lazy" src="'+B+'badges/'+b.id+'.png" alt="'+esc(b.n)+'"></div><div class="n">'+esc(b.n)+'</div></a>'}).join('')}).catch(function(){L.innerHTML='<p class="hint">The community list could not be loaded right now.</p>'})})();</script>
+L.innerHTML=l.map(function(b){return '<a class="cm-card" href="community" style="text-decoration:none;color:inherit"><div class="im"><img loading="lazy" src="'+B+'badges/'+b.id+'.png" alt="'+esc(b.n)+'"></div><div class="n">'+esc(b.n)+'</div></a>'}).join('')}).catch(function(){L.innerHTML='<p class="hint">The community list could not be loaded right now.</p>'})})();</script>
 </body></html>

@@ -78,7 +78,7 @@ const blob=()=>new Promise(r=>$('#cv').toBlob(r,'image/png'));
 $('#dl').onclick=async()=>{const b=await blob();const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(($('#nm').value||'badge').trim().replace(/[^\w-]+/g,'-')||'badge')+'.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
 /* robot check, only when a Turnstile key is set in config.js */
 let tsTok='';
-if(window.FR_TURNSTILE){const s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';s.async=true;s.onload=()=>{window.turnstile.render('#ts',{sitekey:window.FR_TURNSTILE,callback:t=>tsTok=t,'expired-callback':()=>tsTok=''})};document.head.appendChild(s)}
+if(window.FR_TURNSTILE){const s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';s.async=true;s.onload=()=>{window.turnstile.render('#ts',{sitekey:window.FR_TURNSTILE,callback:t=>{tsTok=t;const r=$('#res');if(r&&r.textContent.startsWith('Robot check'))r.hidden=true},'expired-callback':()=>tsTok='','error-callback':code=>{tsTok='';const r=$('#res');r.hidden=false;r.className='pr bad';r.textContent='Robot check problem (code '+code+'). Check that farizmohd70.github.io is listed as a hostname in the Turnstile widget, turn off any blocker for this page, then reload.';return true}})};document.head.appendChild(s)}
 const b64=async b=>{const u=new Uint8Array(await b.arrayBuffer());let s='';for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode(...u.subarray(i,i+8192));return btoa(s)};
 $('#sub').onclick=async()=>{
  const res=$('#res');res.hidden=false;
@@ -92,7 +92,7 @@ $('#sub').onclick=async()=>{
   const b=await blob();if(b.size>90000)throw new Error('The image is too big. Use a smaller size or fewer effects.');
   const r=await fetch(window.FR_WORKER.replace(/\/$/,'')+'/submit',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({n:name,p:pat,g:$('#gp').value,png:await b64(b),ts:tsTok})});
   const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Could not share the badge.');
-  res.className='pr ok';res.innerHTML='Shared. It can take a few minutes to show on the Community made page. <button class="b2 sm" id="addm">Add to my pack</button> <a class="b2 sm" href="community.html" style="text-decoration:none">See community</a>';
+  res.className='pr ok';res.innerHTML='Shared. It can take a few minutes to show on the Community made page. <button class="b2 sm" id="addm">Add to my pack</button> <a class="b2 sm" href="community" style="text-decoration:none">See community</a>';
   $('#addm').onclick=()=>{try{const l=JSON.parse(localStorage.getItem('fr_com_pick')||'[]');if(!l.some(x=>x.id===j.id))l.push({id:j.id,n:j.n,p:j.p,g:j.g});localStorage.setItem('fr_com_pick',JSON.stringify(l));toast('Added. Open Make a pack to see it.')}catch(e){toast('Could not save in this browser')}};
  }catch(e){res.className='pr bad';res.textContent=e.message||'Could not share the badge.'}
  $('#sub').disabled=false;
