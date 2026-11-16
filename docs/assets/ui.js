@@ -5,15 +5,16 @@ let open=null,pop=null,back=null;
 function label(sel){const o=sel.options[sel.selectedIndex];return o?o.textContent:''}
 function sync(sel){const b=sel._ui;if(!b)return;b.firstChild.textContent=label(sel);b.disabled=sel.disabled}
 function close(){if(!open)return;open.b.setAttribute('aria-expanded','false');pop&&pop.remove();back&&back.remove();pop=back=null;const b=open.b;open=null;try{b.focus({preventScroll:true})}catch(e){}}
+function sheetMode(sel){return innerWidth<=640&&!!sel.closest('[data-p=looks],[data-p=share]')}
 function place(){if(!open)return;const r=open.b.getBoundingClientRect(),vh=innerHeight;
- if(innerWidth<=640){pop.className='ui-pop ui-sheet';pop.style.cssText='';return}
+ if(sheetMode(open.sel)){pop.className='ui-pop ui-sheet';pop.style.cssText='';return}
  pop.className='ui-pop';const h=Math.min(pop.scrollHeight,Math.round(vh*.5)),below=vh-r.bottom,up=below<h+16&&r.top>below;
  pop.style.cssText='left:'+Math.max(8,Math.min(r.left,innerWidth-Math.max(r.width,200)-8))+'px;min-width:'+r.width+'px;max-height:'+Math.min(h,Math.round(vh*.5))+'px;'+(up?'bottom:'+(vh-r.top+6)+'px':'top:'+(r.bottom+6)+'px')}
 function pick(sel,i){if(sel.selectedIndex!==i){sel.selectedIndex=i;sel.dispatchEvent(new Event('input',{bubbles:true}));sel.dispatchEvent(new Event('change',{bubbles:true}))}sync(sel);close()}
 function show(sel){
  if(open){const same=open.sel===sel;close();if(same)return}
  const b=sel._ui;b.setAttribute('aria-expanded','true');
- back=document.createElement('div');back.className='ui-back';back.onclick=close;document.body.appendChild(back);
+ back=document.createElement('div');back.className='ui-back'+(sheetMode(sel)?' dim':'');back.onclick=close;document.body.appendChild(back);
  pop=document.createElement('div');pop.className='ui-pop';pop.setAttribute('role','listbox');pop.tabIndex=-1;
  let html='',n=0;
  [...sel.children].forEach(c=>{

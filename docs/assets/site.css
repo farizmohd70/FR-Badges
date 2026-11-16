@@ -246,4 +246,4 @@ dialog::backdrop{background:#0009}
 .ui-sheet::before{content:"";display:block;width:38px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 8px}
 .ui-sheet+*{}
 @keyframes uis{from{transform:translateY(30px);opacity:0}}
-@media (max-width:640px){.ui-back{background:rgba(0,0,0,.45)}}
+@media (max-width:640px){.ui-back.dim{background:rgba(0,0,0,.45)}}
