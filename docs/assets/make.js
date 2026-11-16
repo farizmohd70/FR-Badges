@@ -14,7 +14,7 @@ function renderSteps(){$('#steps').innerHTML=STEPS.map((s,i)=>`<button class="${
  $('#next').textContent=['Next: choose badges','Next: set the order','Next: get my pack'][step]||'';
  $('#undo').disabled=!P.canUndo();stat()}
 function stat(){const bg=$('#big');if(bg)bg.innerHTML=S.sel.size>200?'<div class="warn"><span>You picked '+S.sel.size+' badges. With more than 200, streams will take longer to load.</span></div>':'';
- $('#stat').textContent=S.sel.size+' badge'+(S.sel.size===1?'':'s')+' picked'}
+ {const n=S.sel.size+P.comCount();$('#stat').textContent=n+' badge'+(n===1?'':'s')+' picked'}}
 function go(n){step=n;scrollTo(0,0);render()}
 function render(){renderSteps();[v1,v2,v3,v4][step]();stat()}
 
@@ -33,24 +33,35 @@ function v1(){const ids=demoIds();
  document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const n=P.preset(b.dataset.p);P.toast(n+' badges picked');go(1)})}
 
 /* 2 badges */
-let chipX=0;
+let chipX=0,COM=null,COMERR=false;
+function loadCom(){COM=[];fetch((window.FR_COMMUNITY||'')+'index.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(j=>{COM=(j.badges||[]).filter(b=>/^[0-9a-f]{12}$/.test(b.id));if(step===1&&grp==='community')v2()}).catch(()=>{COMERR=true;if(step===1&&grp==='community')v2()})}
+function comAll(){const l=(COM||[]).slice();Object.entries(S.com).forEach(([id,m])=>{if(!l.some(b=>b.id===id))l.unshift({id,n:m.n,p:m.p})});const qq=q.trim().toLowerCase();return qq?l.filter(b=>(b.n+' '+b.p).toLowerCase().includes(qq)):l}
+function comHtml(){const l=comAll();if(!l.length)return `<div class="empty">${COM===null?'Loading community badges...':COMERR?'The community list could not be loaded right now.':'No community badges yet. <a href="create.html">Make the first one.</a>'}</div>`;
+ return `<p class="hint">Badges shared by other people. <a href="community.html">See them all</a> or <a href="create.html">make your own</a>. They are added to the end of your pack.</p><div class="grid">${l.map(b=>`<button class="tile ${S.com[b.id]?'on':''}" data-com="${b.id}"><div class="im" style="background:#4a4e57"><img src="${P.comUrl(b.id)}" alt="" loading="lazy" style="max-height:30px;max-width:90%"></div><div class="n">${esc(b.n)}</div></button>`).join('')}</div>`}
+function comBlock(){const ids=Object.keys(S.com);if(!ids.length)return;
+ $('#view').insertAdjacentHTML('beforeend',`<div class="grp"><div class="gh"><span class="dot" style="background:#7E57C2"></span>Community made<span class="c">${ids.length}</span></div><p class="hint" style="padding:0 12px">Added at the end of your pack.</p>${ids.map(id=>`<div class="rw"><div class="row"><div class="im" style="background:#4a4e57"><img src="${P.comUrl(id)}" alt="" style="max-height:30px;max-width:90%"></div><div class="n">${esc(S.com[id].n)}</div><button class="ib" data-cr="${id}" aria-label="Remove">✕</button></div></div>`).join('')}</div>`);
+ document.querySelectorAll('[data-cr]').forEach(b=>b.onclick=()=>{const y=scrollY;P.toggleCom(b.dataset.cr);scrollTo(0,y)})}
 function v2(){const oc=document.getElementById('chips');if(oc)chipX=oc.scrollLeft;const oy=window.scrollY;const counts={};P.CAT.badges.forEach(b=>{if(S.sel.has(b.id))counts[b.g]=(counts[b.g]||0)+1});
  $('#view').innerHTML=`<h2>Choose your badges</h2><p class="sub">Tap a badge to add it. Tap again to remove it.</p>
  <div id="big"></div><div class="bar"><input type="search" id="q" placeholder="Search, like 4K or Atmos" value="${esc(q)}"><button class="b2" id="all">Pick all shown</button><button class="b2" id="none">Clear shown</button></div>
  <div class="chips" id="chips"></div><div id="grid"></div>`;
- const ch=[['all','All']].concat(P.CAT.groups.map(g=>[g.id,g.name]));
+ const ch=[['all','All']].concat(P.CAT.groups.map(g=>[g.id,g.name]),[['community','Community made']]);
+ counts.community=P.comCount();
  $('#chips').innerHTML=ch.map(([id,n])=>`<button class="chip ${grp===id?'on':''}" data-g="${id}">${esc(n)}${id==='all'?'':`<i>${counts[id]||0}</i>`}</button>`).join('');
  $('#chips').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{grp=b.dataset.g;v2()});
  {const c=$('#chips');c.scrollLeft=chipX;const on=c.querySelector('.chip.on');if(on){const l=on.offsetLeft-c.offsetLeft,r=l+on.offsetWidth;if(l<c.scrollLeft)c.scrollLeft=l-8;else if(r>c.scrollLeft+c.clientWidth)c.scrollLeft=r-c.clientWidth+8}window.scrollTo(0,oy)}
  const list=()=>P.filter(q,{group:grp});
  const tile=b=>`<button class="tile ${S.sel.has(b.id)?'on':''}" data-id="${b.id}"><div class="im" style="background:${P.bgOf(b.id)}">${P.img(b.id)}</div><div class="n">${esc(b.n)}</div></button>`;
  const draw=()=>{const l=list();let h='';
-  if(!l.length)h='<div class="empty">Nothing found. Try a different word.</div>';
+  if(grp==='community'){h=comHtml()}
+  else if(!l.length)h='<div class="empty">Nothing found. Try a different word.</div>';
   else if(grp!=='all')h=`<div class="grid">${l.map(tile).join('')}</div>`;
   else P.CAT.groups.forEach(g=>{const gl=l.filter(b=>b.g===g.id);if(!gl.length)return;
    h+=`<div class="sec" data-sec="${g.id}"><div class="sh"><span class="dot" style="background:${g.color}"></span><b>${esc(g.name)}</b><span class="c"></span><button class="lnk" data-pa="${g.id}">Pick all</button><button class="lnk" data-pc="${g.id}">Clear</button></div><div class="grid">${gl.map(tile).join('')}</div></div>`});
   $('#grid').innerHTML=h;
-  $('#grid').querySelectorAll('.tile').forEach(t=>t.onclick=()=>P.toggle(t.dataset.id));
+  $('#grid').querySelectorAll('.tile[data-id]').forEach(t=>t.onclick=()=>P.toggle(t.dataset.id));
+  $('#grid').querySelectorAll('.tile[data-com]').forEach(t=>t.onclick=()=>{const id=t.dataset.com,b=comAll().find(x=>x.id===id);P.toggleCom(id,b)});
+  if(grp==='community'&&COM===null)loadCom();
   const ids=g=>[...$('#grid').querySelectorAll('[data-sec="'+g+'"] .tile')].map(t=>t.dataset.id);
   $('#grid').querySelectorAll('[data-pa]').forEach(x=>x.onclick=()=>P.setMany(ids(x.dataset.pa),true));
   $('#grid').querySelectorAll('[data-pc]').forEach(x=>x.onclick=()=>P.setMany(ids(x.dataset.pc),false));
@@ -77,12 +88,13 @@ function peBind(){if(!editing)return;const id=editing,pt=$('#pt'),pq=$('#pq'),pr
  $('#pz').onclick=()=>{pt.value=P.byId[id].p;upd()};
  $('#px').onclick=()=>{const y=scrollY;editing=null;v3();scrollTo(0,y)}}
 function v3(){const act=P.activeGroups();
- if(!act.length){$('#view').innerHTML=`<h2>Set the order</h2><p class="sub">You have not picked any badges yet.</p><button class="b2 pri" id="g2">Choose badges</button>`;$('#g2').onclick=()=>go(1);return}
+ if(!act.length&&!P.comCount()){$('#view').innerHTML=`<h2>Set the order</h2><p class="sub">You have not picked any badges yet.</p><button class="b2 pri" id="g2">Choose badges</button>`;$('#g2').onclick=()=>go(1);return}
  $('#view').innerHTML=`<h2>Set the order</h2><p class="sub">Nuvio shows badges in this order, top to bottom. Use the arrows to move things.</p>
  <div id="big"></div>
  <div class="bar"><button class="b2 sm" id="rst">Reset order</button>${Object.keys(S.over).length?'<button class="b2 sm" id="rso">Use one style for all</button>':''}</div>
  ${act.map((g,gi)=>{const ids=P.groupSel(g),c=P.gInfo[g];return`<div class="grp"><div class="gh"><span class="dot" style="background:${c.color}"></span>${esc(c.name)}<span class="c">${ids.length}</span><button class="ib" data-gm="${g}" data-d="-1" aria-label="Move group up" ${gi===0?'disabled':''}>↑</button><button class="ib" data-gm="${g}" data-d="1" aria-label="Move group down" ${gi===act.length-1?'disabled':''}>↓</button></div>
  ${ids.map((id,i)=>`<div class="rw"><div class="row"><div class="im" style="background:${P.bgOf(id)}">${P.img(id)}</div><div class="n">${esc(P.byId[id].n)}${S.pat[id]!=null?' <span class="ed">edited</span>':''}</div><select class="sty" data-so="${id}" aria-label="Style">${P.STYLES.map(x=>`<option value="${x.id}" ${P.styleOf(id)===x.id?'selected':''}>${x.name}</option>`).join('')}</select><button class="ib" data-bm="${id}" data-d="-1" aria-label="Move up" ${i===0?'disabled':''}>↑</button><button class="ib" data-bm="${id}" data-d="1" aria-label="Move down" ${i===ids.length-1?'disabled':''}>↓</button><button class="ib${S.pat[id]!=null?' on':''}" data-pe="${id}" aria-label="Edit pattern" title="Edit pattern">{}</button><button class="ib" data-rm="${id}" aria-label="Remove">✕</button></div>${editing===id?peHtml(id):''}</div>`).join('')}</div>`}).join('')}`;
+  comBlock();
   const mv=(fn)=>{const y=scrollY;fn();scrollTo(0,y)};
  document.querySelectorAll('[data-gm]').forEach(b=>b.onclick=()=>mv(()=>P.moveGroup(b.dataset.gm,+b.dataset.d)));
  document.querySelectorAll('[data-bm]').forEach(b=>b.onclick=()=>mv(()=>P.moveBadge(b.dataset.bm,+b.dataset.d)));
@@ -96,7 +108,7 @@ function v3(){const act=P.activeGroups();
 
 /* 4 get */
 function v4(){const kb=(P.bytes()/1024).toFixed(0);
- $('#view').innerHTML=`<h2>Your pack is ready</h2><p class="sub">${S.sel.size} badges, ${kb} KB.</p>
+ $('#view').innerHTML=`<h2>Your pack is ready</h2><p class="sub">${S.sel.size+P.comCount()} badges, ${kb} KB.</p>
  <div class="two"><div>
   <h3 style="margin-top:0">Name</h3><input type="text" id="nm" value="${esc(S.name)}" style="width:100%" maxlength="40">
   <h3>Copy your link</h3><div class="linkbox"><input type="text" readonly value="Making your link..." id="lk" aria-label="Pack link"><button class="b2 pri" id="cp">Copy</button></div>
@@ -122,8 +134,8 @@ $('#back').onclick=()=>go(step-1);$('#next').onclick=()=>go(step+1);
 $('#undo').onclick=()=>P.undo();
 $('#helpB').onclick=()=>$('#help').showModal();$('#helpX').onclick=()=>$('#help').close();
 P.on(why=>{renderSteps();
- if(why==='sel'&&step===1){document.querySelectorAll('.tile').forEach(t=>t.classList.toggle('on',S.sel.has(t.dataset.id)));secCounts();
-  const c={};P.CAT.badges.forEach(b=>{if(S.sel.has(b.id))c[b.g]=(c[b.g]||0)+1});document.querySelectorAll('.chip[data-g]').forEach(x=>{const i=x.querySelector('i');if(i&&x.dataset.g!=='all')i.textContent=c[x.dataset.g]||0});return}
+ if(why==='sel'&&step===1){document.querySelectorAll('.tile[data-id]').forEach(t=>t.classList.toggle('on',S.sel.has(t.dataset.id)));document.querySelectorAll('.tile[data-com]').forEach(t=>t.classList.toggle('on',!!S.com[t.dataset.com]));{const cc=document.querySelector('.chip[data-g="community"] i');if(cc)cc.textContent=P.comCount()}secCounts();
+  const c={};P.CAT.badges.forEach(b=>{if(S.sel.has(b.id))c[b.g]=(c[b.g]||0)+1});document.querySelectorAll('.chip[data-g]').forEach(x=>{const i=x.querySelector('i');if(i&&x.dataset.g!=='all'&&x.dataset.g!=='community')i.textContent=c[x.dataset.g]||0});return}
  if(why==='name'||why==='saved'||why==='samples')return;
  [v1,v2,v3,v4][step]();stat()});
 P.init();render();

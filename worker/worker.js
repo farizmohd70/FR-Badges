@@ -4,6 +4,15 @@
 // The catalog below only ever grows at the end, so old links keep working.
 
 const RAW = 'https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/';
+
+// Community made badges. They are stored in their own repo, and people add them from the site.
+// Settings (Cloudflare worker, Settings, Variables and Secrets):
+//   GITHUB_TOKEN     (secret, needed to accept new badges) a token that can write to the community repo only
+//   TURNSTILE_SECRET (secret, optional) turns on the "I am not a robot" check
+//   SUBMIT_OFF       (optional) set to 1 to stop accepting new badges
+const C_OWNER = 'farizmohd70', C_REPO = 'FR-Badges-Community';
+const C_RAW = 'https://raw.githubusercontent.com/' + C_OWNER + '/' + C_REPO + '/main/';
+const SITE_ORIGINS = ['https://farizmohd70.github.io', 'http://localhost:8123', 'http://127.0.0.1:8123'];
 // Built-in copy of the style folders. The live list is read from docs/assets/styles.js in your repo,
 // so a new style only needs a new line there (and its folder). This copy is the fallback.
 let STYLES = ["Badges", "Badges-Neon", "Badges-Solid", "Badges-Light", "Badges-Icon-Dark", "Badges-Split", "Badges-Frost", "Badges-Neon-Icon", "Badges-Minimal", "Badges-Icon-Light", "Badges-Black-White", "Badges-White-Black", "Badges-Text-White", "Badges-Text-Black"];
@@ -23,6 +32,7 @@ const CAT = {"groups":[{"id":"hero","name":"Hero Badges","color":"#FFD700","bord
 const byId = {}, gInfo = {};
 CAT.groups.forEach(g => (gInfo[g.id] = g));
 CAT.badges.forEach(b => (byId[b.id] = b));
+gInfo.community = { id: 'community', name: 'Community made', color: '#7E57C2', border: '#4527A0' };
 
 const HEAD = {
   'content-type': 'application/json; charset=utf-8',
@@ -86,8 +96,14 @@ async function resolveCode(code) {
   let j;
   try { j = JSON.parse(new TextDecoder().decode(await inflate(code.slice(1)))); } catch (e) { return null; }
   if (!j || typeof j.c !== 'string' || j.c[0] === 'x') return null;
-  const items = await resolveCode(j.c);
+  const items = j.c ? await resolveCode(j.c) : [];
   if (!items) return null;
+  if (Array.isArray(j.u)) {
+    for (const u of j.u.slice(0, 200)) {
+      if (!Array.isArray(u) || !/^[0-9a-f]{12}$/.test(u[0]) || typeof u[1] !== 'string' || typeof u[2] !== 'string' || !u[2] || u[2].length > 1500) continue;
+      items.push({ b: { id: 'com-' + u[0], g: 'community', n: u[1].slice(0, 60), p: u[2], f: '' }, style: 0, url: C_RAW + 'badges/' + u[0] + '.png' });
+    }
+  }
   const pats = j.p && typeof j.p === 'object' ? j.p : {};
   let n = 0;
   return items.map(it => {
@@ -124,9 +140,9 @@ function manifest(items) {
   const groups = [];
   items.forEach(({ b }) => { if (!groups.includes(b.g)) groups.push(b.g); });
   return {
-    filters: items.map(({ b, style, pat }) => ({
+    filters: items.map(({ b, style, pat, url }) => ({
       id: b.id, groupId: b.g, name: b.n, pattern: pat || b.p,
-      imageURL: RAW + STYLES[style] + '/' + b.f,
+      imageURL: url || RAW + STYLES[style] + '/' + b.f,
       tagColor: '#00000000', borderColor: '#00000000', textColor: '#00000000',
       tagStyle: 'filled and bordered', isEnabled: true, type: 'filter',
     })),
@@ -137,10 +153,72 @@ function manifest(items) {
   };
 }
 
+// ---- community submissions ----
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const hex = buf => [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, '0')).join('');
+const cors = req => {
+  const o = req.headers.get('origin') || '';
+  return {
+    'access-control-allow-origin': SITE_ORIGINS.includes(o) ? o : SITE_ORIGINS[0],
+    'access-control-allow-methods': 'POST, OPTIONS', 'access-control-allow-headers': 'content-type', 'vary': 'origin',
+  };
+};
+const jres = (obj, status, req) => new Response(JSON.stringify(obj), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...cors(req) } });
+const gh = (env, path, init = {}) => fetch('https://api.github.com/repos/' + C_OWNER + '/' + C_REPO + path, {
+  ...init, headers: { authorization: 'Bearer ' + env.GITHUB_TOKEN, accept: 'application/vnd.github+json', 'user-agent': 'fr-badges-worker', 'x-github-api-version': '2022-11-28', ...(init.headers || {}) },
+});
+const toB64 = bytes => { let s = ''; for (let i = 0; i < bytes.length; i += 8192) s += String.fromCharCode(...bytes.subarray(i, i + 8192)); return btoa(s); };
+
+async function submit(req, env) {
+  if (!env.GITHUB_TOKEN) return jres({ error: 'Sharing is not switched on yet.' }, 503, req);
+  if (env.SUBMIT_OFF) return jres({ error: 'Sharing is paused for now.' }, 503, req);
+  if (!SITE_ORIGINS.includes(req.headers.get('origin') || '')) return jres({ error: 'Not allowed from this site.' }, 403, req);
+  let j; try { j = await req.json(); } catch (e) { return jres({ error: 'Bad request.' }, 400, req); }
+  const name = typeof j.n === 'string' ? j.n.trim() : '', pat = typeof j.p === 'string' ? j.p.trim() : '';
+  if (!name || name.length > 40) return jres({ error: 'Give the badge a name of up to 40 letters.' }, 400, req);
+  if (!pat || pat.length > 1000) return jres({ error: 'The pattern is empty or too long.' }, 400, req);
+  if (/[<>]/.test(name)) return jres({ error: 'The name has characters that are not allowed.' }, 400, req);
+  if (env.TURNSTILE_SECRET) {
+    const f = new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: String(j.ts || ''), remoteip: req.headers.get('cf-connecting-ip') || '' });
+    const v = await (await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: f })).json();
+    if (!v.success) return jres({ error: 'The robot check failed. Please try again.' }, 403, req);
+  }
+  let png; try { png = b64d(String(j.png || '')); } catch (e) { return jres({ error: 'The image is not valid.' }, 400, req); }
+  if (png.length < 100 || png.length > 90000) return jres({ error: 'The image is too big. Keep it under 90 KB.' }, 400, req);
+  const sig = [137, 80, 78, 71, 13, 10, 26, 10];
+  if (!sig.every((x, i) => png[i] === x)) return jres({ error: 'The image must be a PNG.' }, 400, req);
+  const dv = new DataView(png.buffer, png.byteOffset), w = dv.getUint32(16), h = dv.getUint32(20);
+  if (h < 64 || h > 512 || w < 32 || w / h > 5.75) return jres({ error: 'The image size is outside what Nuvio shows well (height 64 to 512, width at most 5.75 times the height).' }, 400, req);
+  const id = hex(await crypto.subtle.digest('SHA-256', png)).slice(0, 12);
+
+  // 1) the image (if it exists already, that is fine)
+  const put = await gh(env, '/contents/badges/' + id + '.png', { method: 'PUT', body: JSON.stringify({ message: 'Add community badge ' + id, content: toB64(png) }) });
+  if (!put.ok && put.status !== 422) return jres({ error: 'Could not save the badge. Try again in a minute.' }, 502, req);
+  // 2) the list (retry if two people add at the same moment)
+  for (let t = 0; t < 4; t++) {
+    const cur = await gh(env, '/contents/index.json');
+    if (!cur.ok) return jres({ error: 'Could not save the badge. Try again in a minute.' }, 502, req);
+    const meta = await cur.json();
+    let list; try { list = JSON.parse(new TextDecoder().decode(b64d(meta.content.replace(/\n/g, '')))); } catch (e) { return jres({ error: 'The community list is damaged.' }, 502, req); }
+    if (list.badges.some(b => b.id === id)) return jres({ id, url: C_RAW + 'badges/' + id + '.png', n: name, p: pat, existed: true }, 200, req);
+    if (list.badges.length >= 3000) return jres({ error: 'The community list is full.' }, 503, req);
+    list.badges.unshift({ id, n: name, p: pat, t: Math.floor(Date.now() / 1000), w, h });
+    const up = await gh(env, '/contents/index.json', { method: 'PUT', body: JSON.stringify({ message: 'List community badge ' + id, sha: meta.sha, content: toB64(new TextEncoder().encode(JSON.stringify(list))) }) });
+    if (up.ok) return jres({ id, url: C_RAW + 'badges/' + id + '.png', n: name, p: pat }, 200, req);
+    if (up.status !== 409 && up.status !== 422) break;
+  }
+  return jres({ error: 'Could not save the badge. Try again in a minute.' }, 502, req);
+}
+
 export default {
-  async fetch(req) {
-    if (req.method === 'OPTIONS') return new Response(null, { headers: HEAD });
+  async fetch(req, env) {
     const url = new URL(req.url);
+    if (url.pathname === '/submit') {
+      if (req.method === 'OPTIONS') return new Response(null, { headers: cors(req) });
+      if (req.method !== 'POST') return jres({ error: 'Use POST.' }, 405, req);
+      try { return await submit(req, env || {}); } catch (e) { return jres({ error: 'Something went wrong.' }, 500, req); }
+    }
+    if (req.method === 'OPTIONS') return new Response(null, { headers: HEAD });
     const m = /^\/p\/([A-Za-z0-9_-]+)(?:\.json)?$/.exec(url.pathname);
     if (!m) return new Response('FR Badges pack links. Make one at https://farizmohd70.github.io/FR-Badges/make.html', { headers: { 'content-type': 'text/plain; charset=utf-8' } });
     try {

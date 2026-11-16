@@ -28,7 +28,7 @@ const PRESETS={
  empty:{name:'Blank',desc:'Start from nothing',ids:()=>[]}
 };
 ['indian','audiophile','streaming','picture','theater','cinephile'].forEach(k=>{const f=PRESETS[k].ids;PRESETS[k].ids=()=>nodup(f())});
-const S={name:'My FR Pack',style:'glass',sel:new Set(),over:{},pat:{},gord:CAT.groups.map(g=>g.id),bord:{},bg:'dark'};
+const S={name:'My FR Pack',style:'glass',sel:new Set(),over:{},pat:{},com:{},gord:CAT.groups.map(g=>g.id),bord:{},bg:'dark'};
 CAT.groups.forEach(g=>S.bord[g.id]=byGroup[g.id].map(b=>b.id));
 const SAMPLES=[
  'Night.Harbor.2024.2160p.UHD.BluRay.REMUX.DV.HDR10+.HEVC.TrueHD.Atmos.7.1-GRP',
@@ -40,8 +40,8 @@ const SAMPLES=[
 ];
 const P={CAT,S,STYLES,PRESETS,byId,byGroup,gInfo,samples:SAMPLES.slice(),badRe,RAW};
 let undo=[],redo=[],subs=[],busy=false;
-const snap=()=>JSON.stringify({name:S.name,style:S.style,sel:[...S.sel],over:S.over,pat:S.pat,gord:S.gord,bord:S.bord});
-const restore=s=>{const o=JSON.parse(s);S.name=o.name;S.style=o.style;S.sel=new Set(o.sel);S.over=o.over;S.pat=o.pat||{};S.gord=o.gord;S.bord=o.bord};
+const snap=()=>JSON.stringify({name:S.name,style:S.style,sel:[...S.sel],over:S.over,pat:S.pat,com:S.com,gord:S.gord,bord:S.bord});
+const restore=s=>{const o=JSON.parse(s);S.name=o.name;S.style=o.style;S.sel=new Set(o.sel);S.over=o.over;S.pat=o.pat||{};S.com=o.com||{};S.gord=o.gord;S.bord=o.bord};
 P.on=f=>subs.push(f);
 function emit(why){subs.forEach(f=>{try{f(why)}catch(e){console.error(e)}});syncHash()}
 const FAM={};CAT.badges.forEach(b=>{const m=/^(.+)-(1l|code|name)$/.exec(b.id);if(m&&byId[m[1]]&&['oneline','lang-code','lang-name'].includes(b.g)){(FAM[m[1]]=FAM[m[1]]||[m[1]]).push(b.id)}});
@@ -76,9 +76,12 @@ P.moveGroup=(g,dir)=>P.commit(()=>{const a=S.gord,act=P.activeGroups(),k=act.ind
 P.dropBadge=(id,beforeId)=>P.commit(()=>{if(id===beforeId||byId[id].g!==byId[beforeId].g)return;const a=S.bord[byId[id].g];a.splice(a.indexOf(id),1);a.splice(a.indexOf(beforeId),0,id)},'order');
 P.dropGroup=(g,beforeG)=>P.commit(()=>{if(g===beforeG)return;const a=S.gord;a.splice(a.indexOf(g),1);a.splice(a.indexOf(beforeG),0,g)},'order');
 P.resetOrder=()=>P.commit(()=>{S.gord=CAT.groups.map(g=>g.id);CAT.groups.forEach(g=>S.bord[g.id]=byGroup[g.id].map(b=>b.id))},'order');
-P.manifest=()=>{const bs=P.ordered(),gs=P.activeGroups();
- return{filters:bs.map(b=>({id:b.id,groupId:b.g,name:b.n,pattern:P.pat(b.id),imageURL:P.rawUrl(b.id),tagColor:'#00000000',borderColor:'#00000000',textColor:'#00000000',tagStyle:'filled and bordered',isEnabled:true,type:'filter'})),
- groups:gs.map(g=>({id:g,name:gInfo[g].name,color:gInfo[g].color,borderColor:gInfo[g].border||gInfo[g].color,isExpanded:true}))}};
+P.manifest=()=>{const bs=P.ordered(),gs=P.activeGroups(),cm=Object.entries(S.com);
+ return{filters:bs.map(b=>({id:b.id,groupId:b.g,name:b.n,pattern:P.pat(b.id),imageURL:P.rawUrl(b.id),tagColor:'#00000000',borderColor:'#00000000',textColor:'#00000000',tagStyle:'filled and bordered',isEnabled:true,type:'filter'})).concat(cm.map(([id,m])=>({id:'com-'+id,groupId:'community',name:m.n,pattern:m.p,imageURL:P.comUrl(id),tagColor:'#00000000',borderColor:'#00000000',textColor:'#00000000',tagStyle:'filled and bordered',isEnabled:true,type:'filter'}))),
+ groups:gs.map(g=>({id:g,name:gInfo[g].name,color:gInfo[g].color,borderColor:gInfo[g].border||gInfo[g].color,isExpanded:true})).concat(cm.length?[{id:'community',name:'Community made',color:'#7E57C2',borderColor:'#4527A0',isExpanded:true}]:[])}};
+P.comUrl=id=>(window.FR_COMMUNITY||'')+'badges/'+id+'.png';
+P.toggleCom=(id,m)=>P.commit(()=>{if(S.com[id])delete S.com[id];else if(m)S.com[id]={n:m.n,p:m.p}},'sel');
+P.comCount=()=>Object.keys(S.com).length;
 P.manifestText=()=>JSON.stringify(P.manifest(),null,2);
 P.bytes=()=>new Blob([JSON.stringify(P.manifest())]).size;
 /* share code: pk-<style index>-<hex bitmask over catalog order> */
@@ -147,8 +150,8 @@ const baseCode=async()=>{if(isDefaultOrder()){const r=rangesCode(),m='m'+P.code(
  const raw=[];n.forEach(v=>{while(v>=128){raw.push(v&127|128);v>>=7}raw.push(v)});
  const cs=new CompressionStream('deflate-raw'),w=cs.writable.getWriter();w.write(new Uint8Array(raw));w.close();
  return'o'+b64(new Uint8Array(await new Response(cs.readable).arrayBuffer()))};
-P.packCode=async()=>{const base=await baseCode();const pat={};let n=0;S.sel.forEach(id=>{if(S.pat[id]!=null){pat[id]=S.pat[id];n++}});if(!n)return base;
- const raw=new TextEncoder().encode(JSON.stringify({c:base,p:pat}));const cs=new CompressionStream('deflate-raw'),w=cs.writable.getWriter();w.write(raw);w.close();
+P.packCode=async()=>{const nc=P.comCount();const base=S.sel.size?await baseCode():'';const pat={};let n=0;S.sel.forEach(id=>{if(S.pat[id]!=null){pat[id]=S.pat[id];n++}});if(!n&&!nc)return base;
+ const raw=new TextEncoder().encode(JSON.stringify({c:base,p:pat,u:Object.entries(S.com).map(([id,m])=>[id,m.n,m.p])}));const cs=new CompressionStream('deflate-raw'),w=cs.writable.getWriter();w.write(raw);w.close();
  return'x'+b64(new Uint8Array(await new Response(cs.readable).arrayBuffer()))};
 P.packUrl=async()=>(window.FR_WORKER||'').replace(/\/$/,'')+'/p/'+await P.packCode()+'.json';
 /* utils */
@@ -161,7 +164,8 @@ P.liteSet=new Set(CAT.lite);
 /* hash sync (plain #name only) */
 let ht;function syncHash(){clearTimeout(ht);ht=setTimeout(()=>{try{const c=P.code();if(location.hash.slice(1)!==c){busy=true;history.replaceState(null,'','#'+c);setTimeout(()=>busy=false,50)}}catch(e){}},400)}
 window.addEventListener('hashchange',()=>{if(busy)return;if(P.loadCode(location.hash))P.toast('Loaded pack from link')});
-P.init=()=>{if(!P.loadCode(location.hash))P.preset('essentials');undo=[];redo=[];emit('all')};
+P.init=()=>{if(!P.loadCode(location.hash))P.preset('essentials');
+ try{const l=JSON.parse(localStorage.getItem('fr_com_pick')||'[]');l.forEach(x=>{if(/^[0-9a-f]{12}$/.test(x.id)&&x.n&&x.p)S.com[x.id]={n:String(x.n).slice(0,60),p:String(x.p).slice(0,1500)}})}catch(e){}undo=[];redo=[];emit('all')};
 window.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&e.key==='z'&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();P.undo()}if((e.ctrlKey||e.metaKey)&&(e.key==='y'||(e.shiftKey&&e.key==='z'))&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();P.redo()}});
 window.P=P;
 })();
