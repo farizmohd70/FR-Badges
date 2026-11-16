@@ -5,6 +5,7 @@ const RAW='https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/';
 const STYLES=window.STYLES_DATA;
 const byId={},byGroup={},gInfo={};
 CAT.groups.forEach(g=>{gInfo[g.id]=g;byGroup[g.id]=[]});
+gInfo.community={id:'community',name:'Community made',color:'#7E57C2',border:'#4527A0'};
 function flags(p){const m=/^\(\?([a-z]+)\)/.exec(p);let f='',b=p;if(m){b=p.slice(m[0].length);for(const c of m[1])if('ims'.includes(c)&&!f.includes(c))f+=c}return[b,f]}
 let badRe=0;
 CAT.badges.forEach((b,i)=>{b.i=i;byId[b.id]=b;byGroup[b.g].push(b);const[bd,f]=flags(b.p);b.re=null;
@@ -41,19 +42,29 @@ const SAMPLES=[
 const P={CAT,S,STYLES,PRESETS,byId,byGroup,gInfo,samples:SAMPLES.slice(),badRe,RAW};
 let undo=[],redo=[],subs=[],busy=false;
 const snap=()=>JSON.stringify({name:S.name,style:S.style,sel:[...S.sel],over:S.over,pat:S.pat,com:S.com,gord:S.gord,bord:S.bord});
-const restore=s=>{const o=JSON.parse(s);S.name=o.name;S.style=o.style;S.sel=new Set(o.sel);S.over=o.over;S.pat=o.pat||{};S.com=o.com||{};S.gord=o.gord;S.bord=o.bord};
+const compile=p=>{const[bd,f]=flags(p);try{return new RegExp(bd,f)}catch(e){try{return new RegExp(bd,f+'u')}catch(e2){return null}}};
+const okGroup=g=>CAT.groups.some(x=>x.id===g)&&!['oneline','lang-code','lang-name'].includes(g)?g:'community';
+const ensureGroup=g=>{if(!S.bord[g])S.bord[g]=[];if(!S.gord.includes(g))S.gord.push(g)};
+function syncCom(){const keep=new Set();
+ Object.entries(S.com).forEach(([id,m])=>{const k='com-'+id;keep.add(k);m.g=okGroup(m.g);ensureGroup(m.g);
+  byId[k]={id:k,g:m.g,n:m.n,p:m.p,f:'',_com:id,re:compile(m.p)};S.sel.add(k);
+  Object.keys(S.bord).forEach(g=>{if(g!==m.g){const i=S.bord[g].indexOf(k);if(i>=0)S.bord[g].splice(i,1)}});
+  if(!S.bord[m.g].includes(k))S.bord[m.g].push(k)});
+ [...S.sel].forEach(k=>{if(k.startsWith('com-')&&!keep.has(k))S.sel.delete(k)});
+ Object.keys(S.bord).forEach(g=>{S.bord[g]=S.bord[g].filter(k=>!k.startsWith('com-')||keep.has(k))})}
+const restore=s=>{const o=JSON.parse(s);S.name=o.name;S.style=o.style;S.sel=new Set(o.sel);S.over=o.over;S.pat=o.pat||{};S.com=o.com||{};S.gord=o.gord;S.bord=o.bord;syncCom()};
 P.on=f=>subs.push(f);
 function emit(why){subs.forEach(f=>{try{f(why)}catch(e){console.error(e)}});syncHash()}
 const FAM={};CAT.badges.forEach(b=>{const m=/^(.+)-(1l|code|name)$/.exec(b.id);if(m&&byId[m[1]]&&['oneline','lang-code','lang-name'].includes(b.g)){(FAM[m[1]]=FAM[m[1]]||[m[1]]).push(b.id)}});
 const famOf={};Object.values(FAM).forEach(a=>a.forEach(i=>famOf[i]=a));
 const ORD={};CAT.badges.forEach((b,i)=>ORD[b.id]=i);
 function oneOfEach(before){const seen=new Set(),swaps=[];[...S.sel].forEach(id=>{const f=famOf[id];if(!f||seen.has(f))return;seen.add(f);const on=f.filter(x=>S.sel.has(x));if(on.length<2)return;const nw=on.filter(x=>!before.has(x));const pool=nw.length?nw:on;const keep=pool.sort((x,y)=>ORD[x]-ORD[y])[0];on.forEach(x=>{if(x!==keep){S.sel.delete(x);if(before.has(x))swaps.push([x,keep])}})});if(swaps.length&&P.toast)P.toast(swaps.length>1?'Swapped '+swaps.length+' badges for their other version (one version of each)':'Swapped '+byId[swaps[0][0]].n+' for '+byId[swaps[0][1]].n+' (one version of each)')}
-P.commit=(fn,why)=>{const a=snap(),before=new Set(S.sel);fn();oneOfEach(before);if(snap()!==a){undo.push(a);if(undo.length>100)undo.shift();redo=[]}emit(why||'sel')};
+P.commit=(fn,why)=>{const a=snap(),before=new Set(S.sel);fn();syncCom();oneOfEach(before);if(snap()!==a){undo.push(a);if(undo.length>100)undo.shift();redo=[]}emit(why||'sel')};
 P.undo=()=>{if(!undo.length)return false;redo.push(snap());restore(undo.pop());emit('all');return true};
 P.redo=()=>{if(!redo.length)return false;undo.push(snap());restore(redo.pop());emit('all');return true};
 P.canUndo=()=>undo.length>0;P.canRedo=()=>redo.length>0;
-P.toggle=id=>P.commit(()=>{S.sel.has(id)?S.sel.delete(id):S.sel.add(id)});
-P.setMany=(ids,on)=>P.commit(()=>ids.forEach(i=>on?S.sel.add(i):S.sel.delete(i)));
+P.toggle=id=>{if(id.startsWith('com-')){P.toggleCom(id.slice(4));return}P.commit(()=>{S.sel.has(id)?S.sel.delete(id):S.sel.add(id)})};
+P.setMany=(ids,on)=>P.commit(()=>ids.forEach(i=>{if(i.startsWith('com-')){if(!on)delete S.com[i.slice(4)];return}on?S.sel.add(i):S.sel.delete(i)}));
 P.invert=ids=>P.commit(()=>ids.forEach(i=>S.sel.has(i)?S.sel.delete(i):S.sel.add(i)));
 P.preset=k=>{const ids=PRESETS[k].ids();P.commit(()=>{S.sel=new Set(ids)},'all');return ids.length};
 P.setStyle=s=>P.commit(()=>{S.style=s},'style');
@@ -65,7 +76,7 @@ const cache={};
 P.src=(id,style)=>P.rawUrl(id,style);
 P.img=(id,cls,style)=>`<img class="${cls||''}" alt="${esc(byId[id].n)}" src="${P.src(id,style)}" draggable="false">`;
 P.bgCol=sid=>'#4a4e57';P.bgOf=id=>P.bgCol(P.styleOf(id));
-P.rawUrl=(id,style)=>RAW+STYLES.find(s=>s.id===(style||P.styleOf(id))).folder+'/'+byId[id].f;
+P.rawUrl=(id,style)=>byId[id]._com?P.comUrl(byId[id]._com):RAW+STYLES.find(s=>s.id===(style||P.styleOf(id))).folder+'/'+byId[id].f;
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 P.esc=esc;
 P.ordered=()=>{const o=[];S.gord.forEach(g=>S.bord[g].forEach(id=>{if(S.sel.has(id))o.push(byId[id])}));return o};
@@ -76,11 +87,13 @@ P.moveGroup=(g,dir)=>P.commit(()=>{const a=S.gord,act=P.activeGroups(),k=act.ind
 P.dropBadge=(id,beforeId)=>P.commit(()=>{if(id===beforeId||byId[id].g!==byId[beforeId].g)return;const a=S.bord[byId[id].g];a.splice(a.indexOf(id),1);a.splice(a.indexOf(beforeId),0,id)},'order');
 P.dropGroup=(g,beforeG)=>P.commit(()=>{if(g===beforeG)return;const a=S.gord;a.splice(a.indexOf(g),1);a.splice(a.indexOf(beforeG),0,g)},'order');
 P.resetOrder=()=>P.commit(()=>{S.gord=CAT.groups.map(g=>g.id);CAT.groups.forEach(g=>S.bord[g.id]=byGroup[g.id].map(b=>b.id))},'order');
-P.manifest=()=>{const bs=P.ordered(),gs=P.activeGroups(),cm=Object.entries(S.com);
- return{filters:bs.map(b=>({id:b.id,groupId:b.g,name:b.n,pattern:P.pat(b.id),imageURL:P.rawUrl(b.id),tagColor:'#00000000',borderColor:'#00000000',textColor:'#00000000',tagStyle:'filled and bordered',isEnabled:true,type:'filter'})).concat(cm.map(([id,m])=>({id:'com-'+id,groupId:'community',name:m.n,pattern:m.p,imageURL:P.comUrl(id),tagColor:'#00000000',borderColor:'#00000000',textColor:'#00000000',tagStyle:'filled and bordered',isEnabled:true,type:'filter'}))),
- groups:gs.map(g=>({id:g,name:gInfo[g].name,color:gInfo[g].color,borderColor:gInfo[g].border||gInfo[g].color,isExpanded:true})).concat(cm.length?[{id:'community',name:'Community made',color:'#7E57C2',borderColor:'#4527A0',isExpanded:true}]:[])}};
+P.manifest=()=>{const bs=P.ordered(),gs=P.activeGroups();
+ return{filters:bs.map(b=>({id:b.id,groupId:b.g,name:b.n,pattern:P.pat(b.id),imageURL:P.rawUrl(b.id),tagColor:'#00000000',borderColor:'#00000000',textColor:'#00000000',tagStyle:'filled and bordered',isEnabled:true,type:'filter'})),
+ groups:gs.map(g=>({id:g,name:gInfo[g].name,color:gInfo[g].color,borderColor:gInfo[g].border||gInfo[g].color,isExpanded:true}))}};
 P.comUrl=id=>(window.FR_COMMUNITY||'')+'badges/'+id+'.png';
-P.toggleCom=(id,m)=>P.commit(()=>{if(S.com[id])delete S.com[id];else if(m)S.com[id]={n:m.n,p:m.p}},'sel');
+P.toggleCom=(id,m)=>P.commit(()=>{if(S.com[id])delete S.com[id];else if(m)S.com[id]={n:m.n,p:m.p,g:okGroup(m.g)}},'sel');
+P.setComGroup=(id,g)=>P.commit(()=>{if(S.com[id])S.com[id].g=okGroup(g)},'order');
+P.comGroups=()=>CAT.groups.filter(g=>okGroup(g.id)===g.id).map(g=>[g.id,g.name]).concat([['community','Community made']]);
 P.comCount=()=>Object.keys(S.com).length;
 P.manifestText=()=>JSON.stringify(P.manifest(),null,2);
 P.bytes=()=>new Blob([JSON.stringify(P.manifest())]).size;
@@ -142,16 +155,16 @@ P.delSaved=n=>{try{localStorage.setItem(LK,JSON.stringify(P.saved().filter(x=>x.
 P.openSaved=n=>{const x=P.saved().find(y=>y.name===n);if(!x)return;P.loadCode(x.code);S.name=n;emit('name')};
 /* worker url (demo) */
 const b64=u=>btoa(String.fromCharCode(...u)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-const isDefaultOrder=()=>{if(Object.keys(S.over).length)return false;const def=[];CAT.groups.forEach(g=>byGroup[g.id].forEach(b=>{if(S.sel.has(b.id))def.push(b.id)}));const cur=P.ordered().map(b=>b.id);return def.length===cur.length&&def.every((x,i)=>x===cur[i])};
+const isDefaultOrder=()=>{if(Object.keys(S.over).length)return false;const def=[];CAT.groups.forEach(g=>byGroup[g.id].forEach(b=>{if(S.sel.has(b.id))def.push(b.id)}));const cur=P.ordered().filter(b=>!b._com).map(b=>b.id);return def.length===cur.length&&def.every((x,i)=>x===cur[i])};
 const rangesCode=()=>{const idx=[];CAT.badges.forEach((b,i)=>{if(S.sel.has(b.id))idx.push(i)});const v=[],put=x=>{while(x>=128){v.push(x&127|128);x>>=7}v.push(x)};let last=0,k=0;while(k<idx.length){let a=idx[k],z=a;while(k+1<idx.length&&idx[k+1]===z+1){z++;k++}k++;put(a-last);put(z-a);last=z}return'r'+STYLES.findIndex(s=>s.id===S.style)+'-'+b64(new Uint8Array(v))};
 P.rangesCode=rangesCode;
 const baseCode=async()=>{if(isDefaultOrder()){const r=rangesCode(),m='m'+P.code().slice(3);return r.length<m.length?r:m}
- const sx=s=>STYLES.findIndex(x=>x.id===s),n=[sx(S.style)];P.ordered().forEach(b=>{const o=S.over[b.id];n.push(b.i*32+(o?sx(o)+1:0))});
+ const sx=s=>STYLES.findIndex(x=>x.id===s),n=[sx(S.style)];P.ordered().filter(b=>!b._com).forEach(b=>{const o=S.over[b.id];n.push(b.i*32+(o?sx(o)+1:0))});
  const raw=[];n.forEach(v=>{while(v>=128){raw.push(v&127|128);v>>=7}raw.push(v)});
  const cs=new CompressionStream('deflate-raw'),w=cs.writable.getWriter();w.write(new Uint8Array(raw));w.close();
  return'o'+b64(new Uint8Array(await new Response(cs.readable).arrayBuffer()))};
-P.packCode=async()=>{const nc=P.comCount();const base=S.sel.size?await baseCode():'';const pat={};let n=0;S.sel.forEach(id=>{if(S.pat[id]!=null){pat[id]=S.pat[id];n++}});if(!n&&!nc)return base;
- const raw=new TextEncoder().encode(JSON.stringify({c:base,p:pat,u:Object.entries(S.com).map(([id,m])=>[id,m.n,m.p])}));const cs=new CompressionStream('deflate-raw'),w=cs.writable.getWriter();w.write(raw);w.close();
+P.packCode=async()=>{const nc=P.comCount();const base=P.ordered().some(b=>!b._com)?await baseCode():'';const pat={};let n=0;S.sel.forEach(id=>{if(S.pat[id]!=null&&!id.startsWith('com-')){pat[id]=S.pat[id];n++}});if(!n&&!nc)return base;
+ const raw=new TextEncoder().encode(JSON.stringify({c:base,p:pat,u:Object.entries(S.com).map(([id,m])=>[id,m.n,P.pat('com-'+id),m.g,S.bord[m.g].filter(k=>S.sel.has(k)).indexOf('com-'+id)])}));const cs=new CompressionStream('deflate-raw'),w=cs.writable.getWriter();w.write(raw);w.close();
  return'x'+b64(new Uint8Array(await new Response(cs.readable).arrayBuffer()))};
 P.packUrl=async()=>(window.FR_WORKER||'').replace(/\/$/,'')+'/p/'+await P.packCode()+'.json';
 /* utils */
@@ -165,7 +178,8 @@ P.liteSet=new Set(CAT.lite);
 let ht;function syncHash(){clearTimeout(ht);ht=setTimeout(()=>{try{const c=P.code();if(location.hash.slice(1)!==c){busy=true;history.replaceState(null,'','#'+c);setTimeout(()=>busy=false,50)}}catch(e){}},400)}
 window.addEventListener('hashchange',()=>{if(busy)return;if(P.loadCode(location.hash))P.toast('Loaded pack from link')});
 P.init=()=>{if(!P.loadCode(location.hash))P.preset('essentials');
- try{const l=JSON.parse(localStorage.getItem('fr_com_pick')||'[]');l.forEach(x=>{if(/^[0-9a-f]{12}$/.test(x.id)&&x.n&&x.p)S.com[x.id]={n:String(x.n).slice(0,60),p:String(x.p).slice(0,1500)}})}catch(e){}undo=[];redo=[];emit('all')};
+ try{const l=JSON.parse(localStorage.getItem('fr_com_pick')||'[]');l.forEach(x=>{if(/^[0-9a-f]{12}$/.test(x.id)&&x.n&&x.p)S.com[x.id]={n:String(x.n).slice(0,60),p:String(x.p).slice(0,1500),g:x.g}})}catch(e){}
+ syncCom();undo=[];redo=[];emit('all')};
 window.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&e.key==='z'&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();P.undo()}if((e.ctrlKey||e.metaKey)&&(e.key==='y'||(e.shiftKey&&e.key==='z'))&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();P.redo()}});
 window.P=P;
 })();

@@ -11,6 +11,8 @@ const PRE=[
  {n:'Black and white',bg1:'#000000',bg2:'#000000',gd:'none',fg:'#ffffff',bc:'#ffffff',bw:6,rd:24,sh:0}
 ];
 const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2200)};
+const GR=(window.CAT?window.CAT.groups:[]).filter(g=>!['oneline','lang-code','lang-name'].includes(g.id)).map(g=>[g.id,g.name]).concat([['community','Other']]);
+$('#gp').innerHTML=GR.map(([i,n])=>`<option value="${i}">${n}</option>`).join('');
 $('#font').innerHTML=FONTS.map(f=>`<option value="${f}" style="font-family:'${f}'">${f}</option>`).join('');
 $('#pre').innerHTML=PRE.map((p,i)=>`<button class="b2 sm" data-p="${i}">${p.n}</button>`).join('');
 const v=id=>{const e=$('#'+id);return e.type==='checkbox'?e.checked:e.value};
@@ -88,10 +90,10 @@ $('#sub').onclick=async()=>{
  $('#sub').disabled=true;res.className='pr no';res.textContent='Sharing...';
  try{
   const b=await blob();if(b.size>90000)throw new Error('The image is too big. Use a smaller size or fewer effects.');
-  const r=await fetch(window.FR_WORKER.replace(/\/$/,'')+'/submit',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({n:name,p:pat,png:await b64(b),ts:tsTok})});
+  const r=await fetch(window.FR_WORKER.replace(/\/$/,'')+'/submit',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({n:name,p:pat,g:$('#gp').value,png:await b64(b),ts:tsTok})});
   const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Could not share the badge.');
   res.className='pr ok';res.innerHTML='Shared. It can take a few minutes to show on the Community made page. <button class="b2 sm" id="addm">Add to my pack</button> <a class="b2 sm" href="community.html" style="text-decoration:none">See community</a>';
-  $('#addm').onclick=()=>{try{const l=JSON.parse(localStorage.getItem('fr_com_pick')||'[]');if(!l.some(x=>x.id===j.id))l.push({id:j.id,n:j.n,p:j.p});localStorage.setItem('fr_com_pick',JSON.stringify(l));toast('Added. Open Make a pack to see it.')}catch(e){toast('Could not save in this browser')}};
+  $('#addm').onclick=()=>{try{const l=JSON.parse(localStorage.getItem('fr_com_pick')||'[]');if(!l.some(x=>x.id===j.id))l.push({id:j.id,n:j.n,p:j.p,g:j.g});localStorage.setItem('fr_com_pick',JSON.stringify(l));toast('Added. Open Make a pack to see it.')}catch(e){toast('Could not save in this browser')}};
  }catch(e){res.className='pr bad';res.textContent=e.message||'Could not share the badge.'}
  $('#sub').disabled=false;
 };

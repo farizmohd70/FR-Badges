@@ -99,9 +99,26 @@ async function resolveCode(code) {
   const items = j.c ? await resolveCode(j.c) : [];
   if (!items) return null;
   if (Array.isArray(j.u)) {
+    const rank = {};
+    CAT.groups.forEach((g, i) => (rank[g.id] = i));
+    rank.community = CAT.groups.length;
+    const add = [];
     for (const u of j.u.slice(0, 200)) {
       if (!Array.isArray(u) || !/^[0-9a-f]{12}$/.test(u[0]) || typeof u[1] !== 'string' || typeof u[2] !== 'string' || !u[2] || u[2].length > 1500) continue;
-      items.push({ b: { id: 'com-' + u[0], g: 'community', n: u[1].slice(0, 60), p: u[2], f: '' }, style: 0, url: C_RAW + 'badges/' + u[0] + '.png' });
+      const g = typeof u[3] === 'string' && rank[u[3]] !== undefined && !['oneline', 'lang-code', 'lang-name'].includes(u[3]) ? u[3] : 'community';
+      add.push({ g, pos: Number.isInteger(u[4]) && u[4] >= 0 ? u[4] : 1e6, it: { b: { id: 'com-' + u[0], g, n: u[1].slice(0, 60), p: u[2], f: '' }, style: 0, url: C_RAW + 'badges/' + u[0] + '.png' } });
+    }
+    // put each community badge inside its group, at the position it had in the builder
+    add.sort((a, b) => rank[a.g] - rank[b.g] || a.pos - b.pos);
+    for (const a of add) {
+      let first = -1, last = -1;
+      items.forEach((x, i) => { if (x.b.g === a.g) { if (first < 0) first = i; last = i; } });
+      if (first >= 0) items.splice(first + Math.min(a.pos, last - first + 1), 0, a.it);
+      else {
+        let at = items.length;
+        for (let i = 0; i < items.length; i++) if ((rank[items[i].b.g] ?? 0) > rank[a.g]) { at = i; break; }
+        items.splice(at, 0, a.it);
+      }
     }
   }
   const pats = j.p && typeof j.p === 'object' ? j.p : {};
@@ -175,6 +192,7 @@ async function submit(req, env) {
   if (!SITE_ORIGINS.includes(req.headers.get('origin') || '')) return jres({ error: 'Not allowed from this site.' }, 403, req);
   let j; try { j = await req.json(); } catch (e) { return jres({ error: 'Bad request.' }, 400, req); }
   const name = typeof j.n === 'string' ? j.n.trim() : '', pat = typeof j.p === 'string' ? j.p.trim() : '';
+  const grp = typeof j.g === 'string' && gInfo[j.g] && !['oneline', 'lang-code', 'lang-name'].includes(j.g) ? j.g : 'community';
   if (!name || name.length > 40) return jres({ error: 'Give the badge a name of up to 40 letters.' }, 400, req);
   if (!pat || pat.length > 1000) return jres({ error: 'The pattern is empty or too long.' }, 400, req);
   if (/[<>]/.test(name)) return jres({ error: 'The name has characters that are not allowed.' }, 400, req);
@@ -200,11 +218,11 @@ async function submit(req, env) {
     if (!cur.ok) return jres({ error: 'Could not save the badge. Try again in a minute.' }, 502, req);
     const meta = await cur.json();
     let list; try { list = JSON.parse(new TextDecoder().decode(b64d(meta.content.replace(/\n/g, '')))); } catch (e) { return jres({ error: 'The community list is damaged.' }, 502, req); }
-    if (list.badges.some(b => b.id === id)) return jres({ id, url: C_RAW + 'badges/' + id + '.png', n: name, p: pat, existed: true }, 200, req);
+    if (list.badges.some(b => b.id === id)) return jres({ id, url: C_RAW + 'badges/' + id + '.png', n: name, p: pat, g: grp, existed: true }, 200, req);
     if (list.badges.length >= 3000) return jres({ error: 'The community list is full.' }, 503, req);
-    list.badges.unshift({ id, n: name, p: pat, t: Math.floor(Date.now() / 1000), w, h });
+    list.badges.unshift({ id, n: name, p: pat, g: grp, t: Math.floor(Date.now() / 1000), w, h });
     const up = await gh(env, '/contents/index.json', { method: 'PUT', body: JSON.stringify({ message: 'List community badge ' + id, sha: meta.sha, content: toB64(new TextEncoder().encode(JSON.stringify(list))) }) });
-    if (up.ok) return jres({ id, url: C_RAW + 'badges/' + id + '.png', n: name, p: pat }, 200, req);
+    if (up.ok) return jres({ id, url: C_RAW + 'badges/' + id + '.png', n: name, p: pat, g: grp }, 200, req);
     if (up.status !== 409 && up.status !== 422) break;
   }
   return jres({ error: 'Could not save the badge. Try again in a minute.' }, 502, req);
