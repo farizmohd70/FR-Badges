@@ -298,3 +298,32 @@ dialog::backdrop{background:#0009}
 
 .pkc .pkstrip{background:#4a4e57;border-radius:10px;padding:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:44px}.pkstrip img{height:auto;width:auto;max-height:24px;max-width:48%;object-fit:contain}
 #vt{margin:6px 0 4px}
+
+/* calmer, tighter layout */
+body{font-size:16px;line-height:1.5}
+.hint{font-size:12px;line-height:1.35;margin:0 0 8px;opacity:.9}
+.sub,.mk .sub{font-size:14px;line-height:1.4;margin:0 0 14px}
+.cr-h{font-size:clamp(26px,5vw,34px);margin-bottom:6px}
+.cr-p{padding:12px;gap:10px}
+.cr-p .hint{font-size:12px}
+.f{gap:4px;font-size:13px}
+.cr-tabs{margin-block:8px}
+.cr-box{padding:10px}
+.cr-nx{margin-top:2px}
+.cr-ck{font-size:13px}
+.top{height:56px}
+.top nav{font-size:14px;gap:18px}
+.hero{padding-block:28px 44px;gap:28px}
+.lede{font-size:16px;margin-bottom:18px}
+.btn{height:44px;padding:0 18px;font-size:15px}
+section{padding-block:44px}
+h2{margin-bottom:8px}
+.sec-l{font-size:15px;margin-bottom:24px}
+.cap{font-size:12px;margin-top:8px}
+.look span{font-size:12px}
+.cm-card .hint,.cm-card p{font-size:12px}
+.sp-cnt{font-size:13px}
+@media(max-width:640px){h1{font-size:clamp(32px,9vw,42px);margin-bottom:12px}.hero{padding-block:16px 32px}section{padding-block:32px}}
+.shd{margin:6px 0 0;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:700;border-top:1px solid var(--line);padding-top:10px}
+.cr-p>.shd:first-child{border-top:0;padding-top:0;margin-top:0}
+.sp-d>summary{cursor:pointer;font-weight:700;font-size:15px;margin-bottom:8px}

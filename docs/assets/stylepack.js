@@ -37,6 +37,16 @@ function preview(){clearTimeout(pT);pT=setTimeout(async()=>{const my=++busy,L=lo
  for(let i=0;i<SAMPLE.length;i++){if(my!==busy)return;await drawBadge(cvs[i],SAMPLE[i],L)}
  $('#meta').textContent='Sample badges. Your look is used for every badge in the pack.'},60)}
 
+
+/* ---------- order ---------- */
+const {byGroup,gInfo}=P;const nm=id=>byId[id].n.toLowerCase();
+$('#ord').addEventListener('change',()=>{const m=v('ord');
+ P.commit(()=>{const S=P.S;
+  if(m==='def'){S.gord=CAT.groups.map(g=>g.id);CAT.groups.forEach(g=>S.bord[g.id]=byGroup[g.id].map(b=>b.id));return}
+  if(m==='az'||m==='za')Object.keys(S.bord).forEach(g=>{S.bord[g].sort((a,b)=>nm(a).localeCompare(nm(b),undefined,{numeric:true})*(m==='za'?-1:1))});
+  if(m==='gaz')S.gord.sort((a,b)=>gInfo[a].name.localeCompare(gInfo[b].name));
+  if(m==='rev'){S.gord.reverse();Object.keys(S.bord).forEach(g=>S.bord[g].reverse())}},'order');
+ toast('Order updated.')});
 /* ---------- tabs, controls ---------- */
 function tab(t){$$('.cr-tabs [data-t]').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});$$('.cr-p').forEach(p=>p.classList.toggle('on',p.dataset.p===t));
  const bar=$('.cr-tabs'),a=bar.querySelector('.on');if(a)bar.scrollLeft=a.offsetLeft-12;if(t==='make')refreshMake()}

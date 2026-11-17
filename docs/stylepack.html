@@ -5,7 +5,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Poppins:wght@400;700;800&family=Oswald:wght@400;700&family=Bebas+Neue&family=Roboto+Mono:wght@400;700&family=Montserrat:wght@400;700;800&family=Anton&family=Space+Grotesk:wght@400;700&family=Playfair+Display:wght@400;700;800&family=Rubik:wght@400;700;800&family=Barlow+Condensed:wght@400;700;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261135">
+<link rel="stylesheet" href="assets/site.css?v=20261139">
 </head><body>
 <div class="w"><div class="top"><a class="logo" href="./"><i></i>FR Badges</a>
  <nav><a href="create">Make a badge</a><a href="community">Community made</a><a href="make">Make a pack</a></nav></div></div>
@@ -27,15 +27,15 @@
  </section>
 
  <section class="cr-p" data-p="text" role="tabpanel">
-  <div class="cr-2"><label class="f">Font<select id="font"></select></label><label class="f">Weight<select id="wt"><option value="400">Regular</option><option value="700" selected>Bold</option><option value="800">Extra bold</option></select></label></div>
+  <h4 class="shd">Font</h4><div class="cr-2"><label class="f">Font<select id="font"></select></label><label class="f">Weight<select id="wt"><option value="400">Regular</option><option value="700" selected>Bold</option><option value="800">Extra bold</option></select></label></div>
   <label class="f s">Size <span id="szv"></span><input type="range" id="sz" min="60" max="170" value="120"></label>
   <p class="hint">Long names shrink on their own so every badge fits Nuvio's width.</p>
   <label class="f s">Letter spacing <span id="lsv"></span><input type="range" id="ls" min="0" max="20" value="0"></label>
   <div class="cr-2"><label class="f">Case<select id="cs"><option value="n">As written</option><option value="u" selected>UPPERCASE</option></select></label><label class="f">Text colour<input type="color" id="fg" value="#ffffff"></label></div>
-  <label class="f">Icons<select id="ics"><option value="1">Show icons that the badge has</option><option value="0" selected>No icons, text only</option></select></label>
+  <h4 class="shd">Icons and lines</h4><label class="f">Icons<select id="ics"><option value="1">Show icons that the badge has</option><option value="0" selected>No icons, text only</option></select></label>
   <label class="f">Lines<select id="ln"><option value="2" selected>Two lines (small second line when a badge has one)</option><option value="1">One line (everything on a single line)</option></select></label>
   <label class="f s">Second line size <span id="s2v"></span><input type="range" id="s2" min="40" max="110" value="70"></label>
-  <div class="cr-2"><label class="f s">Outline <span id="towv"></span><input type="range" id="tow" min="0" max="14" value="0"></label><label class="f">Outline colour<input type="color" id="toc" value="#000000"></label></div>
+  <h4 class="shd">Effects</h4><div class="cr-2"><label class="f s">Outline <span id="towv"></span><input type="range" id="tow" min="0" max="14" value="0"></label><label class="f">Outline colour<input type="color" id="toc" value="#000000"></label></div>
   <label class="cr-ck"><input type="checkbox" id="sh" checked> Soft shadow behind the text</label>
   <label class="f s">Shadow strength <span id="shsv"></span><input type="range" id="shs" min="10" max="90" value="35"></label>
   <div class="cr-2"><label class="f s">Glow <span id="gwv"></span><input type="range" id="gw" min="0" max="60" value="0"></label><label class="f">Glow colour<input type="color" id="gc" value="#ffffff"></label></div>
@@ -63,9 +63,9 @@
  </section>
 
  <section class="cr-p" data-p="pick" role="tabpanel">
-  <h3>Start from a ready-made set</h3><p class="hint">Then tick or untick any badge below.</p>
-  <div class="sp-pre" id="spre"></div>
+  <details class="sp-d" open><summary>Ready-made sets</summary><p class="hint">Then tick or untick any badge below.</p><div class="sp-pre" id="spre"></div></details>
   <div class="sp-cnt" id="cnt"></div>
+  <label class="f">Order in the pack<select id="ord"><option value="def" selected>Default order</option><option value="az">Badges A to Z</option><option value="za">Badges Z to A</option><option value="gaz">Groups A to Z</option><option value="rev">Reverse everything</option></select></label>
   <input type="search" id="sq" placeholder="Search badges" aria-label="Search badges">
   <div id="grp"></div>
   <div class="cr-nx"><button class="b2" data-go="shape">Back</button><button class="b2 pri" data-go="make">Next: Make</button></div>
@@ -93,12 +93,12 @@
  </section>
 </main>
 <div id="toast" role="status"></div>
-<script src="assets/ui.js?v=20261135"></script>
-<script src="assets/config.js?v=20261135"></script>
+<script src="assets/ui.js?v=20261139"></script>
+<script src="assets/config.js?v=20261139"></script>
 <script src="assets/styles.js"></script>
 <script src="assets/catalog.js"></script>
-<script src="assets/labels.js?v=20261135"></script>
-<script src="assets/core.js?v=20261135"></script>
-<script src="assets/draw.js?v=20261135"></script>
-<script src="assets/stylepack.js?v=20261135"></script>
+<script src="assets/labels.js?v=20261139"></script>
+<script src="assets/core.js?v=20261139"></script>
+<script src="assets/draw.js?v=20261139"></script>
+<script src="assets/stylepack.js?v=20261139"></script>
 </body></html>
