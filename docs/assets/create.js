@@ -235,6 +235,16 @@ function dupCheck(){clearTimeout(dT);dT=setTimeout(async()=>{
  const d=$('#dup');d.hidden=!f.length;d.innerHTML=f.length?'<b>Heads up.</b> '+f.join(' ')+' You can still share yours.':''},300)}
 ['nm','pat'].forEach(i=>$('#'+i).addEventListener('input',()=>{if($('.cr-p.on').dataset.p==='share')dupCheck()}));
 $('#gp').addEventListener('change',()=>{if($('.cr-p.on').dataset.p==='share')refreshShare()});
+
+/* design code: copy or load a whole design */
+const enc=s=>{const u=new TextEncoder().encode(s);let t='';u.forEach(x=>t+=String.fromCharCode(x));return btoa(t)};
+const dec=s=>{const t=atob(s),u=new Uint8Array(t.length);for(let i=0;i<t.length;i++)u[i]=t.charCodeAt(i);return new TextDecoder().decode(u)};
+$('#dcc').onclick=()=>{const o=getAll();delete o.tt;const code='frb1:'+enc(JSON.stringify(o));$('#dc').value=code;
+ (navigator.clipboard?navigator.clipboard.writeText(code):Promise.reject()).then(()=>toast('Design code copied')).catch(()=>{$('#dc').select();toast('Select the code and copy it')})};
+$('#dcl').onclick=()=>{try{const t=$('#dc').value.trim();if(!t.startsWith('frb1:'))throw 0;const o=JSON.parse(dec(t.slice(5)));if(!o||typeof o!=='object')throw 0;
+ const safe={};[...DIDS,'pat','nm','gp','nt'].forEach(k=>{if(o[k]!==undefined&&typeof o[k]!=='object')safe[k]=o[k]});
+ if(!$('#gp').querySelector('option[value="'+String(safe.gp).replace(/"/g,'')+'"]'))delete safe.gp;
+ clearImg();setAll(safe);pushH();toast('Design loaded.')}catch(e){toast('That is not a valid design code.')}};
 /* easy pattern builder */
 const rxEsc=s=>s.replace(/[.*+?^${}()|[\]\\\/]/g,'\\$&');
 function buildPat(){const ws=v('pw').split(/[,\n]/).map(s=>s.trim()).filter(Boolean);if(!ws.length)return;

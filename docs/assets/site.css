@@ -269,3 +269,5 @@ dialog::backdrop{background:#0009}
 .pk{background:#1b1d22;border-radius:12px;padding:12px;display:grid;gap:8px}
 .pkl{color:#9aa0ab;font-size:12px}.pkr{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .dupb{border-color:var(--warn,#e8a317);color:var(--ink);font-size:14px}.dupb a{color:var(--ac)}
+
+.cr-d{border:1px solid var(--line);border-radius:10px;padding:10px 12px}.cr-d summary{cursor:pointer;font-weight:600;font-size:14px}.cr-d[open] summary{margin-bottom:8px}.cr-d>*+*{margin-top:8px}
