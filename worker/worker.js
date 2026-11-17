@@ -3,12 +3,27 @@
 // A link looks like  https://<your-worker>.workers.dev/p/<code>.json  and returns a Nuvio badge pack.
 // The catalog below only ever grows at the end, so old links keep working.
 
+// Turnstile check: token must be valid, from our site, and made for this action.
+async function tsOk(env, req, tok, action) {
+  if (!env.TURNSTILE_SECRET) return true;
+  try {
+    const f = new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: String(tok || ''), remoteip: req.headers.get('cf-connecting-ip') || '' });
+    const v = await (await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: f, signal: AbortSignal.timeout(10000) })).json();
+    if (!v.success) return false;
+    const hosts = String(env.TURNSTILE_HOSTNAMES || 'farizmohd70.github.io').split(',').map(s => s.trim()).filter(Boolean);
+    if (v.hostname && !hosts.includes(v.hostname)) return false;
+    if (v.action && v.action !== action) return false;
+    return true;
+  } catch (e) { return false; }
+}
+
 const RAW = 'https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/';
 
 // Community made badges. They are stored in their own repo, and people add them from the site.
 // Settings (Cloudflare worker, Settings, Variables and Secrets):
 //   GITHUB_TOKEN     (secret, needed to accept new badges) a token that can write to the community repo only
 //   TURNSTILE_SECRET (secret, optional) turns on the "I am not a robot" check
+//   TURNSTILE_HOSTNAMES (optional) comma separated sites allowed to pass the check, default farizmohd70.github.io
 //   SUBMIT_OFF       (optional) set to 1 to stop accepting new badges
 //   LIKES            (optional, KV namespace binding) turns on likes and the report button
 //   PACK_SECRET      (optional, secret) signs style pack uploads; if missing, GITHUB_TOKEN is used
@@ -199,11 +214,7 @@ async function submit(req, env) {
   if (!name || name.length > 40) return jres({ error: 'Give the badge a name of up to 40 letters.' }, 400, req);
   if (!pat || pat.length > 1000) return jres({ error: 'The pattern is empty or too long.' }, 400, req);
   if (/[<>]/.test(name)) return jres({ error: 'The name has characters that are not allowed.' }, 400, req);
-  if (env.TURNSTILE_SECRET) {
-    const f = new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: String(j.ts || ''), remoteip: req.headers.get('cf-connecting-ip') || '' });
-    const v = await (await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: f })).json();
-    if (!v.success) return jres({ error: 'The robot check failed. Please try again.' }, 403, req);
-  }
+  if (!(await tsOk(env, req, j.ts, 'badge'))) return jres({ error: 'The robot check failed. Please try again.' }, 403, req);
   const kh = typeof j.kh === 'string' && /^[0-9a-f]{64}$/.test(j.kh) ? j.kh : '';
   let png; try { png = b64d(String(j.png || '')); } catch (e) { return jres({ error: 'The image is not valid.' }, 400, req); }
   if (png.length < 100 || png.length > 90000) return jres({ error: 'The image is too big. Keep it under 90 KB.' }, 400, req);
@@ -326,11 +337,7 @@ async function packStart(req, env) {
   if (env.SUBMIT_OFF) return jres({ error: 'Sharing is paused for now.' }, 503, req);
   if (!okName(j.n)) return jres({ error: 'Give the pack a name of up to 40 letters.' }, 400, req);
   if (!(j.count >= 1 && j.count <= MAX_FILES)) return jres({ error: 'A pack can hold 1 to ' + MAX_FILES + ' badges.' }, 400, req);
-  if (env.TURNSTILE_SECRET) {
-    const f = new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: String(j.ts || ''), remoteip: req.headers.get('cf-connecting-ip') || '' });
-    const v = await (await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: f })).json();
-    if (!v.success) return jres({ error: 'The robot check failed. Please try again.' }, 403, req);
-  }
+  if (!(await tsOk(env, req, j.ts, 'pack'))) return jres({ error: 'The robot check failed. Please try again.' }, 403, req);
   const id = hex(crypto.getRandomValues(new Uint8Array(6)));
   return jres({ ok: 1, id, token: await mkToken(env, id, j.count | 0) }, 200, req);
 }
