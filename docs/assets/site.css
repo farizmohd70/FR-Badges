@@ -261,3 +261,7 @@ dialog::backdrop{background:#0009}
 .sw{display:flex;flex-wrap:wrap;gap:8px}.swb{width:34px;height:34px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0}
 .f input[type=file]{font:inherit;font-size:14px;width:100%}
 [hidden]{display:none!important}
+
+.cm-sub{align-items:center;flex-wrap:wrap}.cm-sub .on{color:#e5484d;border-color:#e5484d}
+.lk{margin-left:auto;background:none;border:0;color:var(--mute);font:inherit;font-size:12px;text-decoration:underline;cursor:pointer;padding:4px}.lk:disabled{text-decoration:none;cursor:default}
+.cm-card .f{font-size:13px}.cm-card textarea,.cm-card input[type=text]{width:100%}

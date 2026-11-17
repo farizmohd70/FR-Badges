@@ -10,6 +10,8 @@ const RAW = 'https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/';
 //   GITHUB_TOKEN     (secret, needed to accept new badges) a token that can write to the community repo only
 //   TURNSTILE_SECRET (secret, optional) turns on the "I am not a robot" check
 //   SUBMIT_OFF       (optional) set to 1 to stop accepting new badges
+//   LIKES            (optional, KV namespace binding) turns on likes and the report button
+//   ADMIN_KEY        (optional, secret) lets you delete any community badge from the Community page: open it with  #admin=<key>  at the end of the address
 const C_OWNER = 'farizmohd70', C_REPO = 'FR-Badges-Community';
 const C_RAW = 'https://raw.githubusercontent.com/' + C_OWNER + '/' + C_REPO + '/main/';
 const SITE_ORIGINS = ['https://farizmohd70.github.io', 'http://localhost:8123', 'http://127.0.0.1:8123'];
@@ -177,7 +179,7 @@ const cors = req => {
   const o = req.headers.get('origin') || '';
   return {
     'access-control-allow-origin': SITE_ORIGINS.includes(o) ? o : SITE_ORIGINS[0],
-    'access-control-allow-methods': 'POST, OPTIONS', 'access-control-allow-headers': 'content-type', 'vary': 'origin',
+    'access-control-allow-methods': 'GET, POST, OPTIONS', 'access-control-allow-headers': 'content-type', 'vary': 'origin',
   };
 };
 const jres = (obj, status, req) => new Response(JSON.stringify(obj), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...cors(req) } });
@@ -201,6 +203,7 @@ async function submit(req, env) {
     const v = await (await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: f })).json();
     if (!v.success) return jres({ error: 'The robot check failed. Please try again.' }, 403, req);
   }
+  const kh = typeof j.kh === 'string' && /^[0-9a-f]{64}$/.test(j.kh) ? j.kh : '';
   let png; try { png = b64d(String(j.png || '')); } catch (e) { return jres({ error: 'The image is not valid.' }, 400, req); }
   if (png.length < 100 || png.length > 90000) return jres({ error: 'The image is too big. Keep it under 90 KB.' }, 400, req);
   const sig = [137, 80, 78, 71, 13, 10, 26, 10];
@@ -220,7 +223,7 @@ async function submit(req, env) {
     let list; try { list = JSON.parse(new TextDecoder().decode(b64d(meta.content.replace(/\n/g, '')))); } catch (e) { return jres({ error: 'The community list is damaged.' }, 502, req); }
     if (list.badges.some(b => b.id === id)) return jres({ id, url: C_RAW + 'badges/' + id + '.png', n: name, p: pat, g: grp, existed: true }, 200, req);
     if (list.badges.length >= 3000) return jres({ error: 'The community list is full.' }, 503, req);
-    list.badges.unshift({ id, n: name, p: pat, g: grp, t: Math.floor(Date.now() / 1000), w, h });
+    list.badges.unshift({ id, n: name, p: pat, g: grp, t: Math.floor(Date.now() / 1000), w, h, ...(kh ? { o: kh } : {}) });
     const up = await gh(env, '/contents/index.json', { method: 'PUT', body: JSON.stringify({ message: 'List community badge ' + id, sha: meta.sha, content: toB64(new TextEncoder().encode(JSON.stringify(list))) }) });
     if (up.ok) return jres({ id, url: C_RAW + 'badges/' + id + '.png', n: name, p: pat, g: grp }, 200, req);
     if (up.status !== 409 && up.status !== 422) break;
@@ -228,13 +231,88 @@ async function submit(req, env) {
   return jres({ error: 'Could not save the badge. Try again in a minute.' }, 502, req);
 }
 
+
+// ---- edit, delete, likes, reports ----
+const IDRE = /^[0-9a-f]{12}$/;
+async function readIndex(env) {
+  const cur = await gh(env, '/contents/index.json');
+  if (!cur.ok) throw new Error('index');
+  const meta = await cur.json();
+  return { meta, list: JSON.parse(new TextDecoder().decode(b64d(meta.content.replace(/\n/g, '')))) };
+}
+const writeIndex = (env, meta, list, msg) => gh(env, '/contents/index.json', { method: 'PUT', body: JSON.stringify({ message: msg, sha: meta.sha, content: toB64(new TextEncoder().encode(JSON.stringify(list))) }) });
+async function sha256(s) { return hex(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s))); }
+async function mayEdit(env, entry, k) {
+  if (typeof k !== 'string' || k.length < 16) return false;
+  if (env.ADMIN_KEY && k === env.ADMIN_KEY) return true;
+  return !!entry.o && (await sha256(k)) === entry.o;
+}
+async function edit(req, env) {
+  if (!env.GITHUB_TOKEN) return jres({ error: 'Not switched on yet.' }, 503, req);
+  if (!SITE_ORIGINS.includes(req.headers.get('origin') || '')) return jres({ error: 'Not allowed from this site.' }, 403, req);
+  let j; try { j = await req.json(); } catch (e) { return jres({ error: 'Bad request.' }, 400, req); }
+  if (!IDRE.test(String(j.id || ''))) return jres({ error: 'Bad badge.' }, 400, req);
+  let name, pat, grp;
+  if (!j.del) {
+    name = typeof j.n === 'string' ? j.n.trim() : ''; pat = typeof j.p === 'string' ? j.p.trim() : '';
+    grp = typeof j.g === 'string' && gInfo[j.g] && !['oneline', 'lang-code', 'lang-name'].includes(j.g) ? j.g : 'community';
+    if (!name || name.length > 40 || /[<>]/.test(name)) return jres({ error: 'Give the badge a name of up to 40 letters.' }, 400, req);
+    if (!pat || pat.length > 1000) return jres({ error: 'The pattern is empty or too long.' }, 400, req);
+  }
+  for (let t = 0; t < 4; t++) {
+    let idx; try { idx = await readIndex(env); } catch (e) { return jres({ error: 'Could not reach the list. Try again in a minute.' }, 502, req); }
+    const i = idx.list.badges.findIndex(b => b.id === j.id);
+    if (i < 0) return jres({ error: 'That badge is not in the list.' }, 404, req);
+    if (!(await mayEdit(env, idx.list.badges[i], j.k))) return jres({ error: 'This browser did not make that badge, so it cannot change it.' }, 403, req);
+    if (j.del) idx.list.badges.splice(i, 1); else Object.assign(idx.list.badges[i], { n: name, p: pat, g: grp });
+    const up = await writeIndex(env, idx.meta, idx.list, (j.del ? 'Remove' : 'Edit') + ' community badge ' + j.id);
+    if (up.ok) {
+      if (j.del) { // also remove the picture (the list is already updated, so a failure here is harmless)
+        try { const f = await gh(env, '/contents/badges/' + j.id + '.png'); if (f.ok) { const m = await f.json(); await gh(env, '/contents/badges/' + j.id + '.png', { method: 'DELETE', body: JSON.stringify({ message: 'Remove community badge ' + j.id, sha: m.sha }) }); } } catch (e) {}
+        return jres({ ok: 1, deleted: 1 }, 200, req);
+      }
+      return jres({ ok: 1, id: j.id, n: name, p: pat, g: grp }, 200, req);
+    }
+    if (up.status !== 409 && up.status !== 422) break;
+  }
+  return jres({ error: 'Could not save the change. Try again in a minute.' }, 502, req);
+}
+// likes and reports live in a KV namespace bound as LIKES (optional)
+async function stats(req, env) {
+  if (!env.LIKES) return jres({ off: 1 }, 200, req);
+  const s = {}; let cursor;
+  for (let p = 0; p < 5; p++) {
+    const r = await env.LIKES.list({ prefix: 's:', cursor });
+    r.keys.forEach(k => { if (k.metadata) s[k.name.slice(2)] = [k.metadata.l || 0, k.metadata.r || 0]; });
+    if (r.list_complete) break; cursor = r.cursor;
+  }
+  return jres({ ok: 1, s }, 200, req);
+}
+async function vote(req, env, kind) { // kind: 'l' like, 'r' report
+  if (!env.LIKES) return jres({ off: 1 }, 200, req);
+  if (!SITE_ORIGINS.includes(req.headers.get('origin') || '')) return jres({ error: 'Not allowed from this site.' }, 403, req);
+  let j; try { j = await req.json(); } catch (e) { return jres({ error: 'Bad request.' }, 400, req); }
+  const id = String(j.id || ''); if (!IDRE.test(id)) return jres({ error: 'Bad badge.' }, 400, req);
+  const who = (await sha256((req.headers.get('cf-connecting-ip') || 'x') + '|' + id + '|' + kind)).slice(0, 20), mk = kind + ':' + id + ':' + who;
+  const cur = await env.LIKES.getWithMetadata('s:' + id), m = { l: 0, r: 0, ...(cur.metadata || {}) };
+  if (await env.LIKES.get(mk)) return jres({ ok: 1, dup: 1, l: m.l, r: m.r }, 200, req);
+  await env.LIKES.put(mk, '1', { expirationTtl: 31536000 });
+  m[kind]++;
+  await env.LIKES.put('s:' + id, '', { metadata: m });
+  return jres({ ok: 1, l: m.l, r: m.r }, 200, req);
+}
+
 export default {
   async fetch(req, env) {
     const url = new URL(req.url);
-    if (url.pathname === '/submit') {
+    const POSTS = { '/submit': submit, '/edit': edit, '/like': (r, e) => vote(r, e, 'l'), '/report': (r, e) => vote(r, e, 'r') };
+    if (POSTS[url.pathname] || url.pathname === '/stats') {
       if (req.method === 'OPTIONS') return new Response(null, { headers: cors(req) });
-      if (req.method !== 'POST') return jres({ error: 'Use POST.' }, 405, req);
-      try { return await submit(req, env || {}); } catch (e) { return jres({ error: 'Something went wrong.' }, 500, req); }
+      try {
+        if (url.pathname === '/stats') return req.method === 'GET' ? await stats(req, env || {}) : jres({ error: 'Use GET.' }, 405, req);
+        if (req.method !== 'POST') return jres({ error: 'Use POST.' }, 405, req);
+        return await POSTS[url.pathname](req, env || {});
+      } catch (e) { return jres({ error: 'Something went wrong.' }, 500, req); }
     }
     if (req.method === 'OPTIONS') return new Response(null, { headers: HEAD });
     const m = /^\/p\/([A-Za-z0-9_-]+)(?:\.json)?$/.exec(url.pathname);
