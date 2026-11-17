@@ -296,5 +296,5 @@ dialog::backdrop{background:#0009}
 .sr input{width:18px;height:18px;flex:none}
 .sp-prg{height:8px;border-radius:4px;background:var(--line);overflow:hidden}.sp-prg i{display:block;height:100%;width:0;background:var(--ac);transition:width .15s}
 
-.pkc .pkstrip{background:#4a4e57;border-radius:10px;padding:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:44px}.pkstrip img{height:24px;max-width:48%}
+.pkc .pkstrip{background:#4a4e57;border-radius:10px;padding:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:44px}.pkstrip img{height:auto;width:auto;max-height:24px;max-width:48%;object-fit:contain}
 #vt{margin:6px 0 4px}
