@@ -41,7 +41,8 @@ const set=(id,x)=>{const e=$('#'+id);if(e.type==='checkbox')e.checked=!!x;else e
 let cvW=0;
 /* tabs */
 function tab(t){document.querySelectorAll('.cr-tabs [data-t]').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});document.querySelectorAll('.cr-p').forEach(p=>p.classList.toggle('on',p.dataset.p===t));
- const bar=$('.cr-tabs');if(bar){const a=bar.querySelector('.on');if(a)bar.scrollLeft=a.offsetLeft-12}}
+ const bar=$('.cr-tabs');if(bar){const a=bar.querySelector('.on');if(a)bar.scrollLeft=a.offsetLeft-12}
+ if(t==='share')refreshShare()}
 document.querySelectorAll('.cr-tabs [data-t]').forEach(b=>b.onclick=()=>tab(b.dataset.t));
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{tab(b.dataset.go);const y=$('.cr-tabs').getBoundingClientRect().top+scrollY-(($('#pvbox')||{}).offsetHeight||0)-12;scrollTo({top:Math.max(0,y),behavior:'smooth'})});
 /* built-in icons (24 x 24 grid) */
@@ -209,6 +210,31 @@ function contrast(o){const w=$('#cw');if(!w)return;let t='';
  $('#sw').innerHTML=cs.map(x=>`<button type="button" class="swb" data-c="${x}" style="background:${x}" aria-label="${x}"></button>`).join('');
  $('#sw').onclick=e=>{const b=e.target.closest('[data-c]');if(!b)return;set($('#swt').value,b.dataset.c);render();sched()};
  if(window.EyeDropper){$('#eyed').hidden=false;$('#eyed').onclick=()=>{new EyeDropper().open().then(r=>{set($('#swt').value,r.sRGBHex);render();sched()}).catch(()=>{})}}}
+
+/* share tab: preview in the pack, real size, duplicate warning */
+const PACK_RAW='https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/Badges/';
+let comIdx=null;
+const comList=()=>comIdx||(comIdx=fetch(window.FR_COMMUNITY+'index.json').then(r=>r.json()).then(j=>j.badges||[]).catch(()=>[]));
+const norm=s=>String(s).toLowerCase().replace(/\(\?i\)/g,'').replace(/\\b/g,'').replace(/[^a-z0-9]+/g,'');
+function refreshShare(){
+ const g=v('gp'),url=$('#cv').toDataURL('image/png'),w=$('#cv').width,h=$('#cv').height,near=(window.CAT?window.CAT.badges:[]).filter(b=>b.g===g).slice(0,5);
+ const row=hpx=>`<div class="pkr">${near.map(b=>`<img src="${PACK_RAW}${b.f}" alt="" style="height:${hpx}px" onerror="this.remove()">`).join('')}<img src="${url}" alt="Your badge" style="height:${hpx}px;outline:1px dashed rgba(255,255,255,.55);outline-offset:2px"></div>`;
+ $('#pk').innerHTML='<div class="pkl">Real size (16dp tall)</div>'+row(16)+'<div class="pkl">Zoomed</div>'+row(32);
+ const dp=Math.round(16*w/h);
+ $('#pkn').textContent=`Your badge is ${dp}dp wide at 16dp tall. Nuvio shows up to about 92dp. The dashed outline marks your badge.`+(dp>86?' It is close to the limit, so shorten the text if it looks cut off.':'');
+ dupCheck()}
+let dT=0;
+function dupCheck(){clearTimeout(dT);dT=setTimeout(async()=>{
+ const n=norm(v('nm')),p=norm(v('pat'));if(!n&&!p){$('#dup').hidden=true;return}
+ const f=[];f.push=function(x){if(!this.includes(x))Array.prototype.push.call(this,x)};(window.CAT?window.CAT.badges:[]).forEach(b=>{if(f.length>=3)return;
+  if(p&&norm(b.p)===p)f.push(`The pack already has <b>${esc(b.n)}</b> with the same pattern.`);
+  else if(n&&norm(b.n)===n)f.push(`The pack already has a badge called <b>${esc(b.n)}</b>.`)});
+ (await comList()).forEach(b=>{if(f.length>=3)return;
+  if(p&&norm(b.p)===p)f.push(`Someone already shared <b>${esc(b.n)}</b> with the same pattern. <a href="create?remix=${b.id}">Remix it</a> instead?`);
+  else if(n&&norm(b.n)===n)f.push(`Someone already shared a badge called <b>${esc(b.n)}</b>.`)});
+ const d=$('#dup');d.hidden=!f.length;d.innerHTML=f.length?'<b>Heads up.</b> '+f.join(' ')+' You can still share yours.':''},300)}
+['nm','pat'].forEach(i=>$('#'+i).addEventListener('input',()=>{if($('.cr-p.on').dataset.p==='share')dupCheck()}));
+$('#gp').addEventListener('change',()=>{if($('.cr-p.on').dataset.p==='share')refreshShare()});
 /* easy pattern builder */
 const rxEsc=s=>s.replace(/[.*+?^${}()|[\]\\\/]/g,'\\$&');
 function buildPat(){const ws=v('pw').split(/[,\n]/).map(s=>s.trim()).filter(Boolean);if(!ws.length)return;

@@ -265,3 +265,7 @@ dialog::backdrop{background:#0009}
 .cm-sub{align-items:center;flex-wrap:wrap}.cm-sub .on{color:#e5484d;border-color:#e5484d}
 .lk{margin-left:auto;background:none;border:0;color:var(--mute);font:inherit;font-size:12px;text-decoration:underline;cursor:pointer;padding:4px}.lk:disabled{text-decoration:none;cursor:default}
 .cm-card .f{font-size:13px}.cm-card textarea,.cm-card input[type=text]{width:100%}
+
+.pk{background:#1b1d22;border-radius:12px;padding:12px;display:grid;gap:8px}
+.pkl{color:#9aa0ab;font-size:12px}.pkr{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.dupb{border-color:var(--warn,#e8a317);color:var(--ink);font-size:14px}.dupb a{color:var(--ac)}
