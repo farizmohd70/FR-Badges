@@ -271,3 +271,12 @@ dialog::backdrop{background:#0009}
 .dupb{border-color:var(--warn,#e8a317);color:var(--ink);font-size:14px}.dupb a{color:var(--ac)}
 
 .cr-d{border:1px solid var(--line);border-radius:10px;padding:10px 12px}.cr-d summary{cursor:pointer;font-weight:600;font-size:14px}.cr-d[open] summary{margin-bottom:8px}.cr-d>*+*{margin-top:8px}
+
+.ncs{display:grid;gap:10px;margin-top:10px}
+.nc{background:#241d1a;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;display:grid;gap:5px;color:#e8e6e3}
+.nct{font-weight:700;font-size:15px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.nch{font-weight:600;font-size:12px}.nc.y .nch{color:#66bb6a}.nc.n .nch{color:#9a9590}
+.ncf{font-size:13px;color:#a8a29d;word-break:break-all;line-height:1.35}
+.ncb{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:4px;min-height:16px}
+.ncb .me{outline:1px dashed rgba(255,255,255,.55);outline-offset:2px}
+.pr.ok,.pr.no{background:transparent}

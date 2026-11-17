@@ -42,7 +42,7 @@ let cvW=0;
 /* tabs */
 function tab(t){document.querySelectorAll('.cr-tabs [data-t]').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});document.querySelectorAll('.cr-p').forEach(p=>p.classList.toggle('on',p.dataset.p===t));
  const bar=$('.cr-tabs');if(bar){const a=bar.querySelector('.on');if(a)bar.scrollLeft=a.offsetLeft-12}
- if(t==='share')refreshShare()}
+ if(t==='share')refreshShare();if(t==='pat')check()}
 document.querySelectorAll('.cr-tabs [data-t]').forEach(b=>b.onclick=()=>tab(b.dataset.t));
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{tab(b.dataset.go);const y=$('.cr-tabs').getBoundingClientRect().top+scrollY-(($('#pvbox')||{}).offsetHeight||0)-12;scrollTo({top:Math.max(0,y),behavior:'smooth'})});
 /* built-in icons (24 x 24 grid) */
@@ -123,15 +123,21 @@ async function render(){
 function flags(p){const m=/^\(\?([a-z]+)\)/.exec(p);let f='',b=p;if(m){b=p.slice(m[0].length);for(const c of m[1])if('ims'.includes(c)&&!f.includes(c))f+=c}return[b,f]}
 function rx(p){const[b,f]=flags(p);try{return new RegExp(b,f)}catch(e){try{return new RegExp(b,f+'u')}catch(e2){throw e2}}}
 const esc=s=>String(s).replace(/[&<>"]/g,k=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[k]));
+const PR='https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/Badges/',CRX={};
+function catRx(b){if(!(b.id in CRX)){try{CRX[b.id]=rx(b.p)}catch(e){CRX[b.id]=null}}return CRX[b.id]}
 function check(){const p=$('#pat').value.trim(),pr=$('#pr');
  if(!p){pr.className='pr bad';pr.textContent='Add a pattern.';return false}
  let r;try{r=rx(p)}catch(e){pr.className='pr bad';pr.textContent='Not a valid pattern: '+e.message;return false}
  const L=$('#tt').value.split('\n').map(s=>s.trim()).filter(Boolean),hit=L.map(l=>r.test(l)),n=hit.filter(Boolean).length;
  pr.className='pr '+(n?'ok':'no');
- pr.innerHTML=L.length?`<b>${n} of ${L.length} titles match</b>`+(n?'. The badge shows on those.':'. The badge will not show.')+L.map((l,i)=>`<div class="ln ${hit[i]?'y':'n'}"><b>${hit[i]?'\u2713':'\u2717'}</b> ${esc(l)}</div>`).join(''):'Add a title to test.';
+ const big=$('#pvz')&&$('#pvz').checked,h=big?28:16,mine=$('#cv').toDataURL('image/png'),CAT_=window.CAT;
+ const lite=CAT_?new Set(CAT_.lite):new Set(),pool=CAT_?CAT_.badges.filter(b=>lite.has(b.id)):[];
+ const card=(l,i)=>{const others=pool.filter(b=>{const x=catRx(b);try{return x&&x.test(l)}catch(e){return false}}).slice(0,8);
+  return `<div class="nc ${hit[i]?'y':'n'}"><div class="nct">Stream ${i+1}<span class="nch">${hit[i]?'✓ your badge shows':'✗ no match'}</span></div><div class="ncf">${esc(l)}</div><div class="ncb">${others.map(b=>`<img src="${PR}${b.f}" alt="${esc(b.n)}" style="height:${h}px" onerror="this.remove()">`).join('')}${hit[i]?`<img class="me" src="${mine}" alt="Your badge" style="height:${h}px">`:''}</div></div>`};
+ pr.innerHTML=L.length?`<b>${n} of ${L.length} titles match</b>`+(n?'. The badge shows on those.':'. The badge will not show.')+`<div class="ncs">${L.map(card).join('')}</div>`:'Add a title to test.';
  return true}
 ['t2','s2','ic','imz','shs','gw','gc','bgr','bc2','txt','sym','font','wt','sz','ls','fg','cs','bg1','bg2','gd','bc','bw','rd','px','sh','tr','bgo','gl','tow','toc'].forEach(id=>{$('#'+id).addEventListener('input',render);$('#'+id).addEventListener('change',render)});
-['pat','tt'].forEach(id=>$('#'+id).addEventListener('input',check));
+['pat','tt'].forEach(id=>$('#'+id).addEventListener('input',check));$('#pvz').addEventListener('change',check);
 $('#txt').addEventListener('input',()=>{const n=$('#nm');if(!n.dataset.t){n.value=v('txt').slice(0,40)}});
 $('#nm').addEventListener('input',()=>{$('#nm').dataset.t=1});
 /* start from an existing badge */
