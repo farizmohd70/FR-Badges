@@ -280,3 +280,21 @@ dialog::backdrop{background:#0009}
 .ncb{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:4px;min-height:16px}
 .ncb .me{outline:1px dashed rgba(255,255,255,.55);outline-offset:2px}
 .pr.ok,.pr.no{background:transparent}
+/* style pack maker */
+.sp-pv{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;padding:12px 10px}
+.sp-pv canvas{height:clamp(22px,6vw,34px)!important;width:auto;max-width:31%}
+.sp-pre{display:flex;flex-wrap:wrap;gap:8px}
+.sp-cnt{font-size:15px;padding:8px 0}
+.sg{border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-top:8px;background:var(--bg)}
+.sg summary{cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:center;padding:4px 0;font-size:15px;list-style:none}
+.sg summary::-webkit-details-marker{display:none}
+.sc{color:var(--mute);font-size:13px;font-variant-numeric:tabular-nums}
+.sgb{margin:6px 0}
+.sl{display:grid;gap:2px;max-height:340px;overflow:auto}
+.sr{display:flex;gap:10px;align-items:center;padding:7px 4px;font-size:14px;border-radius:6px;cursor:pointer}
+.sr:hover{background:color-mix(in srgb,var(--ac) 10%,transparent)}
+.sr input{width:18px;height:18px;flex:none}
+.sp-prg{height:8px;border-radius:4px;background:var(--line);overflow:hidden}.sp-prg i{display:block;height:100%;width:0;background:var(--ac);transition:width .15s}
+
+.pkc .pkstrip{background:#4a4e57;border-radius:10px;padding:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:44px}.pkstrip img{height:24px;max-width:48%}
+#vt{margin:6px 0 4px}

@@ -11,6 +11,7 @@ const RAW = 'https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/';
 //   TURNSTILE_SECRET (secret, optional) turns on the "I am not a robot" check
 //   SUBMIT_OFF       (optional) set to 1 to stop accepting new badges
 //   LIKES            (optional, KV namespace binding) turns on likes and the report button
+//   PACK_SECRET      (optional, secret) signs style pack uploads; if missing, GITHUB_TOKEN is used
 //   ADMIN_KEY        (optional, secret) lets you delete any community badge from the Community page: open it with  #admin=<key>  at the end of the address
 const C_OWNER = 'farizmohd70', C_REPO = 'FR-Badges-Community';
 const C_RAW = 'https://raw.githubusercontent.com/' + C_OWNER + '/' + C_REPO + '/main/';
@@ -302,10 +303,124 @@ async function vote(req, env, kind) { // kind: 'l' like, 'r' report
   return jres({ ok: 1, l: m.l, r: m.r }, 200, req);
 }
 
+// ---- style packs: images go up in small steps (a request may only make a few outgoing calls) ----
+const MAX_PACKS = 150, MAX_FILES = 800, FILESET = new Set(CAT.badges.map(b => b.f));
+async function hmac(env, s) {
+  const k = await crypto.subtle.importKey('raw', new TextEncoder().encode(env.PACK_SECRET || env.GITHUB_TOKEN), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  return hex(await crypto.subtle.sign('HMAC', k, new TextEncoder().encode(s))).slice(0, 32);
+}
+async function mkToken(env, id, count) { const p = id + '.' + (Math.floor(Date.now() / 1000) + 1800) + '.' + count; return p + '.' + await hmac(env, p); }
+async function chkToken(env, t) {
+  const a = String(t || '').split('.'); if (a.length !== 4 || !IDRE.test(a[0])) return null;
+  const p = a.slice(0, 3).join('.'); if ((await hmac(env, p)) !== a[3] || +a[1] < Date.now() / 1000) return null;
+  return { id: a[0], count: +a[2] };
+}
+async function packGate(req, env) {
+  if (!env.GITHUB_TOKEN) return jres({ error: 'Sharing is not switched on yet.' }, 503, req);
+  if (!SITE_ORIGINS.includes(req.headers.get('origin') || '')) return jres({ error: 'Not allowed from this site.' }, 403, req);
+  try { return { j: await req.json() }; } catch (e) { return jres({ error: 'Bad request.' }, 400, req); }
+}
+const okName = n => typeof n === 'string' && n.trim() && n.trim().length <= 40 && !/[<>]/.test(n);
+async function packStart(req, env) {
+  const g = await packGate(req, env); if (g instanceof Response) return g; const j = g.j;
+  if (env.SUBMIT_OFF) return jres({ error: 'Sharing is paused for now.' }, 503, req);
+  if (!okName(j.n)) return jres({ error: 'Give the pack a name of up to 40 letters.' }, 400, req);
+  if (!(j.count >= 1 && j.count <= MAX_FILES)) return jres({ error: 'A pack can hold 1 to ' + MAX_FILES + ' badges.' }, 400, req);
+  if (env.TURNSTILE_SECRET) {
+    const f = new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: String(j.ts || ''), remoteip: req.headers.get('cf-connecting-ip') || '' });
+    const v = await (await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: f })).json();
+    if (!v.success) return jres({ error: 'The robot check failed. Please try again.' }, 403, req);
+  }
+  const id = hex(crypto.getRandomValues(new Uint8Array(6)));
+  return jres({ ok: 1, id, token: await mkToken(env, id, j.count | 0) }, 200, req);
+}
+async function packBlobs(req, env) {
+  const g = await packGate(req, env); if (g instanceof Response) return g; const j = g.j;
+  if (!(await chkToken(env, j.token))) return jres({ error: 'This upload expired. Start again.' }, 403, req);
+  const files = Array.isArray(j.files) ? j.files : [];
+  if (!files.length || files.length > 30) return jres({ error: 'Too many images at once.' }, 400, req);
+  const sig = [137, 80, 78, 71, 13, 10, 26, 10];
+  const out = await Promise.all(files.map(async x => {
+    if (!FILESET.has(x.f)) throw new Error('Unknown badge image ' + String(x.f).slice(0, 40));
+    let png; try { png = b64d(String(x.png || '')); } catch (e) { throw new Error('An image is not valid.'); }
+    if (png.length < 100 || png.length > 90000 || !sig.every((s, i) => png[i] === s)) throw new Error('An image is not a valid small PNG.');
+    const dv = new DataView(png.buffer, png.byteOffset), w = dv.getUint32(16), h = dv.getUint32(20);
+    if (h < 64 || h > 512 || w < 32 || w / h > 5.75) throw new Error('An image size is outside what Nuvio shows well.');
+    const r = await gh(env, '/git/blobs', { method: 'POST', body: JSON.stringify({ content: toB64(png), encoding: 'base64' }) });
+    if (!r.ok) throw new Error('Could not store an image. Try again.');
+    return { f: x.f, sha: (await r.json()).sha };
+  })).catch(e => e);
+  if (out instanceof Error) return jres({ error: out.message }, 400, req);
+  return jres({ ok: 1, shas: out }, 200, req);
+}
+async function readPacks(env) {
+  const r = await gh(env, '/contents/packs.json');
+  if (r.status === 404) return [];
+  if (!r.ok) throw new Error('packs');
+  const l = JSON.parse(new TextDecoder().decode(b64d((await r.json()).content.replace(/\n/g, ''))));
+  return Array.isArray(l) ? l : [];
+}
+// one commit that changes several files at once; retries if somebody else committed in between
+async function commitTree(env, build, msg) {
+  for (let t = 0; t < 3; t++) {
+    const ref = await gh(env, '/git/ref/heads/main'); if (!ref.ok) throw new Error('ref');
+    const head = (await ref.json()).object.sha;
+    const cm = await gh(env, '/git/commits/' + head); if (!cm.ok) throw new Error('commit');
+    const baseTree = (await cm.json()).tree.sha;
+    const tree = await build(); if (tree instanceof Response) return tree;
+    const nt = await gh(env, '/git/trees', { method: 'POST', body: JSON.stringify({ base_tree: baseTree, tree }) }); if (!nt.ok) throw new Error('tree');
+    const nc = await gh(env, '/git/commits', { method: 'POST', body: JSON.stringify({ message: msg, tree: (await nt.json()).sha, parents: [head] }) }); if (!nc.ok) throw new Error('newcommit');
+    const up = await gh(env, '/git/refs/heads/main', { method: 'PATCH', body: JSON.stringify({ sha: (await nc.json()).sha }) });
+    if (up.ok) return true;
+    if (up.status !== 422 && up.status !== 409) throw new Error('ref update');
+  }
+  throw new Error('busy');
+}
+async function packFinish(req, env) {
+  const g = await packGate(req, env); if (g instanceof Response) return g; const j = g.j;
+  const tk = await chkToken(env, j.token); if (!tk) return jres({ error: 'This upload expired. Start again.' }, 403, req);
+  if (!okName(j.n)) return jres({ error: 'Give the pack a name of up to 40 letters.' }, 400, req);
+  const ids = Array.isArray(j.ids) ? j.ids : [];
+  if (!ids.length || ids.length > tk.count || new Set(ids).size !== ids.length || !ids.every(i => byId[i])) return jres({ error: 'The badge list is not valid.' }, 400, req);
+  const shas = j.shas && typeof j.shas === 'object' ? j.shas : {};
+  if (!ids.every(i => /^[0-9a-f]{40}$/.test(String(shas[byId[i].f] || '')))) return jres({ error: 'Some images did not upload. Try again.' }, 400, req);
+  const kh = typeof j.kh === 'string' && /^[0-9a-f]{64}$/.test(j.kh) ? j.kh : '';
+  const files = ids.map(i => byId[i].f), prev = (Array.isArray(j.prev) ? j.prev : []).filter(f => files.includes(f)).slice(0, 6);
+  const name = j.n.trim(), pid = tk.id;
+  const man = manifest(ids.map(i => ({ b: byId[i], style: 0, url: C_RAW + 'packs/' + pid + '/' + byId[i].f })));
+  try {
+    const r = await commitTree(env, async () => {
+      const list = await readPacks(env);
+      if (list.some(p => p.id === pid)) return jres({ error: 'That pack was already published.' }, 409, req);
+      if (list.length >= MAX_PACKS) return jres({ error: 'The community has reached its pack limit for now.' }, 503, req);
+      list.unshift({ id: pid, n: name, c: ids.length, t: Math.floor(Date.now() / 1000), prev, ...(kh ? { o: kh } : {}) });
+      return files.map(f => ({ path: 'packs/' + pid + '/' + f, mode: '100644', type: 'blob', sha: shas[f] }))
+        .concat([{ path: 'packs/' + pid + '/badges.json', mode: '100644', type: 'blob', content: JSON.stringify(man) }, { path: 'packs.json', mode: '100644', type: 'blob', content: JSON.stringify(list) }]);
+    }, 'Add style pack ' + pid);
+    if (r instanceof Response) return r;
+  } catch (e) { return jres({ error: 'Could not publish right now. Try again in a minute.' }, 502, req); }
+  return jres({ ok: 1, id: pid, url: C_RAW + 'packs/' + pid + '/badges.json' }, 200, req);
+}
+async function packDelete(req, env) {
+  const g = await packGate(req, env); if (g instanceof Response) return g; const j = g.j;
+  if (!IDRE.test(String(j.id || ''))) return jres({ error: 'Bad pack.' }, 400, req);
+  try {
+    const r = await commitTree(env, async () => {
+      const list = await readPacks(env), i = list.findIndex(p => p.id === j.id);
+      if (i < 0) return jres({ error: 'That pack is not in the list.' }, 404, req);
+      if (!(await mayEdit(env, list[i], j.k))) return jres({ error: 'This browser did not make that pack, so it cannot remove it.' }, 403, req);
+      list.splice(i, 1);
+      return [{ path: 'packs/' + j.id, mode: '040000', type: 'tree', sha: null }, { path: 'packs.json', mode: '100644', type: 'blob', content: JSON.stringify(list) }];
+    }, 'Remove style pack ' + j.id);
+    if (r instanceof Response) return r;
+  } catch (e) { return jres({ error: 'Could not remove it right now. Try again in a minute.' }, 502, req); }
+  return jres({ ok: 1, deleted: 1 }, 200, req);
+}
+
 export default {
   async fetch(req, env) {
     const url = new URL(req.url);
-    const POSTS = { '/submit': submit, '/edit': edit, '/like': (r, e) => vote(r, e, 'l'), '/report': (r, e) => vote(r, e, 'r') };
+    const POSTS = { '/submit': submit, '/edit': edit, '/like': (r, e) => vote(r, e, 'l'), '/report': (r, e) => vote(r, e, 'r'), '/pack/start': packStart, '/pack/blobs': packBlobs, '/pack/finish': packFinish, '/pack/delete': packDelete };
     if (POSTS[url.pathname] || url.pathname === '/stats') {
       if (req.method === 'OPTIONS') return new Response(null, { headers: cors(req) });
       try {

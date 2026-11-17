@@ -11,12 +11,10 @@ let badRe=0;
 CAT.badges.forEach((b,i)=>{b.i=i;byId[b.id]=b;byGroup[b.g].push(b);const[bd,f]=flags(b.p);b.re=null;
  try{b.re=new RegExp(bd,f)}catch(e){try{b.re=new RegExp(bd,f+'u')}catch(e2){badRe++}}
  b.hay=(b.id+' '+b.n).toLowerCase();});
-const IND=['മലയാളം','தமிழ்','हिन्दी','తెలుగు','ಕನ್ನಡ','বাংলা','मराठी','ગુજરાતી','ਪੰਜਾਬੀ','اردو','नेपाली','অসমীয়া','ଓଡ଼ିଆ','සිංහල','भोजपुरी','मैथिली','कोंकणी','ᱥᱟᱱᱛᱟᱲᱤ','डोगरी','कॉशुर','ತುಳು','संस्कृतम्','ꯃꯤꯇꯩꯂꯣꯟ','English'];
 const nodup=ids=>{if(ids.includes('res-4k'))ids=ids.filter(i=>i!=='hero-4k');const names=new Map();ids.forEach(i=>{const b=byId[i];if(b.g!=='hero')names.set(b.n.toLowerCase(),1)});return ids.filter(i=>{const b=byId[i];return b.g!=='hero'||!names.has(b.n.toLowerCase())})};
 const PRESETS={
  lite:{name:'Lite',desc:'The 290 badges of the main FR pack',ids:()=>CAT.lite},
  essentials:{name:'Essentials',desc:'Resolution, HDR, codecs and the hero tags',ids:()=>nodup(CAT.lite.filter(id=>['hero','resolution','dynamic-range','video-codec','audio-codec','source'].includes(byId[id].g)))},
- indian:{name:'Indian languages',desc:'Essentials plus Indian languages and audio flags',ids:()=>CAT.lite.filter(id=>{const b=byId[id];return['hero','resolution','dynamic-range','audio-codec','video-codec'].includes(b.g)||(b.g==='languages'&&IND.includes(b.n))||(b.g==='audio-subs'&&/dual|multi|dubbed/i.test(b.id))})},
  audiophile:{name:'Audiophile',desc:'Audio codecs, channels, Atmos and lossless tags',ids:()=>CAT.badges.filter(b=>['audio-codec','audio-channels'].includes(b.g)||b.id==='hero-dolby-atmos'||b.id==='hero-remux').map(b=>b.id)},
  streaming:{name:'Streaming + debrid',desc:'Services, debrid providers and resolution',ids:()=>CAT.badges.filter(b=>['streaming','debrid','resolution'].includes(b.g)||b.g==='hero').map(b=>b.id)},
  fast:{name:'Light and fast',desc:'About 30 badges, quickest to load',ids:()=>['hero-cached','res-8k','res-4k','res-1080p','res-720p','res-480p','source-remux','source-uhd-bluray','source-bluray','source-webdl','source-webrip','source-hdtv','source-cam','dr-dolby-vision','dr-hdr10plus','dr-hdr10','dr-hdr','dr-10bit','codec-av1','codec-hevc','codec-avc','acodec-atmos','acodec-truehd','acodec-dtsx','acodec-dtshd-ma','acodec-ddplus','ch-7-1','ch-5-1'].filter(i=>byId[i])},
@@ -28,7 +26,7 @@ const PRESETS={
  everything:{name:'Everything',desc:'All 453 badges, one version of each',ids:()=>CAT.badges.filter(b=>!['oneline','lang-code','lang-name'].includes(b.g)).map(b=>b.id)},
  empty:{name:'Blank',desc:'Start from nothing',ids:()=>[]}
 };
-['indian','audiophile','streaming','picture','theater','cinephile'].forEach(k=>{const f=PRESETS[k].ids;PRESETS[k].ids=()=>nodup(f())});
+['audiophile','streaming','picture','theater','cinephile'].forEach(k=>{const f=PRESETS[k].ids;PRESETS[k].ids=()=>nodup(f())});
 const S={name:'My FR Pack',style:'glass',sel:new Set(),over:{},pat:{},com:{},gord:CAT.groups.map(g=>g.id),bord:{},bg:'dark'};
 CAT.groups.forEach(g=>S.bord[g.id]=byGroup[g.id].map(b=>b.id));
 const SAMPLES=[
