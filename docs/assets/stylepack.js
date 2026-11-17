@@ -6,7 +6,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,k=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const toast=m=>P.toast(m);
 const v=id=>{const e=$('#'+id);return e.type==='checkbox'?e.checked:e.value};
 const set=(id,x)=>{const e=$('#'+id);if(e.type==='checkbox')e.checked=!!x;else e.value=x};
-const LOOK=['font','wt','sz','ls','fg','cs','ics','sl','s2','tow','toc','sh','shs','gw','gc','tr','bg1','bg2','gd','bgo','gl','bc','bw','bgr','bc2','rd','px'];
+const LOOK=['font','wt','sz','ls','fg','cs','ics','ln','s2','tow','toc','sh','shs','gw','gc','tr','bg1','bg2','gd','bgo','gl','bc','bw','bgr','bc2','rd','px'];
 
 /* ---------- labels ---------- */
 function label(id){const g=LB.b;
@@ -22,10 +22,10 @@ function iconImg(ic,fg,bg){const k=ic+'|'+fg+'|'+bg;if(iconCache.has(k))return i
  iconCache.set(k,p);return p}
 
 /* ---------- drawing ---------- */
-const look=()=>{const o={};LOOK.forEach(k=>o[k]=v(k));['sz','ls','s2','tow','shs','gw','bgo','bw','rd','px'].forEach(k=>o[k]=+o[k]);o.sl=!!o.sl;o.ics=o.ics==='1';return o};
+const look=()=>{const o={};LOOK.forEach(k=>o[k]=v(k));['sz','ls','s2','tow','shs','gw','bgo','bw','rd','px'].forEach(k=>o[k]=+o[k]);o.sl=o.ln!=='1';o.ics=o.ics==='1';return o};
 async function drawBadge(cv,id,L){
- const lb=label(id),txt=((lb.eb?lb.eb+' ':'')+lb.main)||' ';
- const o={...L,txt,sym:'',t2:L.sl&&lb.sub?lb.sub:'',ic:'',imz:56};
+ const lb=label(id),one=!L.sl,txt=((lb.eb?lb.eb+' ':'')+lb.main+(one&&lb.sub?' '+lb.sub:''))||' ';
+ const o={...L,txt,sym:'',t2:!one&&lb.sub?lb.sub:'',ic:'',imz:56};
  try{await Promise.all([document.fonts.load(`${o.wt} 40px "${o.font}"`,txt),document.fonts.load(`400 40px "${o.font}"`,'A')])}catch(e){}
  const ii=L.ics&&lb.ic>=0?await iconImg(lb.ic,L.fg,L.bg1):null;
  return FRD.draw(cv,o,null,ii)}
