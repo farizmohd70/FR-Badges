@@ -11,6 +11,8 @@ const ls=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||d)}catch(e){retu
 const lset=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 let ADMIN='';{const m=/admin=([^&]+)/.exec(location.hash);if(m){ADMIN=decodeURIComponent(m[1]);try{sessionStorage.setItem('fr_admin',ADMIN)}catch(e){}}else try{ADMIN=sessionStorage.getItem('fr_admin')||''}catch(e){}}
 const owned=()=>ls('fr_owned','{}');
+let maker='';
+const who=x=>ADMIN&&x.u?`<div class="hint" style="margin:0">Maker ${x.u}</div>`:ADMIN?'<div class="hint" style="margin:0">Maker unknown (older item)</div>':'';
 function post(path,body){return fetch(W+path,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json().catch(()=>({})).then(j=>{if(!r.ok||j.error)throw new Error(j.error||'That did not work. Try again.');return j}))}
 function pick(id){const b=all.find(x=>x.id===id);if(!b)return;try{const l=JSON.parse(localStorage.getItem('fr_com_pick')||'[]');if(!l.some(x=>x.id===id))l.push({id:b.id,n:b.n,p:b.p,g:b.g});localStorage.setItem('fr_com_pick',JSON.stringify(l));toast('Added. Open Make a pack to see it.')}catch(e){toast('Could not save in this browser')}}
 function copy(t){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Pattern copied')).catch(()=>toast('Could not copy'))}
@@ -23,14 +25,20 @@ function card(b){
   <label class="f">Pattern<textarea data-f="p" rows="3" spellcheck="false">${esc(b.p)}</textarea></label>
   <div class="bar"><button class="b2 sm pri" data-a="save">Save</button><button class="b2 sm" data-a="cancel">Cancel</button></div></div>`;
  const liked=ls('fr_liked','[]').includes(b.id),rep=ls('fr_reported','[]').includes(b.id);
- return `<div class="cm-card" data-id="${b.id}"><div class="im"><img loading="lazy" src="${BASE}badges/${b.id}.png" alt="${esc(b.n)}"></div><div class="n">${esc(b.n)}</div><div class="hint" style="margin:0">${esc(gn(b.g))}</div><code title="${esc(b.p)}">${esc(b.p)}</code>
+ return `<div class="cm-card" data-id="${b.id}"><div class="im"><img loading="lazy" src="${BASE}badges/${b.id}.png" alt="${esc(b.n)}"></div><div class="n">${esc(b.n)}</div><div class="hint" style="margin:0">${esc(gn(b.g))}</div>${who(b)}<code title="${esc(b.p)}">${esc(b.p)}</code>
  <div class="bar"><button class="b2 sm pri" data-a="add">Add to my pack</button><button class="b2 sm" data-a="copy">Copy pattern</button><a class="b2 sm" href="create?remix=${b.id}" style="text-decoration:none">Remix</a></div>
  <div class="bar cm-sub">${hasStats?`<button class="b2 sm${liked?' on':''}" data-a="like"${liked?' disabled':''}>&#9829; ${likes(b)}</button>`:''}${can?`<button class="b2 sm" data-a="edit">Edit</button><button class="b2 sm" data-a="del">${arm==='del'+b.id?'Tap again to delete':'Delete'}</button>`:''}${hasStats&&!own?`<button class="lk" data-a="rep"${rep?' disabled':''}>${rep?'Reported':arm==='rep'+b.id?'Tap again to report':'Report'}</button>`:''}${ADMIN&&hasStats?`<span class="hint" style="margin:0">${reps(b)} reports</span>`:''}</div></div>`}
+
+function renderAdm(){if(!ADMIN)return;let el=document.getElementById('adm');if(!el){el=document.createElement('div');el.id='adm';el.className='hint';$('#note').insertAdjacentElement('beforebegin',el)}
+ const m={};let none=0;for(const x of all)x.u?((m[x.u]=m[x.u]||{b:0,p:0}).b++):none++;for(const x of packs)x.u?((m[x.u]=m[x.u]||{b:0,p:0}).p++):none++;
+ const ids=Object.keys(m).sort((a,b)=>(m[b].b+m[b].p)-(m[a].b+m[a].p));
+ el.innerHTML=`<b>${ids.length}</b> makers · <b>${all.length}</b> badges · <b>${packs.length}</b> packs${none?` · ${none} older items without a maker id`:''}`+(ids.length?'<div class="bar" style="margin-top:6px;flex-wrap:wrap">'+ids.slice(0,12).map(i=>`<button class="b2 sm${maker===i?' on':''}" data-mk="${i}">${i} · ${m[i].b} badge${m[i].b===1?'':'s'}, ${m[i].p} pack${m[i].p===1?'':'s'}</button>`).join('')+(maker?'<button class="b2 sm" data-mk="">Show all</button>':'')+'</div>':'');
+ el.onclick=e=>{const t=e.target.closest('[data-mk]');if(!t)return;maker=t.dataset.mk===maker?'':t.dataset.mk;view==='packs'?drawPacks():draw()}}
 function draw(){const q=$('#q').value.trim().toLowerCase(),cat=$('#cat').value,so=$('#sort').value;
- let l=all.filter(b=>(!q||(b.n+' '+b.p).toLowerCase().includes(q))&&(!cat||(b.g||'community')===cat)&&(ADMIN||reps(b)<HIDE_AT));
+ let l=all.filter(b=>(!q||(b.n+' '+b.p).toLowerCase().includes(q))&&(!cat||(b.g||'community')===cat)&&(!maker||b.u===maker)&&(ADMIN||reps(b)<HIDE_AT));
  if(so==='liked')l=l.slice().sort((a,b)=>likes(b)-likes(a));
  $('#list').innerHTML=l.map(card).join('');
- $('#note').textContent=all.length?(l.length?'':'Nothing found. Try a different word.'):''}
+ $('#note').textContent=all.length?(l.length?'':'Nothing found. Try a different word.'):'';renderAdm()}
 $('#list').addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t)return;const c=t.closest('[data-id]'),id=c.dataset.id,b=all.find(x=>x.id===id),a=t.dataset.a;if(!b)return;
  if(a==='add')pick(id);else if(a==='copy')copy(b.p);
  else if(a==='edit'){editing=id;arm='';draw()}
@@ -47,14 +55,14 @@ $('#list').addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(
 const PLINK=id=>BASE+'packs/'+id+'/badges.json';
 function packCard(p){const own=!!owned()[p.id],can=own||!!ADMIN,liked=ls('fr_liked','[]').includes(p.id),rep=ls('fr_reported','[]').includes(p.id);
  return `<div class="cm-card pkc" data-id="${p.id}"><div class="pkstrip">${(p.prev||[]).map(f=>`<img loading="lazy" src="${BASE}packs/${p.id}/${esc(f)}" alt="">`).join('')}</div>
- <div class="n">${esc(p.n)}</div><div class="hint" style="margin:0">${p.c} badges. Style pack</div>
+ <div class="n">${esc(p.n)}</div><div class="hint" style="margin:0">${p.c} badges. Style pack</div>${who(p)}
  <div class="bar"><button class="b2 sm pri" data-a="plink">Copy pack link</button></div>
  <div class="bar cm-sub">${hasStats?`<button class="b2 sm${liked?' on':''}" data-a="like"${liked?' disabled':''}>&#9829; ${likes(p)}</button>`:''}${can?`<button class="b2 sm" data-a="pdel">${arm==='pdel'+p.id?'Tap again to delete':'Delete'}</button>`:''}${hasStats&&!own?`<button class="lk" data-a="rep"${rep?' disabled':''}>${rep?'Reported':arm==='rep'+p.id?'Tap again to report':'Report'}</button>`:''}${ADMIN&&hasStats?`<span class="hint" style="margin:0">${reps(p)} reports</span>`:''}</div></div>`}
 function drawPacks(){const q=$('#q').value.trim().toLowerCase(),so=$('#sort').value;
- let l=packs.filter(p=>(!q||p.n.toLowerCase().includes(q))&&(ADMIN||reps(p)<HIDE_AT));
+ let l=packs.filter(p=>(!q||p.n.toLowerCase().includes(q))&&(!maker||p.u===maker)&&(ADMIN||reps(p)<HIDE_AT));
  if(so==='liked')l=l.slice().sort((a,b)=>likes(b)-likes(a));
  $('#plist').innerHTML=l.map(packCard).join('');
- $('#note').textContent=packs.length?(l.length?'':'Nothing found. Try a different word.'):'No style packs yet. Be the first to make one.'}
+ $('#note').textContent=packs.length?(l.length?'':'Nothing found. Try a different word.'):'No style packs yet. Be the first to make one.';renderAdm()}
 $('#plist').addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t)return;const id=t.closest('[data-id]').dataset.id,a=t.dataset.a;
  if(a==='plink')P_copy(PLINK(id));
  else if(a==='like'){t.disabled=true;post('/like',{id}).then(j=>{S[id]=[j.l,j.r];const x=ls('fr_liked','[]');x.push(id);lset('fr_liked',x);drawPacks()}).catch(er=>{t.disabled=false;toast(er.message)})}

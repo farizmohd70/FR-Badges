@@ -216,6 +216,7 @@ async function submit(req, env) {
   if (/[<>]/.test(name)) return jres({ error: 'The name has characters that are not allowed.' }, 400, req);
   if (!(await tsOk(env, req, j.ts, 'badge'))) return jres({ error: 'The robot check failed. Please try again.' }, 403, req);
   const kh = typeof j.kh === 'string' && /^[0-9a-f]{64}$/.test(j.kh) ? j.kh : '';
+  const u = typeof j.u === 'string' && /^[0-9a-f]{12}$/.test(j.u) ? j.u : '';
   let png; try { png = b64d(String(j.png || '')); } catch (e) { return jres({ error: 'The image is not valid.' }, 400, req); }
   if (png.length < 100 || png.length > 90000) return jres({ error: 'The image is too big. Keep it under 90 KB.' }, 400, req);
   const sig = [137, 80, 78, 71, 13, 10, 26, 10];
@@ -235,7 +236,7 @@ async function submit(req, env) {
     let list; try { list = JSON.parse(new TextDecoder().decode(b64d(meta.content.replace(/\n/g, '')))); } catch (e) { return jres({ error: 'The community list is damaged.' }, 502, req); }
     if (list.badges.some(b => b.id === id)) return jres({ id, url: C_RAW + 'badges/' + id + '.png', n: name, p: pat, g: grp, existed: true }, 200, req);
     if (list.badges.length >= 3000) return jres({ error: 'The community list is full.' }, 503, req);
-    list.badges.unshift({ id, n: name, p: pat, g: grp, t: Math.floor(Date.now() / 1000), w, h, ...(kh ? { o: kh } : {}) });
+    list.badges.unshift({ id, n: name, p: pat, g: grp, t: Math.floor(Date.now() / 1000), w, h, ...(kh ? { o: kh } : {}), ...(u ? { u } : {}) });
     const up = await gh(env, '/contents/index.json', { method: 'PUT', body: JSON.stringify({ message: 'List community badge ' + id, sha: meta.sha, content: toB64(new TextEncoder().encode(JSON.stringify(list))) }) });
     if (up.ok) return jres({ id, url: C_RAW + 'badges/' + id + '.png', n: name, p: pat, g: grp }, 200, req);
     if (up.status !== 409 && up.status !== 422) break;
@@ -392,6 +393,7 @@ async function packFinish(req, env) {
   const shas = j.shas && typeof j.shas === 'object' ? j.shas : {};
   if (!ids.every(i => /^[0-9a-f]{40}$/.test(String(shas[byId[i].f] || '')))) return jres({ error: 'Some images did not upload. Try again.' }, 400, req);
   const kh = typeof j.kh === 'string' && /^[0-9a-f]{64}$/.test(j.kh) ? j.kh : '';
+  const u = typeof j.u === 'string' && /^[0-9a-f]{12}$/.test(j.u) ? j.u : '';
   const files = ids.map(i => byId[i].f), prev = (Array.isArray(j.prev) ? j.prev : []).filter(f => files.includes(f)).slice(0, 6);
   const name = j.n.trim(), pid = tk.id;
   const man = manifest(ids.map(i => ({ b: byId[i], style: 0, url: C_RAW + 'packs/' + pid + '/' + byId[i].f })));
@@ -400,7 +402,7 @@ async function packFinish(req, env) {
       const list = await readPacks(env);
       if (list.some(p => p.id === pid)) return jres({ error: 'That pack was already published.' }, 409, req);
       if (list.length >= MAX_PACKS) return jres({ error: 'The community has reached its pack limit for now.' }, 503, req);
-      list.unshift({ id: pid, n: name, c: ids.length, t: Math.floor(Date.now() / 1000), prev, ...(kh ? { o: kh } : {}) });
+      list.unshift({ id: pid, n: name, c: ids.length, t: Math.floor(Date.now() / 1000), prev, ...(kh ? { o: kh } : {}), ...(u ? { u } : {}) });
       return files.map(f => ({ path: 'packs/' + pid + '/' + f, mode: '100644', type: 'blob', sha: shas[f] }))
         .concat([{ path: 'packs/' + pid + '/badges.json', mode: '100644', type: 'blob', content: JSON.stringify(man) }, { path: 'packs.json', mode: '100644', type: 'blob', content: JSON.stringify(list) }]);
     }, 'Add style pack ' + pid);

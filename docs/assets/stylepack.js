@@ -194,7 +194,7 @@ $('#pub').onclick=async()=>{const res=$('#res');res.hidden=false;
    const r=await post('/pack/blobs',{token:st.token,files:g.files.slice(i,i+24).map(f=>({f:f.f,png:b64(f.data)}))});r.shas.forEach(x=>shas[x.f]=x.sha)}
   prog(g.files.length,g.files.length,'Publishing the pack');
   const prev=g.files.slice(0,6).map(f=>f.f);
-  const fin=await post('/pack/finish',{token:st.token,n:name,ids:g.ids,shas,prev,kh});
+  const fin=await post('/pack/finish',{token:st.token,n:name,ids:g.ids,shas,prev,kh,u:await window.frUid()});
   try{const o=JSON.parse(localStorage.getItem('fr_owned')||'{}');o[st.id]=key;localStorage.setItem('fr_owned',JSON.stringify(o))}catch(e){}
   prog(1,1,'Done.');tsTok='';try{window.turnstile&&window.turnstile.reset()}catch(e){}
   res.className='pr ok';res.innerHTML=`Shared. Your pack is on the Community page as <b>${esc(name)}</b>. Pack link for Nuvio: <code style="word-break:break-all">${esc(fin.url)}</code> <button class="b2 sm" id="pc">Copy link</button> You can delete it later from the Community page in this browser.`;
