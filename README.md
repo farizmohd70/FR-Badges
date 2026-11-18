@@ -4,12 +4,12 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/for-Nuvio-8b5cf6?style=for-the-badge" alt="for Nuvio">
-  <img src="https://img.shields.io/badge/badges-733-0ea5e9?style=for-the-badge" alt="badges 733">
+  <img src="https://img.shields.io/badge/badges-1135-0ea5e9?style=for-the-badge" alt="badges 1135">
   <img src="https://img.shields.io/badge/styles-14-ec4899?style=for-the-badge" alt="styles 14">
   <img src="https://img.shields.io/badge/languages-134-10b981?style=for-the-badge" alt="languages 134">
 </p>
 
-<p align="center"><b>Modern badge pack for Nuvio.</b><br>733 badges in 14 styles: hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, streaming platforms, debrid services, 134 languages and 134 subtitle badges. Every style has a ready-to-use filter manifest, and the website lets you build your own pack.</p>
+<p align="center"><b>Modern badge pack for Nuvio.</b><br>1135 badges in 14 styles: hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, streaming platforms, debrid services, 134 languages, 134 subtitle badges and dubbed and short-name versions for every language. Every style has a ready-to-use filter manifest, and the website lets you build your own pack.</p>
 
 <p align="center"><a href="https://farizmohd70.github.io/FR-Badges/"><b>Website</b></a> · <a href="https://farizmohd70.github.io/FR-Badges/make.html"><b>Make your pack</b></a></p>
 
@@ -91,10 +91,15 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 | Streaming Platforms | 46 | Netflix, Prime Video, Apple TV+, Disney+, Max, Hulu, Paramount+, Peacock, YouTube, JioHotstar, ZEE5, Crunchyroll, BBC iPlayer, Canal+, Tubi, MUBI and 30 more |
 | Debrid & Caching | 5 | Real-Debrid, AllDebrid, Premiumize, TorBox, Debrid-Link |
 | Languages | 134 | 134 languages with native names and flags, including regional versions (English US/UK, Portuguese Brazil, Spanish Spain, French Canada, Chinese Simplified), and lesser-used ones like Javanese, Cebuano, Amharic, Somali, Bhojpuri, Sanskrit, Igbo, Xhosa, Scottish Gaelic and Maori |
+| Language Codes | 134 | Every language as a short code, such as ENG or HIN |
+| Language Names | 134 | Every language as its full name, such as ENGLISH or HINDI |
+| Dubbed Short | 134 | Short code and DUB for every language, such as HIN \| DUB |
+| Dubbed Full | 134 | Full language name and DUB for every language, such as HINDI \| DUB |
 | Audio & Subs Flags | 11 | Multi/Dual Audio, Dubbed, Multi-Dub, Subbed, Original Audio, Multi-Sub, Subpack, CC, Commentary, Audio Description |
-| Subtitles | 134 | One subtitle badge for every language, such as "Hindi Subs" (full language name only) |
+| Subtitles | 134 | One subtitle badge for every language, such as "Hindi Sub" (full language name) |
+| Subtitles Short | 134 | The same subtitles with a short code, such as HIN SUB |
 
-**Total: 733 badges per style.** The ready-made manifests (`badges.json` and the style files) are the Lite pack with 219 of them. The rest are available when you build your own pack on the [website](https://farizmohd70.github.io/FR-Badges/make.html).
+**Total: 1135 badges per style.** The ready-made manifests (`badges.json` and the style files) are the Lite pack with 219 of them. The rest are available when you build your own pack on the [website](https://farizmohd70.github.io/FR-Badges/make.html).
 
 </details>
 
