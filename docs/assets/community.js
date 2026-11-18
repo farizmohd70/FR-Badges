@@ -54,9 +54,9 @@ $('#list').addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(
 /* style packs: shown as one card per pack */
 const PLINK=id=>BASE+'packs/'+id+'/badges.json';
 function packCard(p){const own=!!owned()[p.id],can=own||!!ADMIN,liked=ls('fr_liked','[]').includes(p.id),rep=ls('fr_reported','[]').includes(p.id);
- return `<div class="cm-card pkc" data-id="${p.id}"><div class="pkstrip">${(p.prev||[]).map(f=>`<img loading="lazy" src="${BASE}packs/${p.id}/${esc(f)}" alt="">`).join('')}</div>
+ return `<div class="cm-card pkc" data-id="${p.id}"><div class="pkstrip" data-a="pview" title="See the whole pack">${(p.prev||[]).map(f=>`<img loading="lazy" src="${BASE}packs/${p.id}/${esc(f)}" alt="">`).join('')}</div>
  <div class="n">${esc(p.n)}</div><div class="hint" style="margin:0">${p.c} badges. Style pack</div>${who(p)}
- <div class="bar"><button class="b2 sm pri" data-a="plink">Copy pack link</button></div>
+ <div class="bar"><button class="b2 sm pri" data-a="pview">See all badges</button><button class="b2 sm" data-a="plink">Copy pack link</button></div>
  <div class="bar cm-sub">${hasStats?`<button class="b2 sm${liked?' on':''}" data-a="like"${liked?' disabled':''}>&#9829; ${likes(p)}</button>`:''}${can?`<button class="b2 sm" data-a="pdel">${arm==='pdel'+p.id?'Tap again to delete':'Delete'}</button>`:''}${hasStats&&!own?`<button class="lk" data-a="rep"${rep?' disabled':''}>${rep?'Reported':arm==='rep'+p.id?'Tap again to report':'Report'}</button>`:''}${ADMIN&&hasStats?`<span class="hint" style="margin:0">${reps(p)} reports</span>`:''}</div></div>`}
 function drawPacks(){const q=$('#q').value.trim().toLowerCase(),so=$('#sort').value;
  let l=packs.filter(p=>(!q||p.n.toLowerCase().includes(q))&&(!maker||p.u===maker)&&(ADMIN||reps(p)<HIDE_AT));
@@ -65,12 +65,34 @@ function drawPacks(){const q=$('#q').value.trim().toLowerCase(),so=$('#sort').va
  $('#note').textContent=packs.length?(l.length?'':'Nothing found. Try a different word.'):'No style packs yet. Be the first to make one.';renderAdm()}
 $('#plist').addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t)return;const id=t.closest('[data-id]').dataset.id,a=t.dataset.a;
  if(a==='plink')P_copy(PLINK(id));
+ else if(a==='pview')openPack(id);
  else if(a==='like'){t.disabled=true;post('/like',{id}).then(j=>{S[id]=[j.l,j.r];const x=ls('fr_liked','[]');x.push(id);lset('fr_liked',x);drawPacks()}).catch(er=>{t.disabled=false;toast(er.message)})}
  else if(a==='rep'){if(arm!=='rep'+id){arm='rep'+id;drawPacks();setTimeout(()=>{if(arm==='rep'+id){arm='';drawPacks()}},3000);return}
   arm='';post('/report',{id}).then(j=>{S[id]=[j.l,j.r];const x=ls('fr_reported','[]');x.push(id);lset('fr_reported',x);drawPacks();toast('Thanks. We will look at it.')}).catch(er=>{drawPacks();toast(er.message)})}
  else if(a==='pdel'){if(arm!=='pdel'+id){arm='pdel'+id;drawPacks();setTimeout(()=>{if(arm==='pdel'+id){arm='';drawPacks()}},3000);return}
   arm='';post('/pack/delete',{id,k:ADMIN||owned()[id]}).then(()=>{packs=packs.filter(x=>x.id!==id);const o=owned();delete o[id];lset('fr_owned',o);drawPacks();toast('Deleted.')}).catch(er=>{drawPacks();toast(er.message)})}});
 function P_copy(t){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Pack link copied. Paste it into Nuvio.')).catch(()=>toast('Could not copy'))}
+
+/* whole pack preview */
+let pk=null,pkv='all';
+const SK=(n)=>`<div class="sk"><i class="w1"></i><i class="w2"></i><div class="skb">${n}</div></div>`;
+function pkRender(){const q=$('#pmq').value.trim().toLowerCase(),b=$('#pmb');if(!pk){return}
+ const f=pk.f.filter(x=>!q||(x.name||'').toLowerCase().includes(q)||x.id.toLowerCase().includes(q));
+ if(!f.length){b.innerHTML='<p class="hint">Nothing found.</p>';return}
+ if(pkv==='nuvio'){const src=f.slice(0,48),cards=[];for(let i=0;i<src.length;i+=5)cards.push(SK(src.slice(i,i+5).map(x=>`<img loading="lazy" src="${esc(x.imageURL)}" alt="${esc(x.name||'')}" title="${esc(x.name||'')}">`).join('')));
+  b.innerHTML='<p class="hint">How the badges sit on a Nuvio stream card. Nuvio shows them 16dp tall with a small gap, under the title lines.</p><div class="ncs">'+cards.join('')+'</div>'+(f.length>48?`<p class="hint">Showing the first 48 of ${f.length}. Use search to find others.</p>`:'');return}
+ const gn2={};(pk.g||[]).forEach(g=>gn2[g.id]=g.name);const by={},ord=[];f.forEach(x=>{const g=x.groupId||'';if(!by[g]){by[g]=[];ord.push(g)}by[g].push(x)});
+ b.innerHTML=ord.map(g=>`<h4 class="shd">${esc(gn2[g]||'Badges')} (${by[g].length})</h4><div class="pm-g">${by[g].map(x=>`<figure><img loading="lazy" src="${esc(x.imageURL)}" alt="${esc(x.name||'')}"><figcaption>${esc(x.name||x.id)}</figcaption></figure>`).join('')}</div>`).join('')}
+function closePack(){$('#pm').hidden=true;document.body.style.overflow='';pk=null}
+function openPack(id){const p=packs.find(x=>x.id===id);if(!p)return;pk=null;pkv='all';$('#pmq').value='';
+ [...document.querySelectorAll('#pm [data-pv]')].forEach(b=>b.classList.toggle('on',b.dataset.pv==='all'));
+ $('#pmn').textContent=p.n;$('#pmc').textContent=p.c+' badges. Style pack';$('#pmb').innerHTML='<p class="hint">Loading the pack.</p>';
+ $('#pm').hidden=false;document.body.style.overflow='hidden';$('#pmx').focus();$('#pml').onclick=()=>P_copy(PLINK(id));
+ fetch(PLINK(id)).then(r=>{if(!r.ok)throw 0;return r.json()}).then(m=>{pk={f:(m.filters||[]).filter(x=>x&&x.id&&/^https:\/\//.test(x.imageURL||'')),g:m.groups||[]};$('#pmc').textContent=pk.f.length+' badges. Style pack';pkRender()}).catch(()=>{$('#pmb').innerHTML='<p class="hint warn">Could not load this pack. Try again in a moment.</p>'})}
+$('#pmx').onclick=closePack;$('#pm').addEventListener('click',e=>{if(e.target.id==='pm')closePack()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#pm').hidden)closePack()});
+$('#pmq').oninput=pkRender;
+document.querySelectorAll('#pm [data-pv]').forEach(b=>b.onclick=()=>{pkv=b.dataset.pv;document.querySelectorAll('#pm [data-pv]').forEach(x=>x.classList.toggle('on',x===b));pkRender()});
 function setView(v2){view=v2;$$('#vt [data-v]').forEach(b=>{const on=b.dataset.v===v2;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
  $('#list').hidden=v2!=='badges';$('#plist').hidden=v2!=='packs';const ui=$('#cat')._ui;if(ui)ui.hidden=v2!=='badges';
  $('#q').placeholder=v2==='packs'?'Search packs':'Search badges';v2==='packs'?drawPacks():draw()}

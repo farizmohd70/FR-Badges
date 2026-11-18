@@ -6,10 +6,12 @@ const esc=s=>String(s).replace(/[&<>"]/g,k=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const toast=m=>P.toast(m);
 const v=id=>{const e=$('#'+id);return e.type==='checkbox'?e.checked:e.value};
 const set=(id,x)=>{const e=$('#'+id);if(e.type==='checkbox')e.checked=!!x;else e.value=x};
-const LOOK=['font','wt','sz','ls','fg','cs','ics','ln','s2','tow','toc','sh','shs','gw','gc','tr','bg1','bg2','gd','bgo','gl','bc','bw','bgr','bc2','rd','px'];
+const LOOK=['font','wt','sz','ls','fg','cs','ics','ln','s2','tow','toc','sh','shs','gw','gc','tr','bg1','bg2','gd','bgo','gl','bc','bw','bgr','bc2','rd','px','mg'];
 
 /* ---------- labels ---------- */
-function label(id){const g=LB.b;
+let OV={};
+function label(id){const r=baseLabel(id),ov=OV[id];if(!ov)return r;const x={...r};if(ov.m!==undefined){x.main=ov.m;x.eb=''}if(ov.s!==undefined)x.sub=ov.s;if(ov.i==='0')x.ic=-1;return x}
+function baseLabel(id){const g=LB.b;
  if(g[id]){const [eb,main,sub,ic]=g[id];return{eb,main,sub,ic}}
  if(id.endsWith('-1l')&&g[id.slice(0,-3)]){const b=g[id.slice(0,-3)];return{eb:'',main:(b[0]?b[0]+' ':'')+b[1],sub:b[2],ic:b[3]}}
  if(id.endsWith('-code')&&g[id.slice(0,-5)])return{eb:'',main:g[id.slice(0,-5)][1],sub:'',ic:-1};
@@ -22,20 +24,21 @@ function iconImg(ic,fg,bg){const k=ic+'|'+fg+'|'+bg;if(iconCache.has(k))return i
  iconCache.set(k,p);return p}
 
 /* ---------- drawing ---------- */
-const look=()=>{const o={};LOOK.forEach(k=>o[k]=v(k));['sz','ls','s2','tow','shs','gw','bgo','bw','rd','px'].forEach(k=>o[k]=+o[k]);o.sl=o.ln!=='1';o.ics=o.ics==='1';return o};
-async function drawBadge(cv,id,L){
- const lb=label(id),one=!L.sl,txt=((lb.eb?lb.eb+' ':'')+lb.main+(one&&lb.sub?' '+lb.sub:''))||' ';
- const o={...L,txt,sym:'',t2:!one&&lb.sub?lb.sub:'',ic:'',imz:56};
+const look=()=>{const o={};LOOK.forEach(k=>o[k]=v(k));['sz','ls','s2','tow','shs','gw','bgo','bw','rd','px','mg'].forEach(k=>o[k]=+o[k]);o.sl=o.ln!=='1';o.ics=o.ics==='1';return o};
+async function drawBadge(cv,id,L,probe){
+ const lb=label(id),ov=OV[id]||{},one=!L.sl,txt=((lb.eb?lb.eb+' ':'')+lb.main+(one&&lb.sub?' '+lb.sub:''))||' ';
+ const o={...L,txt,sym:'',t2:!one&&lb.sub?lb.sub:'',ic:'',imz:56};if(ov.k)o.sz=Math.max(8,Math.round(L.sz*ov.k/100));
  try{await Promise.all([document.fonts.load(`${o.wt} 40px "${o.font}"`,txt),document.fonts.load(`400 40px "${o.font}"`,'A')])}catch(e){}
  const ii=L.ics&&lb.ic>=0?await iconImg(lb.ic,L.fg,L.bg1):null;
- return FRD.draw(cv,o,null,ii)}
+ return FRD.draw(cv,o,null,ii,probe)}
 const SAMPLE=['hero-remux','res-1080p','hero-dolby-atmos','dr-hdr10','video-hevc','lang-en','flag-dubbed','audio-ddp'].filter(i=>byId[i]);
 let pT=0,busy=0;
 function preview(){clearTimeout(pT);pT=setTimeout(async()=>{const my=++busy,L=look(),box=$('#pvs');
  if(!box.children.length)box.innerHTML=SAMPLE.map(()=>'<canvas></canvas>').join('');
  const cvs=[...box.children];
- for(let i=0;i<SAMPLE.length;i++){if(my!==busy)return;await drawBadge(cvs[i],SAMPLE[i],L)}
- $('#meta').textContent='Sample badges. Your look is used for every badge in the pack.'},60)}
+ let bad=0;for(let i=0;i<SAMPLE.length;i++){if(my!==busy)return;const r=await drawBadge(cvs[i],SAMPLE[i],L,true);if(r&&r.clip)bad++}
+ $('#meta').textContent='Sample badges. Your look is used for every badge in the pack.';clipNote(bad,SAMPLE.length)},60)}
+function clipNote(bad,n){const w=$('#cw');if(!w)return;w.hidden=!bad;if(bad)w.textContent=`Edge clipping: glow, outline or shadow is cut off at the edge on ${bad} of ${n} sample badges. Raise "Margin around the badge" on the Shape tab, or lower the glow or outline.`}
 
 
 /* ---------- order ---------- */
@@ -49,7 +52,7 @@ $('#ord').addEventListener('change',()=>{const m=v('ord');
  toast('Order updated.')});
 /* ---------- tabs, controls ---------- */
 function tab(t){$$('.cr-tabs [data-t]').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});$$('.cr-p').forEach(p=>p.classList.toggle('on',p.dataset.p===t));
- const bar=$('.cr-tabs'),a=bar.querySelector('.on');if(a)bar.scrollLeft=a.offsetLeft-12;if(t==='make')refreshMake()}
+ const bar=$('.cr-tabs'),a=bar.querySelector('.on');if(a)bar.scrollLeft=a.offsetLeft-12;if(t==='make'){refreshMake();quickCheck()}}
 $$('.cr-tabs [data-t]').forEach(b=>b.onclick=()=>tab(b.dataset.t));
 $$('[data-go]').forEach(b=>b.onclick=()=>{tab(b.dataset.go);const y=$('.cr-tabs').getBoundingClientRect().top+scrollY-$('#pvbox').offsetHeight-12;scrollTo({top:Math.max(0,y),behavior:'smooth'})});
 $('#font').innerHTML=FONTS.map(f=>`<option value="${f}" style="font-family:'${f}'">${f}</option>`).join('');
@@ -57,20 +60,20 @@ const pf=p=>({...DEF,...p});
 $('#pre').innerHTML=PRE.map((p,i)=>{const q=pf(p),bgc=q.tr?'transparent':(q.gd==='none'?q.bg1:`linear-gradient(${q.gd==='h'?'90deg':'180deg'},${q.bg1},${q.bg2})`);return `<button class="b2" data-p="${i}" style="background:${bgc};color:${q.fg};border:${q.bw?'2px solid '+q.bc:'1px solid var(--line)'}">${esc(p.n)}</button>`}).join('');
 $('#pre').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;const q=pf(PRE[+b.dataset.p]);Object.keys(DEF).forEach(k=>{if(LOOK.includes(k))set(k,q[k])});update();save()};
 $('#pxr').onclick=()=>{set('px',72);update();save()};
-const vals=()=>{const m={sz:'szv',ls:'lsv',bw:'bwv',rd:'rdv',px:'pxv',bgo:'bgov',tow:'towv',s2:'s2v',shs:'shsv',gw:'gwv'};Object.keys(m).forEach(k=>{$('#'+m[k]).textContent=v(k)+(k==='bgo'||k==='s2'?'%':'')})};
+const vals=()=>{const m={sz:'szv',ls:'lsv',bw:'bwv',rd:'rdv',px:'pxv',mg:'mgv',bgo:'bgov',tow:'towv',s2:'s2v',shs:'shsv',gw:'gwv'};Object.keys(m).forEach(k=>{$('#'+m[k]).textContent=v(k)+(k==='bgo'||k==='s2'?'%':'')})};
 function update(){vals();preview();genKey=''}
 LOOK.forEach(k=>{const e=$('#'+k);e.addEventListener('input',()=>{update();save()});e.addEventListener('change',()=>{update();save()})});
 
 /* ---------- saved look and picks (this browser) ---------- */
-function save(){try{const o={};LOOK.forEach(k=>o[k]=v(k));localStorage.setItem('fr_sp',JSON.stringify({look:o,sel:[...P.S.sel],name:v('pn')}))}catch(e){}}
+function save(){try{const o={};LOOK.forEach(k=>o[k]=v(k));localStorage.setItem('fr_sp',JSON.stringify({look:o,sel:[...P.S.sel],name:v('pn'),ov:OV}))}catch(e){}}
 function restore(){try{const s=JSON.parse(localStorage.getItem('fr_sp')||'null');if(!s)return false;LOOK.forEach(k=>{if(s.look&&s.look[k]!==undefined)set(k,s.look[k])});
- if(Array.isArray(s.sel)){const ok=s.sel.filter(i=>byId[i]);if(ok.length)P.commit(()=>{P.S.sel=new Set(ok)},'all')}if(s.name)set('pn',s.name);return true}catch(e){return false}}
+ if(Array.isArray(s.sel)){const ok=s.sel.filter(i=>byId[i]);if(ok.length)P.commit(()=>{P.S.sel=new Set(ok)},'all')}if(s.name)set('pn',s.name);if(s.ov&&typeof s.ov==='object')for(const[i,x]of Object.entries(s.ov))if(byId[i]&&x&&typeof x==='object')OV[i]={...(typeof x.m==='string'?{m:x.m.slice(0,30)}:{}),...(typeof x.s==='string'?{s:x.s.slice(0,30)}:{}),...(+x.k>=50&&+x.k<=130&&+x.k!==100?{k:+x.k}:{}),...(x.i==='0'?{i:'0'}:{})};return true}catch(e){return false}}
 
 /* ---------- badge picking ---------- */
 const GROUPS=CAT.groups;
 $('#spre').innerHTML=Object.keys(P.PRESETS).map(k=>`<button class="b2 sm" data-k="${k}" title="${esc(P.PRESETS[k].desc)}">${esc(P.PRESETS[k].name)}</button>`).join('');
 $('#spre').onclick=e=>{const b=e.target.closest('[data-k]');if(!b)return;P.preset(b.dataset.k);save()};
-$('#grp').innerHTML=GROUPS.map(g=>{const ids=CAT.badges.filter(b=>b.g===g.id);return `<details class="sg" data-g="${g.id}"><summary><b>${esc(g.name)}</b> <span class="sc"></span></summary><div class="bar sgb"><button class="b2 sm" data-a="all">Pick all</button><button class="b2 sm" data-a="none">Pick none</button></div><div class="sl">${ids.map(b=>`<label class="sr" data-n="${esc((b.n+' '+b.id).toLowerCase())}"><input type="checkbox" data-id="${b.id}"> <span>${esc(b.n)}</span></label>`).join('')}</div></details>`}).join('');
+$('#grp').innerHTML=GROUPS.map(g=>{const ids=CAT.badges.filter(b=>b.g===g.id);return `<details class="sg" data-g="${g.id}"><summary><b>${esc(g.name)}</b> <span class="sc"></span></summary><div class="bar sgb"><button class="b2 sm" data-a="all">Pick all</button><button class="b2 sm" data-a="none">Pick none</button></div><div class="sl">${ids.map(b=>`<label class="sr" data-n="${esc((b.n+' '+b.id).toLowerCase())}"><input type="checkbox" data-id="${b.id}"> <span>${esc(b.n)}</span><button type="button" class="ed" data-e="${b.id}" title="Edit this badge">Edit</button></label>`).join('')}</div></details>`}).join('');
 function refreshSel(){const tot=P.S.sel.size;$('#cnt').innerHTML=`<b>${tot}</b> badges picked`;
  $$('#grp input[data-id]').forEach(i=>i.checked=P.S.sel.has(i.dataset.id));
  $$('#grp .sg').forEach(d=>{const ids=[...d.querySelectorAll('input')].map(i=>i.dataset.id),n=ids.filter(i=>P.S.sel.has(i)).length;d.querySelector('.sc').textContent=n+' of '+ids.length})}
@@ -131,12 +134,12 @@ $('#pn').addEventListener('input',()=>{if(!$('#gf').dataset.t)set('gf',slug(v('p
 const prog=(i,n,msg)=>{$('#prg').hidden=false;$('#prgb').style.width=(n?i/n*100:0)+'%';$('#prgt').textContent=msg||''};
 const toBlob=cv=>new Promise(r=>cv.toBlob(r,'image/png'));
 async function generate(){
- const ids=P.ordered().filter(b=>!b._com),L=look(),key=JSON.stringify([L,ids.map(b=>b.id),imgH(),v('fq')]);
+ const ids=P.ordered().filter(b=>!b._com),L=look(),key=JSON.stringify([L,ids.map(b=>b.id),imgH(),v('fq'),OV]);
  if(gen&&key===genKey)return gen;
- const cv=document.createElement('canvas'),out=document.createElement('canvas'),files=[];
+ const cv=document.createElement('canvas'),out=document.createElement('canvas'),files=[],clipped=[];
  for(let i=0;i<ids.length;i++){
   prog(i,ids.length,`Drawing ${i+1} of ${ids.length}`);
-  const b=ids[i];await drawBadge(cv,b.id,L);
+  const b=ids[i],r=await drawBadge(cv,b.id,L,true);if(r&&r.clip)clipped.push(b.n);
   let src=cv;const h=imgH();
   if(h<240){out.height=h;out.width=Math.max(1,Math.round(cv.width*h/240));const c=out.getContext('2d');c.imageSmoothingQuality='high';c.clearRect(0,0,out.width,out.height);c.drawImage(cv,0,0,out.width,out.height);src=out}
   let data=null;if(!v('fq')){try{data=await quantPng(src)}catch(e){data=null}}
@@ -144,7 +147,9 @@ async function generate(){
   files.push({id:b.id,f:b.f,data});
  }
  prog(ids.length,ids.length,'All images are ready.');
- genKey=key;gen={files,ids:ids.map(b=>b.id)};return gen}
+ clipReport(clipped,ids.length);
+ genKey=key;gen={files,ids:ids.map(b=>b.id),clipped};return gen}
+function clipReport(c,n){const e=$('#ckr');if(!e)return;e.className=c.length?'hint warn':'hint';e.textContent=c.length?`Edge clipping: ${c.length} of ${n} badges have glow, outline or shadow cut off at the edge (${c.slice(0,4).join(', ')}${c.length>4?' and more':''}). Raise "Margin around the badge" on the Shape tab and make again.`:(n?'No edge clipping found.':'')}
 
 function zipBlob(files){const enc=new TextEncoder(),parts=[],cd=[];let off=0,cds=0;
  files.forEach(f=>{const nm=enc.encode(f.name),crc=crc32(f.data),sz=f.data.length;
@@ -202,7 +207,40 @@ $('#pub').onclick=async()=>{const res=$('#res');res.hidden=false;
  catch(e){res.className='pr bad';res.textContent=e.message||'Something went wrong.'}
  running=false;$('#pub').disabled=false};
 
+
+/* ---------- edit one badge ---------- */
+let editId='';
+const baseOf=id=>baseLabel(id);
+function markEdited(){$$('#grp .sr').forEach(r=>{const id=r.querySelector('input').dataset.id,on=!!OV[id];r.classList.toggle('edd',on);r.querySelector('.ed').textContent=on?'Edited':'Edit'})}
+async function drawEdit(){if(!editId)return;await drawBadge($('#bec'),editId,look(),true)}
+function openEdit(id){editId=id;const b=baseOf(id),o=label(id),ov=OV[id]||{};
+ $('#ben').textContent=byId[id].n;$('#bem').value=(ov.m!==undefined?ov.m:((b.eb?b.eb+' ':'')+b.main));$('#bes').value=ov.s!==undefined?ov.s:b.sub;
+ $('#bek').value=ov.k||100;$('#bekv').textContent=($('#bek').value)+'%';$('#bei').value=ov.i||'';
+ $('#be').hidden=false;drawEdit();$('#be').scrollIntoView({block:'center',behavior:'smooth'})}
+function changed(){if(!editId)return;const b=baseOf(editId),m=$('#bem').value,s=$('#bes').value,k=+$('#bek').value,i=$('#bei').value,x={};
+ if(m!==((b.eb?b.eb+' ':'')+b.main))x.m=m;if(s!==b.sub)x.s=s;if(k!==100)x.k=k;if(i==='0')x.i='0';
+ if(Object.keys(x).length)OV[editId]=x;else delete OV[editId];
+ $('#bekv').textContent=k+'%';markEdited();genKey='';drawEdit();save()}
+['bem','bes','bek','bei'].forEach(i=>{$('#'+i).addEventListener('input',changed);$('#'+i).addEventListener('change',changed)});
+$('#ber').onclick=()=>{if(!editId)return;delete OV[editId];markEdited();genKey='';openEdit(editId);save()};
+$('#bed').onclick=()=>{$('#be').hidden=true;editId=''};
+$('#grp').addEventListener('click',e=>{const b=e.target.closest('[data-e]');if(!b)return;e.preventDefault();e.stopPropagation();openEdit(b.dataset.e)},true);
+LOOK.forEach(k=>{const e=$('#'+k);e.addEventListener('input',drawEdit);e.addEventListener('change',drawEdit)});
+
+/* ---------- quick edge check on the Make tab ---------- */
+let qT=0;
+function quickCheck(){clearTimeout(qT);qT=setTimeout(async()=>{const L=look(),all=P.ordered().filter(b=>!b._com);if(!all.length){clipReport([],0);return}
+ const len=b=>{const l=label(b.id);return(l.main+(l.sub||'')).length},pickIds=new Set(all.slice().sort((a,b)=>len(b)-len(a)).slice(0,12).map(b=>b.id));
+ const step=Math.max(1,Math.floor(all.length/28));all.forEach((b,i)=>{if(i%step===0)pickIds.add(b.id)});
+ const cv=document.createElement('canvas'),bad=[];let n=0;
+ for(const id of pickIds){const r=await drawBadge(cv,id,L,true);n++;if(r&&r.clip)bad.push(byId[id].n)}
+ clipReport(bad,n);if(!bad.length)$('#ckr').textContent=`Checked ${n} badges for edge clipping: none found.`},150)}
+/* ---------- Nuvio view of the preview ---------- */
+(()=>{let on=true;try{on=localStorage.getItem('fr_nv')!=='0'}catch(e){}
+ const ap=()=>{$('#pvs').classList.toggle('nv',on);$('#nv').setAttribute('aria-pressed',on);$('#nv').classList.toggle('pri',on)};
+ $('#nv').onclick=()=>{on=!on;try{localStorage.setItem('fr_nv',on?'1':'0')}catch(e){}ap()};ap()})();
 /* ---------- start ---------- */
 if(!restore())P.preset('essentials');
-refreshSel();vals();preview();refreshMake();
+refreshSel();markEdited();vals();preview();refreshMake();
 })();
+

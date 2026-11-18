@@ -4,7 +4,7 @@
 <title>Community made · FR Badges</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261143">
+<link rel="stylesheet" href="assets/site.css?v=20261145">
 </head><body>
 <div class="w"><div class="top"><a class="logo" href="./"><i></i>FR Badges</a>
  <nav><a href="create">Make a badge</a><a href="stylepack">Make a style pack</a><a href="make">Make a pack</a></nav></div></div>
@@ -17,9 +17,14 @@
  <div id="plist" class="cm-grid" hidden></div>
  <p class="hint" id="note" style="margin-top:14px"></p>
 </main>
+<div class="pm" id="pm" hidden role="dialog" aria-modal="true" aria-label="Style pack preview"><div class="pm-c">
+ <div class="pm-h"><div><b id="pmn"></b><div class="hint" id="pmc" style="margin:0"></div></div><button type="button" class="b2 sm" id="pmx">Close</button></div>
+ <div class="bar"><button type="button" class="b2 sm pri" id="pml">Copy pack link</button><button type="button" class="b2 sm on" data-pv="all">All badges</button><button type="button" class="b2 sm" data-pv="nuvio">In Nuvio</button></div>
+ <input type="search" id="pmq" placeholder="Search this pack" aria-label="Search this pack">
+ <div class="pm-body" id="pmb"></div></div></div>
 <div id="toast" role="status"></div>
-<script src="assets/ui.js?v=20261143"></script>
-<script src="assets/config.js?v=20261143"></script>
+<script src="assets/ui.js?v=20261145"></script>
+<script src="assets/config.js?v=20261145"></script>
 <script src="assets/catalog.js"></script>
-<script src="assets/community.js?v=20261143"></script>
+<script src="assets/community.js?v=20261145"></script>
 </body></html>

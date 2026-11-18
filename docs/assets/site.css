@@ -327,3 +327,27 @@ h2{margin-bottom:8px}
 .shd{margin:6px 0 0;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:700;border-top:1px solid var(--line);padding-top:10px}
 .cr-p>.shd:first-child{border-top:0;padding-top:0;margin-top:0}
 .sp-d>summary{cursor:pointer;font-weight:700;font-size:15px;margin-bottom:8px}
+.sr .ed{margin-left:auto;font-size:12px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--mute);cursor:pointer}
+.sr.edd .ed{color:var(--ac);border-color:var(--ac)}
+#be{display:grid;gap:8px}
+#be .sp-pv canvas{height:clamp(28px,8vw,44px)!important;max-width:100%}
+/* pack preview and Nuvio skeleton */
+.sk{background:#241d1a;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;display:grid;gap:8px}
+.sk i{display:block;height:9px;border-radius:5px;background:#3a322d}
+.sk .w1{width:62%}.sk .w2{width:40%;height:8px}
+.skb{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:4px}
+.skb img{height:24px;width:auto;outline:1px dashed rgba(255,255,255,.2);outline-offset:3px}
+#pvs.nv{position:relative;background:#241d1a;border-radius:14px;padding:44px 12px 12px;gap:8px}
+#pvs.nv::before,#pvs.nv::after{content:'';position:absolute;left:14px;border-radius:5px;background:#3a322d}
+#pvs.nv::before{top:14px;width:62%;height:9px}
+#pvs.nv::after{top:29px;width:40%;height:8px}
+#pvs.nv canvas{outline:1px dashed rgba(255,255,255,.2);outline-offset:3px}
+.pm{position:fixed;inset:0;background:rgba(0,0,0,.62);display:grid;place-items:center;z-index:60;padding:14px}
+.pm-c{background:var(--bg);border:1px solid var(--line);border-radius:16px;width:min(780px,100%);max-height:90vh;display:grid;grid-template-rows:auto auto auto minmax(0,1fr);gap:10px;padding:14px}
+.pm-h{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.pm-body{overflow:auto;min-height:0}
+.pm-g{display:flex;flex-wrap:wrap;gap:8px;background:#241d1a;border-radius:12px;padding:10px}
+.pm-g figure{margin:0;display:grid;gap:4px;justify-items:start}
+.pm-g img{height:26px;width:auto}
+.pm-g figcaption{font-size:10px;color:#a8a29d;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pkstrip[data-a]{cursor:pointer}

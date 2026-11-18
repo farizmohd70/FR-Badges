@@ -44,8 +44,8 @@ const ICO={},STROKE={check:1};
   flame:'M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z'};
  Object.keys(S).forEach(k=>ICO[k]=new Path2D(S[k]))}
 const ICN={star:'Star',sparkle:'Sparkle',heart:'Heart',play:'Play',bolt:'Lightning',check:'Tick',diamond:'Diamond',shield:'Shield',sound:'Sound',screen:'Screen',film:'Film',crown:'Crown',flame:'Flame'};
-function draw(cv,o,img,iimg){
- const ctx=cv.getContext('2d'),fam=`"${o.font}", system-ui, sans-serif`;
+function draw(cv,o,img,iimg,probe){
+ let ctx=cv.getContext('2d'),fam=`"${o.font}", system-ui, sans-serif`;
  const up=s=>o.cs==='u'?s.toUpperCase():s,two=!!(o.t2&&o.t2.trim()),t1=up(o.txt),t2=two?up(o.t2.trim()):'',hasT=!!(t1.trim()||two);
  const padX=+o.px,ls=()=>{try{ctx.letterSpacing=o.ls+'px'}catch(e){}},fnt=s=>`${o.wt} ${s}px ${fam}`;
  const cap=s=>{ctx.font=fnt(s);ls();return ctx.measureText('H').actualBoundingBoxAscent||s*.7};
@@ -62,8 +62,9 @@ function draw(cv,o,img,iimg){
  let size=o.sz,m=lay(size);
  for(let i=0;i<5;i++){let f=1;if(two&&m.bh>H*.78)f=Math.min(f,H*.78/m.bh);if(m.w>H*MAXR)f=Math.min(f,(H*MAXR-padX*2)/(m.w-padX*2)*.99);if(f>=1)break;size=Math.floor(size*f);m=lay(size)}
  const W=Math.min(Math.max(m.w,Math.round(H*MINR)),Math.floor(H*5.7));
- cv.width=W;cv.height=H;
- ctx.clearRect(0,0,W,H);
+ const mg=Math.max(0,Math.min(60,+o.mg||0)),k=mg?(H-2*mg)/H:1,Wf=mg?Math.round(W*k+2*mg):W;
+ cv.width=Wf;cv.height=H;
+ ctx.clearRect(0,0,Wf,H);if(mg)ctx.setTransform(k,0,0,k,mg,mg);
  const bw=+o.bw,r=Math.min(+o.rd,H/2,W/2),ins=bw/2;
  ctx.beginPath();ctx.roundRect(ins,ins,W-bw,H-bw,Math.max(0,r-ins));
  let fill=o.bg1;
@@ -90,7 +91,18 @@ function draw(cv,o,img,iimg){
  if(o.gw>0){ctx.save();ctx.shadowColor=o.gc;ctx.shadowBlur=o.gw;paint();paint();ctx.restore()}
  if(o.sh){ctx.shadowColor=`rgba(0,0,0,${o.shs/100})`;ctx.shadowBlur=H*0.04*(o.shs/35);ctx.shadowOffsetY=H*0.02}
  paint();ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;
- return{W,size}
+ ctx.setTransform(1,0,0,1,0,0);
+ let clip=false;
+ if(probe){ /* draw the text and icons on a bigger sheet and look for anything past the edge of the picture */
+  const e=Math.ceil(H*.35),tc=document.createElement('canvas');tc.width=W+2*e;tc.height=H+2*e;
+  const t=tc.getContext('2d'),keep=ctx;ctx=t;t.setTransform(1,0,0,1,e,e);
+  if(o.gw>0){t.save();t.shadowColor=o.gc;t.shadowBlur=o.gw;paint();paint();t.restore()}
+  if(o.sh){t.shadowColor=`rgba(0,0,0,${o.shs/100})`;t.shadowBlur=H*0.04*(o.shs/35);t.shadowOffsetY=H*0.02}
+  paint();ctx=keep;
+  const lim=mg/k,x0=Math.floor(e-lim),x1=Math.ceil(e+W+lim),y0=Math.floor(e-lim),y1=Math.ceil(e+H+lim),w=tc.width,d=t.getImageData(0,0,w,tc.height).data;
+  scan:for(let y=0;y<tc.height;y++){const inY=y>=y0&&y<y1;for(let x=0;x<w;x++){if(inY&&x>=x0&&x<x1){x=x1-1;continue}if(d[(y*w+x)*4+3]>24){clip=true;break scan}}}
+ }
+ return{W:Wf,size,clip}
 }
 
 return{H,MAXR,MINR,FONTS,DEF,PRE,ICO,ICN,draw};
