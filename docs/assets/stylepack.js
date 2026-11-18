@@ -36,9 +36,9 @@ let pT=0,busy=0;
 function preview(){clearTimeout(pT);pT=setTimeout(async()=>{const my=++busy,L=look(),box=$('#pvs');
  if(!box.children.length)box.innerHTML=SAMPLE.map(()=>'<canvas></canvas>').join('');
  const cvs=[...box.children];
- let bad=0;for(let i=0;i<SAMPLE.length;i++){if(my!==busy)return;const r=await drawBadge(cvs[i],SAMPLE[i],L,true);if(r&&r.clip)bad++}
- $('#meta').textContent='Sample badges. Your look is used for every badge in the pack.';clipNote(bad,SAMPLE.length)},60)}
-function clipNote(bad,n){const w=$('#cw');if(!w)return;w.hidden=!bad;if(bad)w.textContent=`Edge clipping: glow, outline or shadow is cut off at the edge on ${bad} of ${n} sample badges. Raise "Margin around the badge" on the Shape tab, or lower the glow or outline.`}
+ let bad=0,vy=0;for(let i=0;i<SAMPLE.length;i++){if(my!==busy)return;const r=await drawBadge(cvs[i],SAMPLE[i],L,true);if(r&&r.clip)bad++;if(r&&r.clipY)vy++}
+ $('#meta').textContent='Sample badges. Your look is used for every badge in the pack.';clipNote(bad,SAMPLE.length,vy)},60)}
+function clipNote(bad,n,vy){const w=$('#cw');if(!w)return;w.hidden=!bad;if(bad)w.textContent=`Edge clipping: glow, outline or shadow is cut off at the edge on ${bad} of ${n} sample badges. Raise "Margin on the left and right" on the Shape tab${vy?' (it cannot fix the top and bottom, so lower the glow or outline too)':''}, or lower the glow or outline.`}
 
 
 /* ---------- order ---------- */
@@ -149,7 +149,7 @@ async function generate(){
  prog(ids.length,ids.length,'All images are ready.');
  clipReport(clipped,ids.length);
  genKey=key;gen={files,ids:ids.map(b=>b.id),clipped};return gen}
-function clipReport(c,n){const e=$('#ckr');if(!e)return;e.className=c.length?'hint warn':'hint';e.textContent=c.length?`Edge clipping: ${c.length} of ${n} badges have glow, outline or shadow cut off at the edge (${c.slice(0,4).join(', ')}${c.length>4?' and more':''}). Raise "Margin around the badge" on the Shape tab and make again.`:(n?'No edge clipping found.':'')}
+function clipReport(c,n){const e=$('#ckr');if(!e)return;e.className=c.length?'hint warn':'hint';e.textContent=c.length?`Edge clipping: ${c.length} of ${n} badges have glow, outline or shadow cut off at the edge (${c.slice(0,4).join(', ')}${c.length>4?' and more':''}). Raise "Margin on the left and right" on the Shape tab and make again.`:(n?'No edge clipping found.':'')}
 
 function zipBlob(files){const enc=new TextEncoder(),parts=[],cd=[];let off=0,cds=0;
  files.forEach(f=>{const nm=enc.encode(f.name),crc=crc32(f.data),sz=f.data.length;
