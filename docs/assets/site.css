@@ -361,3 +361,6 @@ h2{margin-bottom:8px}
 .rp-c{margin:10px 0 14px}.rp-c .card .sw{align-items:flex-start;min-height:38px}.rp-c .card .sw img{height:26px;max-width:100%}
 .rp-n{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
 .rp-c{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}.rp-c .card .d{display:none}
+.more{margin:14px 0 0;color:var(--mute);font-size:15px}.more a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.fold>summary{cursor:pointer;font-weight:600;padding:10px 0;list-style:none}.fold>summary::before{content:"+ ";color:var(--mute)}.fold[open]>summary::before{content:"\2212 "}.fold>summary::-webkit-details-marker{display:none}
+.fold[open]>summary{margin-bottom:8px}
