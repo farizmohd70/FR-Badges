@@ -351,3 +351,6 @@ h2{margin-bottom:8px}
 .pm-g img{height:26px;width:auto}
 .pm-g figcaption{font-size:10px;color:#a8a29d;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pkstrip[data-a]{cursor:pointer}
+.rgn{grid-column:1/-1;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);padding:10px 2px 2px}
+.rgn:first-child{padding-top:2px}
+.sl .rgn{padding:8px 4px 2px}

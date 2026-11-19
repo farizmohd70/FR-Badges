@@ -49,12 +49,13 @@ function v2(){const oc=document.getElementById('chips');if(oc)chipX=oc.scrollLef
  {const c=$('#chips');c.scrollLeft=chipX;const on=c.querySelector('.chip.on');if(on){const l=on.offsetLeft-c.offsetLeft,r=l+on.offsetWidth;if(l<c.scrollLeft)c.scrollLeft=l-8;else if(r>c.scrollLeft+c.clientWidth)c.scrollLeft=r-c.clientWidth+8}window.scrollTo(0,oy)}
  const list=()=>P.filter(q,{group:grp});
  const tile=b=>`<button class="tile ${S.sel.has(b.id)?'on':''}" data-id="${b.id}"><div class="im" style="background:${P.bgOf(b.id)}">${P.img(b.id)}</div><div class="n">${esc(b.n)}</div></button>`;
+ const tiles=arr=>{let pr;return arr.map(b=>{const h=b.r&&b.r!==pr?`<div class="rgn">${esc(P.CAT.regions[b.r])}</div>`:'';pr=b.r;return h+tile(b)}).join('')};
  const draw=()=>{const l=list();let h='';
   if(grp==='community'){h=comHtml()}
   else if(!l.length)h='<div class="empty">Nothing found. Try a different word.</div>';
-  else if(grp!=='all')h=`<div class="grid">${l.map(tile).join('')}</div>`;
+  else if(grp!=='all')h=`<div class="grid">${tiles(l)}</div>`;
   else P.CAT.groups.forEach(g=>{const gl=l.filter(b=>b.g===g.id);if(!gl.length)return;
-   h+=`<div class="sec" data-sec="${g.id}"><div class="sh"><span class="dot" style="background:${g.color}"></span><b>${esc(g.name)}</b><span class="c"></span><button class="lnk" data-pa="${g.id}">Pick all</button><button class="lnk" data-pc="${g.id}">Clear</button></div><div class="grid">${gl.map(tile).join('')}</div></div>`});
+   h+=`<div class="sec" data-sec="${g.id}"><div class="sh"><span class="dot" style="background:${g.color}"></span><b>${esc(g.name)}</b><span class="c"></span><button class="lnk" data-pa="${g.id}">Pick all</button><button class="lnk" data-pc="${g.id}">Clear</button></div><div class="grid">${tiles(gl)}</div></div>`});
   $('#grid').innerHTML=h;
   $('#grid').querySelectorAll('.tile[data-id]').forEach(t=>t.onclick=()=>P.toggle(t.dataset.id));
   $('#grid').querySelectorAll('.tile[data-com]').forEach(t=>t.onclick=()=>{const id=t.dataset.com,b=comAll().find(x=>x.id===id);P.toggleCom(id,b)});
