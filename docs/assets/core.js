@@ -8,7 +8,7 @@ CAT.groups.forEach(g=>{gInfo[g.id]=g;byGroup[g.id]=[]});
 gInfo.community={id:'community',name:'Community made',color:'#7E57C2',border:'#4527A0'};
 function flags(p){const m=/^\(\?([a-z]+)\)/.exec(p);let f='',b=p;if(m){b=p.slice(m[0].length);for(const c of m[1])if('ims'.includes(c)&&!f.includes(c))f+=c}return[b,f]}
 let badRe=0;
-CAT.badges.forEach((b,i)=>{b.i=i;byId[b.id]=b;byGroup[b.g].push(b);const[bd,f]=flags(b.p);b.re=null;
+CAT.badges.forEach((b,i)=>{b.i=CAT.all.indexOf(b);byId[b.id]=b;byGroup[b.g].push(b);const[bd,f]=flags(b.p);b.re=null;
  try{b.re=new RegExp(bd,f)}catch(e){try{b.re=new RegExp(bd,f+'u')}catch(e2){badRe++}}
  b.hay=(b.id+' '+b.n).toLowerCase();});
 const nodup=ids=>{if(ids.includes('res-4k'))ids=ids.filter(i=>i!=='hero-4k');const names=new Map();ids.forEach(i=>{const b=byId[i];if(b.g!=='hero')names.set(b.n.toLowerCase(),1)});return ids.filter(i=>{const b=byId[i];return b.g!=='hero'||!names.has(b.n.toLowerCase())})};
@@ -96,8 +96,8 @@ P.comCount=()=>Object.keys(S.com).length;
 P.manifestText=()=>JSON.stringify(P.manifest(),null,2);
 P.bytes=()=>new Blob([JSON.stringify(P.manifest())]).size;
 /* share code: pk-<style index>-<hex bitmask over catalog order> */
-P.code=()=>{const n=CAT.badges.length,len=Math.ceil(n/4);let h='';for(let k=0;k<len;k++){let v=0;for(let j=0;j<4;j++){const i=k*4+j;if(i<n&&S.sel.has(CAT.badges[i].id))v|=1<<j}h+=v.toString(16)}return'pk-'+STYLES.findIndex(s=>s.id===S.style)+'-'+h};
-P.loadCode=c=>{const m=/^#?pk-(\d+)-([0-9a-f]+)$/i.exec((c||'').trim());if(!m||!STYLES[+m[1]])return null;const ids=[];const h=m[2];for(let k=0;k<h.length;k++){const v=parseInt(h[k],16);for(let j=0;j<4;j++){const i=k*4+j;if(v>>j&1&&CAT.badges[i])ids.push(CAT.badges[i].id)}}
+P.code=()=>{const n=CAT.all.length,len=Math.ceil(n/4);let h='';for(let k=0;k<len;k++){let v=0;for(let j=0;j<4;j++){const i=k*4+j;if(i<n&&S.sel.has(CAT.all[i].id))v|=1<<j}h+=v.toString(16)}return'pk-'+STYLES.findIndex(s=>s.id===S.style)+'-'+h};
+P.loadCode=c=>{const m=/^#?pk-(\d+)-([0-9a-f]+)$/i.exec((c||'').trim());if(!m||!STYLES[+m[1]])return null;const ids=[];const h=m[2];for(let k=0;k<h.length;k++){const v=parseInt(h[k],16);for(let j=0;j<4;j++){const i=k*4+j;if(v>>j&1&&CAT.all[i]&&!CAT.all[i].x)ids.push(CAT.all[i].id)}}
  P.commit(()=>{S.style=STYLES[+m[1]].id;S.sel=new Set(ids)},'all');return ids.length};
 P.importText=t=>{t=(t||'').trim();if(!t)return{err:'Nothing to import'};const c=P.loadCode(t);if(c!=null)return{n:c,unknown:0,kind:'share code'};
  let items=[],unk=0,gseq=[];
@@ -154,7 +154,7 @@ P.openSaved=n=>{const x=P.saved().find(y=>y.name===n);if(!x)return;P.loadCode(x.
 /* worker url (demo) */
 const b64=u=>btoa(String.fromCharCode(...u)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 const isDefaultOrder=()=>{if(Object.keys(S.over).length)return false;const def=[];CAT.groups.forEach(g=>byGroup[g.id].forEach(b=>{if(S.sel.has(b.id))def.push(b.id)}));const cur=P.ordered().filter(b=>!b._com).map(b=>b.id);return def.length===cur.length&&def.every((x,i)=>x===cur[i])};
-const rangesCode=()=>{const idx=[];CAT.badges.forEach((b,i)=>{if(S.sel.has(b.id))idx.push(i)});const v=[],put=x=>{while(x>=128){v.push(x&127|128);x>>=7}v.push(x)};let last=0,k=0;while(k<idx.length){let a=idx[k],z=a;while(k+1<idx.length&&idx[k+1]===z+1){z++;k++}k++;put(a-last);put(z-a);last=z}return'r'+STYLES.findIndex(s=>s.id===S.style)+'-'+b64(new Uint8Array(v))};
+const rangesCode=()=>{const idx=[];CAT.all.forEach((b,i)=>{if(S.sel.has(b.id))idx.push(i)});const v=[],put=x=>{while(x>=128){v.push(x&127|128);x>>=7}v.push(x)};let last=0,k=0;while(k<idx.length){let a=idx[k],z=a;while(k+1<idx.length&&idx[k+1]===z+1){z++;k++}k++;put(a-last);put(z-a);last=z}return'r'+STYLES.findIndex(s=>s.id===S.style)+'-'+b64(new Uint8Array(v))};
 P.rangesCode=rangesCode;
 const baseCode=async()=>{if(isDefaultOrder()){const r=rangesCode(),m='m'+P.code().slice(3);return r.length<m.length?r:m}
  const sx=s=>STYLES.findIndex(x=>x.id===s),n=[sx(S.style)];P.ordered().filter(b=>!b._com).forEach(b=>{const o=S.over[b.id];n.push(b.i*32+(o?sx(o)+1:0))});
