@@ -57,7 +57,7 @@ $$('.cr-tabs [data-t]').forEach(b=>b.onclick=()=>tab(b.dataset.t));
 $$('[data-go]').forEach(b=>b.onclick=()=>{tab(b.dataset.go);const y=$('.cr-tabs').getBoundingClientRect().top+scrollY-$('#pvbox').offsetHeight-12;scrollTo({top:Math.max(0,y),behavior:'smooth'})});
 $('#font').innerHTML=FONTS.map(f=>`<option value="${f}" style="font-family:'${f}'">${f}</option>`).join('');
 const pf=p=>({...DEF,...p});
-$('#pre').innerHTML=PRE.map((p,i)=>{const q=pf(p),bgc=q.tr?'transparent':(q.gd==='none'?q.bg1:`linear-gradient(${q.gd==='h'?'90deg':'180deg'},${q.bg1},${q.bg2})`);return `<button class="b2" data-p="${i}" style="background:${bgc};color:${q.fg};border:${q.bw?'2px solid '+q.bc:'1px solid var(--line)'}">${esc(p.n)}</button>`}).join('');
+$('#pre').innerHTML=PRE.map((p,i)=>{const hd=i===0?'<div class="pre-h">Our default styles</div>':(!p.d&&PRE[i-1].d?'<div class="pre-h">More looks</div>':'');const q=pf(p),bgc=(q.tr||q.bgo<60)?(/^#(0|1)/.test(q.fg)?'#e9ecf2':'#2a2d36'):(q.gd==='none'?q.bg1:`linear-gradient(${q.gd==='h'?'90deg':'180deg'},${q.bg1},${q.bg2})`);return hd+`<button class="b2" data-p="${i}" style="background:${bgc};color:${q.fg};border:${q.bw?'2px solid '+q.bc:'1px solid var(--line)'}">${esc(p.n)}</button>`}).join('');
 $('#pre').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;const q=pf(PRE[+b.dataset.p]);Object.keys(DEF).forEach(k=>{if(LOOK.includes(k))set(k,q[k])});update();save()};
 $('#pxr').onclick=()=>{set('px',72);update();save()};
 const vals=()=>{const m={sz:'szv',ls:'lsv',bw:'bwv',rd:'rdv',px:'pxv',mg:'mgv',bgo:'bgov',tow:'towv',s2:'s2v',shs:'shsv',gw:'gwv'};Object.keys(m).forEach(k=>{$('#'+m[k]).textContent=v(k)+(k==='bgo'||k==='s2'?'%':'')})};

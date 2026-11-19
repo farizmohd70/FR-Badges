@@ -9,7 +9,7 @@ const GR=(window.CAT?window.CAT.groups:[]).filter(g=>!['oneline','lang-code','la
 $('#gp').innerHTML=GR.map(([i,n])=>`<option value="${i}">${n}</option>`).join('');
 $('#font').innerHTML=FONTS.map(f=>`<option value="${f}" style="font-family:'${f}'">${f}</option>`).join('');
 const pf=p=>({...DEF,...p});
-$('#pre').innerHTML=PRE.map((p,i)=>{const q=pf(p),bgc=q.tr?'transparent':(q.gd==='none'?q.bg1:`linear-gradient(${q.gd==='h'?'90deg':'180deg'},${q.bg1},${q.bg2})`);return `<button class="b2 sm" data-p="${i}" style="background:${q.tr?'#4a4e57':bgc};opacity:1;color:${q.fg};border:${Math.min(q.bw,3)||1}px solid ${q.bw?q.bc:'transparent'};-webkit-text-stroke:0">${p.n}</button>`}).join('');
+$('#pre').innerHTML=PRE.map((p,i)=>{const hd=i===0?'<div class="pre-h">Our default styles</div>':(!p.d&&PRE[i-1].d?'<div class="pre-h">More looks</div>':'');const q=pf(p),bgc=q.tr?'transparent':(q.gd==='none'?q.bg1:`linear-gradient(${q.gd==='h'?'90deg':'180deg'},${q.bg1},${q.bg2})`);return hd+`<button class="b2 sm" data-p="${i}" style="background:${(q.tr||q.bgo<60)?(/^#(0|1)/.test(q.fg)?'#e9ecf2':'#2a2d36'):bgc};opacity:1;color:${q.fg};border:${Math.min(q.bw,3)||1}px solid ${q.bw?q.bc:'transparent'};-webkit-text-stroke:0">${p.n}</button>`}).join('');
 const v=id=>{const e=$('#'+id);return e.type==='checkbox'?e.checked:e.value};
 const set=(id,x)=>{const e=$('#'+id);if(e.type==='checkbox')e.checked=!!x;else e.value=x};
 let cvW=0;
@@ -54,7 +54,7 @@ function check(){const p=$('#pat').value.trim(),pr=$('#pr');
 $('#txt').addEventListener('input',()=>{const n=$('#nm');if(!n.dataset.t){n.value=v('txt').slice(0,40)}});
 $('#nm').addEventListener('input',()=>{$('#nm').dataset.t=1});
 /* start from an existing badge */
-const BASEOK=(window.CAT?window.CAT.badges:[]).filter(b=>!['oneline','lang-code','lang-name'].includes(b.g));
+const BASEOK=(window.CAT?window.CAT.badges:[]).filter(b=>!['oneline','lang-code','lang-name'].includes(b.g)&&!/-1l$/.test(b.id));
 const GNAME={};(window.CAT?window.CAT.groups:[]).forEach(g=>GNAME[g.id]=g.name);
 function fillBase(){const q=$('#bq').value.trim().toLowerCase();const by={};
  BASEOK.filter(b=>!q||(b.n+' '+b.id).toLowerCase().includes(q)).forEach(b=>(by[b.g]=by[b.g]||[]).push(b));

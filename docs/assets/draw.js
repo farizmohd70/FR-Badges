@@ -4,18 +4,18 @@ const H=240,MAXR=5.7,MINR=1.25;
 const FONTS=['Inter','Poppins','Montserrat','Rubik','Space Grotesk','Oswald','Barlow Condensed','Bebas Neue','Anton','Playfair Display','Roboto Mono'];
 const DEF={shs:35,gw:0,gc:'#ffffff',bgr:0,bc2:'#ffffff',bg1:'#1f3a8a',bg2:'#1f3a8a',gd:'none',fg:'#ffffff',bc:'#ffffff',bw:0,px:72,rd:90,sh:0,tr:0,bgo:100,gl:0,tow:0,toc:'#000000'};
 const PRE=[
- {n:'Glass',bg1:'#3d4f86',bg2:'#151a34',gd:'v',bc:'#ffffff',bw:3,gl:1,sh:1},
- {n:'Solid blue',bg1:'#2563eb',sh:1},
+ {n:'Glass',d:1,bg1:'#3d4f86',bg2:'#151a34',gd:'v',bc:'#ffffff',bw:3,gl:1,sh:1},
+ {n:'Solid',d:1,bg1:'#2563eb',sh:1},
+ {n:'Light',d:1,bg1:'#ffffff',bg2:'#e6e9f0',gd:'v',fg:'#13161b',bc:'#c8ceda',bw:4},
+ {n:'Neon',d:1,bg1:'#0a0c10',fg:'#39ff88',bc:'#39ff88',bw:8},
+ {n:'Frost',d:1,bg1:'#ffffff',bgo:22,bc:'#ffffff',bw:3,sh:1},
+ {n:'Minimal',d:1,bg1:'#14161b',fg:'#e6e9f0',bc:'#2b2f38',bw:4},
+ {n:'Black & white',d:1,bg1:'#000000',bc:'#ffffff',bw:6,rd:24},
+ {n:'White & black',d:1,bg1:'#ffffff',fg:'#000000',bc:'#000000',bw:6,rd:24},
+ {n:'Text white',d:1,tr:1,sh:1},
+ {n:'Text black',d:1,tr:1,fg:'#000000'},
  {n:'Deep blue',bg1:'#1f3a8a',bg2:'#0b1d52',gd:'v',sh:1},
- {n:'Light',bg1:'#ffffff',bg2:'#e6e9f0',gd:'v',fg:'#13161b',bc:'#c8ceda',bw:4},
- {n:'Neon green',bg1:'#0a0c10',fg:'#39ff88',bc:'#39ff88',bw:8},
  {n:'Neon pink',bg1:'#12081a',fg:'#ff4fd8',bc:'#ff4fd8',bw:8},
- {n:'Frost',bg1:'#ffffff',bgo:22,bc:'#ffffff',bw:3,sh:1},
- {n:'Minimal',bg1:'#14161b',fg:'#e6e9f0',bc:'#2b2f38',bw:4},
- {n:'Black and white',bg1:'#000000',bc:'#ffffff',bw:6,rd:24},
- {n:'White and black',bg1:'#ffffff',fg:'#000000',bc:'#000000',bw:6,rd:24},
- {n:'Text white',tr:1,sh:1},
- {n:'Text black',tr:1,fg:'#000000'},
  {n:'Outline',tr:1,bc:'#ffffff',bw:8},
  {n:'Comic text',tr:1,tow:7,toc:'#000000',sh:0},
  {n:'Sunset',bg1:'#ff512f',bg2:'#dd2476',gd:'h',rd:90,sh:1},
@@ -59,7 +59,7 @@ function draw(cv,o,img,iimg,probe){
   if(o.sym){const fs=two?LH:sz;ctx.font=`400 ${fs}px ${fam}`;try{ctx.letterSpacing='0px'}catch(e){}L.push({k:'sym',w:ctx.measureText(o.sym).width,fs})}
   const gp=sz*.22,lw=L.length?L.reduce((a,l)=>a+l.w,0)+gp*(L.length-(hasT?0:1)):0;
   return{s1,s2,w1,w2,tw,c1,c2,gap,bh,L,gp,lw,w:Math.ceil(padX*2+tw+lw)}}
- const mg=Math.max(0,Math.min(60,+o.mg||0));
+ const mg=Math.max(0,Math.min(100,+o.mg||0));
  let size=o.sz,m=lay(size);
  for(let i=0;i<5;i++){let f=1;if(two&&m.bh>H*.78)f=Math.min(f,H*.78/m.bh);if(m.w>H*MAXR-2*mg)f=Math.min(f,(H*MAXR-2*mg-padX*2)/(m.w-padX*2)*.99);if(f>=1)break;size=Math.floor(size*f);m=lay(size)}
  const W=Math.min(Math.max(m.w,Math.round(H*MINR)),Math.floor(H*5.7)-2*mg);

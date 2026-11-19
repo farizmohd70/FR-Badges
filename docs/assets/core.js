@@ -23,7 +23,7 @@ const PRESETS={
  picture:{name:'Best picture',desc:'Resolution, HDR, Dolby Vision, codecs and sources',ids:()=>CAT.badges.filter(b=>['hero','resolution','dynamic-range','video-codec','video-format','source'].includes(b.g)).map(b=>b.id)},
  theater:{name:'Home theater',desc:'Picture and sound together, with speaker layouts',ids:()=>CAT.badges.filter(b=>['hero','resolution','dynamic-range','video-codec','source','audio-codec','audio-channels'].includes(b.g)).map(b=>b.id)},
  cinephile:{name:'Cinephile',desc:'Editions like IMAX and Criterion, plus quality tags',ids:()=>CAT.badges.filter(b=>['hero','editions','source','resolution','dynamic-range'].includes(b.g)).map(b=>b.id)},
- everything:{name:'Everything',desc:'All 453 badges, one version of each',ids:()=>CAT.badges.filter(b=>!['oneline','lang-code','lang-name'].includes(b.g)).map(b=>b.id)},
+ everything:{name:'Everything',desc:'All 453 badges, one version of each',ids:()=>CAT.badges.filter(b=>!['oneline','lang-code','lang-name'].includes(b.g)&&!/-1l$/.test(b.id)).map(b=>b.id)},
  empty:{name:'Blank',desc:'Start from nothing',ids:()=>[]}
 };
 ['audiophile','streaming','picture','theater','cinephile'].forEach(k=>{const f=PRESETS[k].ids;PRESETS[k].ids=()=>nodup(f())});
@@ -53,7 +53,7 @@ function syncCom(){const keep=new Set();
 const restore=s=>{const o=JSON.parse(s);S.name=o.name;S.style=o.style;S.sel=new Set(o.sel);S.over=o.over;S.pat=o.pat||{};S.com=o.com||{};S.gord=o.gord;S.bord=o.bord;syncCom()};
 P.on=f=>subs.push(f);
 function emit(why){subs.forEach(f=>{try{f(why)}catch(e){console.error(e)}});syncHash()}
-const FAM={};CAT.badges.forEach(b=>{const m=/^(.+)-(1l|code|name)$/.exec(b.id);if(m&&byId[m[1]]&&['oneline','lang-code','lang-name'].includes(b.g)){(FAM[m[1]]=FAM[m[1]]||[m[1]]).push(b.id)}});
+const FAM={};CAT.badges.forEach(b=>{const m=/^(.+)-(1l|code|name)$/.exec(b.id);if(m&&byId[m[1]]&&(['lang-code','lang-name'].includes(b.g)||m[2]==='1l')){(FAM[m[1]]=FAM[m[1]]||[m[1]]).push(b.id)}});
 const famOf={};Object.values(FAM).forEach(a=>a.forEach(i=>famOf[i]=a));
 const ORD={};CAT.badges.forEach((b,i)=>ORD[b.id]=i);
 function oneOfEach(before){const seen=new Set(),swaps=[];[...S.sel].forEach(id=>{const f=famOf[id];if(!f||seen.has(f))return;seen.add(f);const on=f.filter(x=>S.sel.has(x));if(on.length<2)return;const nw=on.filter(x=>!before.has(x));const pool=nw.length?nw:on;const keep=pool.sort((x,y)=>ORD[x]-ORD[y])[0];on.forEach(x=>{if(x!==keep){S.sel.delete(x);if(before.has(x))swaps.push([x,keep])}})});if(swaps.length&&P.toast)P.toast(swaps.length>1?'Swapped '+swaps.length+' badges for their other version (one version of each)':'Swapped '+byId[swaps[0][0]].n+' for '+byId[swaps[0][1]].n+' (one version of each)')}
