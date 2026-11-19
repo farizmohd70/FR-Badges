@@ -33,9 +33,30 @@ async function drawBadge(cv,id,L,probe){
  return FRD.draw(cv,o,null,ii,probe)}
 const SAMPLE=['hero-remux','res-1080p','hero-dolby-atmos','dr-hdr10','video-hevc','lang-en','flag-dubbed','audio-ddp'].filter(i=>byId[i]);
 let pT=0,busy=0;
+/* ---------- quick option: real repo images, only size and outside margin ---------- */
+const RM={on:false,style:'glass',sz:100,mg:0};
+const styleName=()=>(P.STYLES.find(s=>s.id===RM.style)||{}).name||'';
+const imgCache=new Map();
+function loadImg(u){if(imgCache.has(u))return imgCache.get(u);const p=new Promise((res,rej)=>{const im=new Image();im.crossOrigin='anonymous';im.onload=()=>res(im);im.onerror=()=>rej(new Error('Could not load '+u));im.src=u});imgCache.set(u,p);p.catch(()=>imgCache.delete(u));return p}
+async function drawRepo(cv,id,style,sz,mg){
+ const im=await loadImg(P.rawUrl(id,style));
+ let h=Math.round(im.naturalHeight*sz/100);h=Math.max(64,Math.min(512,h));
+ const w=Math.max(1,Math.round(im.naturalWidth*h/im.naturalHeight));
+ let pad=Math.round(mg*h/240);const maxW=Math.floor(h*5.7);if(w+2*pad>maxW)pad=Math.max(0,Math.floor((maxW-w)/2));
+ cv.width=w+2*pad;cv.height=h;const c=cv.getContext('2d');c.clearRect(0,0,cv.width,cv.height);c.imageSmoothingQuality='high';c.drawImage(im,pad,0,w,h);return cv}
+function rmCards(){$('#rst').innerHTML=P.STYLES.map(s=>`<button type="button" class="card${RM.style===s.id?' on':''}" data-rs="${s.id}"><div class="sw" style="background:${s.bg==='light'?'#e9ecf2':'#4a4e57'}"><img src="${P.rawUrl('hero-remux',s.id)}" alt="" loading="lazy"></div><div class="t">${esc(s.name)}</div><div class="d">${esc(s.note)}</div></button>`).join('')}
+function rmVals(){$('#rszv').textContent=RM.sz+'%';$('#rmgv').textContent=RM.mg}
+function rmOff(){if(!RM.on)return;RM.on=false;genKey='';refreshMake();preview()}
+$('#rst').onclick=e=>{const b=e.target.closest('[data-rs]');if(!b)return;RM.style=b.dataset.rs;RM.on=true;genKey='';rmCards();preview()};
+$('#rsz').addEventListener('input',()=>{RM.sz=+$('#rsz').value;RM.on=true;genKey='';rmVals();preview()});
+$('#rmg').addEventListener('input',()=>{RM.mg=+$('#rmg').value;RM.on=true;genKey='';rmVals();preview()});
+$('#rgo').onclick=()=>{RM.on=true;genKey='';preview();tab('make');scrollTo({top:Math.max(0,$('.cr-tabs').getBoundingClientRect().top+scrollY-$('#pvbox').offsetHeight-12),behavior:'smooth'})};
+$('#rp').addEventListener('toggle',()=>{if($('#rp').open){RM.on=true;genKey='';preview()}else rmOff()});
+rmCards();rmVals();
 function preview(){clearTimeout(pT);pT=setTimeout(async()=>{const my=++busy,L=look(),box=$('#pvs');
  if(!box.children.length)box.innerHTML=SAMPLE.map(()=>'<canvas></canvas>').join('');
  const cvs=[...box.children];
+ if(RM.on){for(let i=0;i<SAMPLE.length;i++){if(my!==busy)return;await drawRepo(cvs[i],SAMPLE[i],RM.style,RM.sz,RM.mg)}$('#meta').textContent='Sample badges from our '+styleName()+' style.';const w=$('#cw');if(w)w.hidden=true;return}
  let bad=0,vy=0;for(let i=0;i<SAMPLE.length;i++){if(my!==busy)return;const r=await drawBadge(cvs[i],SAMPLE[i],L,true);if(r&&r.clip)bad++;if(r&&r.clipY)vy++}
  $('#meta').textContent='Sample badges. Your look is used for every badge in the pack.';clipNote(bad,SAMPLE.length,vy)},60)}
 function clipNote(bad,n,vy){const w=$('#cw');if(!w)return;w.hidden=!bad;if(bad)w.textContent=`Edge clipping: glow, outline or shadow is cut off at the edge on ${bad} of ${n} sample badges. Raise "Margin on the left and right" on the Shape tab${vy?' (it cannot fix the top and bottom, so lower the glow or outline too)':''}, or lower the glow or outline.`}
@@ -51,18 +72,18 @@ $('#ord').addEventListener('change',()=>{const m=v('ord');
   if(m==='rev'){S.gord.reverse();Object.keys(S.bord).forEach(g=>S.bord[g].reverse())}},'order');
  toast('Order updated.')});
 /* ---------- tabs, controls ---------- */
-function tab(t){$$('.cr-tabs [data-t]').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});$$('.cr-p').forEach(p=>p.classList.toggle('on',p.dataset.p===t));
+function tab(t){if(['text','bg','shape'].includes(t)&&RM.on){$('#rp').open=false;rmOff()}$$('.cr-tabs [data-t]').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});$$('.cr-p').forEach(p=>p.classList.toggle('on',p.dataset.p===t));
  const bar=$('.cr-tabs'),a=bar.querySelector('.on');if(a)bar.scrollLeft=a.offsetLeft-12;if(t==='make'){refreshMake();quickCheck()}}
 $$('.cr-tabs [data-t]').forEach(b=>b.onclick=()=>tab(b.dataset.t));
 $$('[data-go]').forEach(b=>b.onclick=()=>{tab(b.dataset.go);const y=$('.cr-tabs').getBoundingClientRect().top+scrollY-$('#pvbox').offsetHeight-12;scrollTo({top:Math.max(0,y),behavior:'smooth'})});
 $('#font').innerHTML=FONTS.map(f=>`<option value="${f}" style="font-family:'${f}'">${f}</option>`).join('');
 const pf=p=>({...DEF,...p});
 $('#pre').innerHTML=PRE.map((p,i)=>{const hd=i===0?'<div class="pre-h">Our default styles</div>':(!p.d&&PRE[i-1].d?'<div class="pre-h">More looks</div>':'');const q=pf(p),bgc=(q.tr||q.bgo<60)?(/^#(0|1)/.test(q.fg)?'#e9ecf2':'#2a2d36'):(q.gd==='none'?q.bg1:`linear-gradient(${q.gd==='h'?'90deg':'180deg'},${q.bg1},${q.bg2})`);return hd+`<button class="b2" data-p="${i}" style="background:${bgc};color:${q.fg};border:${q.bw?'2px solid '+q.bc:'1px solid var(--line)'}">${esc(p.n)}</button>`}).join('');
-$('#pre').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;const q=pf(PRE[+b.dataset.p]);Object.keys(DEF).forEach(k=>{if(LOOK.includes(k))set(k,q[k])});update();save()};
+$('#pre').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;const q=pf(PRE[+b.dataset.p]);Object.keys(DEF).forEach(k=>{if(LOOK.includes(k))set(k,q[k])});rmOff();update();save()};
 $('#pxr').onclick=()=>{set('px',72);update();save()};
 const vals=()=>{const m={sz:'szv',ls:'lsv',bw:'bwv',rd:'rdv',px:'pxv',mg:'mgv',bgo:'bgov',tow:'towv',s2:'s2v',shs:'shsv',gw:'gwv'};Object.keys(m).forEach(k=>{$('#'+m[k]).textContent=v(k)+(k==='bgo'||k==='s2'?'%':'')})};
 function update(){vals();preview();genKey=''}
-LOOK.forEach(k=>{const e=$('#'+k);e.addEventListener('input',()=>{update();save()});e.addEventListener('change',()=>{update();save()})});
+LOOK.forEach(k=>{const e=$('#'+k);e.addEventListener('input',()=>{rmOff();update();save()});e.addEventListener('change',()=>{rmOff();update();save()})});
 
 /* ---------- saved look and picks (this browser) ---------- */
 function save(){try{const o={};LOOK.forEach(k=>o[k]=v(k));localStorage.setItem('fr_sp',JSON.stringify({look:o,sel:[...P.S.sel],name:v('pn'),ov:OV}))}catch(e){}}
@@ -127,23 +148,26 @@ async function quantPng(cv){
 
 const slug=s=>(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'style-pack';
 const imgH=()=>+v('isz');
-function refreshMake(){const n=P.S.sel.size,kb=v("fq")?(imgH()===160?30:60):(imgH()===160?8:14);
+function refreshMake(){const rn=$('#rmn');rn.hidden=!RM.on;if(RM.on)rn.innerHTML=`Using our <b>${esc(styleName())}</b> style from the repo, size ${RM.sz}%, outside margin ${RM.mg}. <button type="button" class="b2 sm" id="rmx">Use my own look instead</button>`;
+ const rx=$('#rmx');if(rx)rx.onclick=()=>{RM.on=false;$('#rp').open=false;genKey='';refreshMake();preview()};
+ $('#isz').closest('label').hidden=RM.on;$('#fq').closest('label').hidden=RM.on;
+ const n=P.S.sel.size,kb=v("fq")?(imgH()===160?30:60):(imgH()===160?8:14);
  $('#est').textContent=n?`${n} badges, about ${(n*kb/1000).toFixed(1)} MB.`:'Pick some badges first on the Badges tab.';
  if(!$('#gf').dataset.t)set('gf',slug(v('pn')))}
 $('#pn').addEventListener('input',()=>{if(!$('#gf').dataset.t)set('gf',slug(v('pn')));save()});$('#gf').addEventListener('input',()=>$('#gf').dataset.t=1);$('#isz').addEventListener('change',()=>{genKey='';refreshMake()});$('#fq').addEventListener('change',()=>{genKey='';refreshMake()});
 const prog=(i,n,msg)=>{$('#prg').hidden=false;$('#prgb').style.width=(n?i/n*100:0)+'%';$('#prgt').textContent=msg||''};
 const toBlob=cv=>new Promise(r=>cv.toBlob(r,'image/png'));
 async function generate(){
- const ids=P.ordered().filter(b=>!b._com),L=look(),key=JSON.stringify([L,ids.map(b=>b.id),imgH(),v('fq'),OV]);
+ const ids=P.ordered().filter(b=>!b._com),L=look(),key=JSON.stringify([RM.on?[RM.style,RM.sz,RM.mg]:L,ids.map(b=>b.id),RM.on?0:imgH(),RM.on?0:v('fq'),RM.on?0:OV]);
  if(gen&&key===genKey)return gen;
  const cv=document.createElement('canvas'),out=document.createElement('canvas'),files=[],clipped=[];
  for(let i=0;i<ids.length;i++){
   prog(i,ids.length,`Drawing ${i+1} of ${ids.length}`);
-  const b=ids[i],r=await drawBadge(cv,b.id,L,true);if(r&&r.clip)clipped.push(b.n);
-  let src=cv;const h=imgH();
-  if(h<240){out.height=h;out.width=Math.max(1,Math.round(cv.width*h/240));const c=out.getContext('2d');c.imageSmoothingQuality='high';c.clearRect(0,0,out.width,out.height);c.drawImage(cv,0,0,out.width,out.height);src=out}
-  let data=null;if(!v('fq')){try{data=await quantPng(src)}catch(e){data=null}}
-  if(!data){const bl=await toBlob(src);data=new Uint8Array(await bl.arrayBuffer());if(data.length>85000){try{data=(await quantPng(src))||data}catch(e){}}}
+  const b=ids[i];let r=null;if(RM.on)await drawRepo(cv,b.id,RM.style,RM.sz,RM.mg);else r=await drawBadge(cv,b.id,L,true);if(r&&r.clip)clipped.push(b.n);
+  let src=cv;const h=RM.on?cv.height:imgH();
+  if(!RM.on&&h<240){out.height=h;out.width=Math.max(1,Math.round(cv.width*h/240));const c=out.getContext('2d');c.imageSmoothingQuality='high';c.clearRect(0,0,out.width,out.height);c.drawImage(cv,0,0,out.width,out.height);src=out}
+  let data=null;if(!RM.on&&!v('fq')){try{data=await quantPng(src)}catch(e){data=null}}
+  if(!data){const bl=await toBlob(src);data=new Uint8Array(await bl.arrayBuffer());if(data.length>85000||RM.on&&data.length>60000){try{data=(await quantPng(src))||data}catch(e){}}}
   files.push({id:b.id,f:b.f,data});
  }
  prog(ids.length,ids.length,'All images are ready.');

@@ -31,6 +31,13 @@
   <label class="f s">Outside margin, left and right <span id="mgv"></span><input type="range" id="mg" min="0" max="100" value="0"></label>
   <p class="hint">Empty space added on the left and right of the badge so a glow, shadow or outline is not cut off at the sides. The badge keeps its full height.</p>
   <div class="cr-nx"><button class="b2 pri" data-go="text">Next: Text</button></div>
+  <details class="sp-d rp" id="rp"><summary>Quick option: use one of our repo styles as they are</summary>
+   <p class="hint">Skip the design steps. Pick one of our real badge styles, set the size and the outside margin, and go straight to the link. Images are taken from the repo, not redrawn.</p>
+   <div class="cards rp-c" id="rst"></div>
+   <label class="f s">Size <span id="rszv"></span><input type="range" id="rsz" min="50" max="160" value="100"></label>
+   <label class="f s">Outside margin, left and right <span id="rmgv"></span><input type="range" id="rmg" min="0" max="100" value="0"></label>
+   <div class="bar"><button type="button" class="b2 pri" id="rgo">Use this style and go to the link</button></div>
+  </details>
  </section>
 
  <section class="cr-p" data-p="text" role="tabpanel">
@@ -81,6 +88,7 @@
  </section>
 
  <section class="cr-p" data-p="make" role="tabpanel">
+  <p class="hint rp-n" id="rmn" hidden></p>
     <p class="hint" id="ckr"></p>
   <label class="f">Pack name<input type="text" id="pn" maxlength="40" value="My style pack"></label>
   <label class="f">Image size<select id="isz"><option value="240">Standard (240 px tall, sharper)</option><option value="160">Small files (160 px tall, quicker)</option></select></label>

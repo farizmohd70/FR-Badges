@@ -357,3 +357,7 @@ h2{margin-bottom:8px}
 #mgv{font-size:20px;font-weight:700;color:var(--fg,inherit);margin-left:8px}
 .cr-pre .pre-h{grid-column:1/-1;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--mute);padding:6px 2px 0}
 .cr-pre .pre-h:not(:first-child){padding-top:12px}
+.rp{margin-top:22px}.rp summary{font-weight:600;cursor:pointer;color:var(--mute)}.rp[open] summary{color:inherit}
+.rp-c{margin:10px 0 14px}.rp-c .card .sw{align-items:flex-start;min-height:38px}.rp-c .card .sw img{height:26px;max-width:100%}
+.rp-n{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.rp-c{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}.rp-c .card .d{display:none}
