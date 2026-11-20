@@ -19,14 +19,14 @@ function tab(t){document.querySelectorAll('.cr-tabs [data-t]').forEach(b=>{const
  if(t==='share')refreshShare();if(t==='pat')check()}
 document.querySelectorAll('.cr-tabs [data-t]').forEach(b=>b.onclick=()=>tab(b.dataset.t));
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{tab(b.dataset.go);const y=$('.cr-tabs').getBoundingClientRect().top+scrollY-(($('#pvbox')||{}).offsetHeight||0)-12;scrollTo({top:Math.max(0,y),behavior:'smooth'})});
-const opts=()=>({txt:v('txt')||' ',sym:v('sym').trim(),font:v('font'),wt:v('wt'),sz:+v('sz'),ls:+v('ls'),fg:v('fg'),cs:v('cs'),bg1:v('bg1'),bg2:v('bg2'),gd:v('gd'),bc:v('bc'),bw:+v('bw'),rd:+v('rd'),px:+v('px'),sh:v('sh'),tr:v('tr'),bgo:+v('bgo'),gl:v('gl'),tow:+v('tow'),toc:v('toc'),t2:v('t2'),s2:+v('s2'),ic:v('ic'),imz:+v('imz'),shs:+v('shs'),gw:+v('gw'),gc:v('gc'),bgr:v('bgr'),bc2:v('bc2')});
+const opts=()=>({txt:v('txt')||' ',sym:v('sym').trim(),font:v('font'),wt:v('wt'),sz:+v('sz'),ls:+v('ls'),fg:v('fg'),cs:v('cs'),bg1:v('bg1'),bg2:v('bg2'),gd:v('gd'),bc:v('bc'),bw:+v('bw'),rd:+v('rd'),px:+v('px'),mg:+v('mg'),sh:v('sh'),tr:v('tr'),bgo:+v('bgo'),gl:v('gl'),tow:+v('tow'),toc:v('toc'),t2:v('t2'),s2:+v('s2'),ic:v('ic'),imz:+v('imz'),shs:+v('shs'),gw:+v('gw'),gc:v('gc'),bgr:v('bgr'),bc2:v('bc2')});
 let busy=0;
 async function render(){
  const o=opts();const my=++busy;
  try{await Promise.all([document.fonts.load(`${o.wt} 40px "${o.font}"`,o.txt),document.fonts.load(`400 40px "${o.font}"`,o.sym||'A')])}catch(e){}
  if(my!==busy)return;
  const cv=$('#cv'),r=draw(cv,o,IMG);
- $('#szv').textContent=o.sz;$('#lsv').textContent=o.ls;$('#bwv').textContent=o.bw;$('#rdv').textContent=o.rd;$('#pxv').textContent=o.px;$('#bgov').textContent=o.bgo+'%';$('#towv').textContent=o.tow;$('#s2v').textContent=o.s2+'%';$('#shsv').textContent=o.shs;$('#gwv').textContent=o.gw;$('#imzv').textContent=o.imz+'%';contrast(o);
+ $('#szv').textContent=o.sz;$('#lsv').textContent=o.ls;$('#bwv').textContent=o.bw;$('#rdv').textContent=o.rd;$('#pxv').textContent=o.px;$('#mgv').textContent=o.mg;$('#bgov').textContent=o.bgo+'%';$('#towv').textContent=o.tow;$('#s2v').textContent=o.s2+'%';$('#shsv').textContent=o.shs;$('#gwv').textContent=o.gw;$('#imzv').textContent=o.imz+'%';contrast(o);
  const ratio=r.W/H;
  $('#meta').textContent=`${r.W} × ${H} px, width is ${ratio.toFixed(2)}× the height (Nuvio limit 5.75)`+(r.size<o.sz?'. The text was shrunk to fit.':'');
  cv.style.height='clamp(48px,18vw,96px)';
@@ -49,7 +49,7 @@ function check(){const p=$('#pat').value.trim(),pr=$('#pr');
   return `<div class="nc ${hit[i]?'y':'n'}"><div class="nct">Stream ${i+1}<span class="nch">${hit[i]?'✓ your badge shows':'✗ no match'}</span></div><div class="ncf">${esc(l)}</div><div class="ncb">${others.map(b=>`<img src="${PR}${b.f}" alt="${esc(b.n)}" style="height:${h}px" onerror="this.remove()">`).join('')}${hit[i]?`<img class="me" src="${mine}" alt="Your badge" style="height:${h}px">`:''}</div></div>`};
  pr.innerHTML=L.length?`<b>${n} of ${L.length} titles match</b>`+(n?'. The badge shows on those.':'. The badge will not show.')+`<div class="ncs">${L.map(card).join('')}</div>`:'Add a title to test.';
  return true}
-['t2','s2','ic','imz','shs','gw','gc','bgr','bc2','txt','sym','font','wt','sz','ls','fg','cs','bg1','bg2','gd','bc','bw','rd','px','sh','tr','bgo','gl','tow','toc'].forEach(id=>{$('#'+id).addEventListener('input',render);$('#'+id).addEventListener('change',render)});
+['t2','s2','ic','imz','shs','gw','gc','bgr','bc2','txt','sym','font','wt','sz','ls','fg','cs','bg1','bg2','gd','bc','bw','rd','px','mg','sh','tr','bgo','gl','tow','toc'].forEach(id=>{$('#'+id).addEventListener('input',render);$('#'+id).addEventListener('change',render)});
 ['pat','tt'].forEach(id=>$('#'+id).addEventListener('input',check));$('#pvz').addEventListener('change',check);
 $('#txt').addEventListener('input',()=>{const n=$('#nm');if(!n.dataset.t){n.value=v('txt').slice(0,40)}});
 $('#nm').addEventListener('input',()=>{$('#nm').dataset.t=1});
@@ -76,12 +76,12 @@ function readText(png,key){const dv=new DataView(png.buffer,png.byteOffset,png.b
  while(p+12<=png.length){const n=dv.getUint32(p),ty=String.fromCharCode(...png.subarray(p+4,p+8));
   if(ty==='tEXt'){const d=png.subarray(p+8,p+8+n),z=d.indexOf(0);if(String.fromCharCode(...d.subarray(0,z))===key)return String.fromCharCode(...d.subarray(z+1))}
   if(ty==='IEND')break;p+=12+n}return null}
-const DIDS=['t2','s2','ic','imz','shs','gw','gc','bgr','bc2','txt','sym','font','wt','sz','ls','fg','cs','bg1','bg2','gd','bc','bw','rd','px','sh','tr','bgo','gl','tow','toc'];
+const DIDS=['t2','s2','ic','imz','shs','gw','gc','bgr','bc2','txt','sym','font','wt','sz','ls','fg','cs','bg1','bg2','gd','bc','bw','rd','px','mg','sh','tr','bgo','gl','tow','toc'];
 const MIDS=['pat','nm','gp','tt','pw','pwb','pwi','pws'];
 const getD=()=>{const o={};DIDS.forEach(k=>o[k]=v(k));return o};
 function setD(o){DIDS.forEach(k=>{if(o[k]!==undefined)set(k,o[k])})}
 const getAll=()=>{const o=getD();MIDS.forEach(k=>o[k]=v(k));o.nt=$('#nm').dataset.t?1:0;return o};
-const NEWD={t2:'',s2:70,ic:'',imz:56,shs:35,gw:0,gc:'#ffffff',bgr:0,bc2:'#ffffff'};
+const NEWD={mg:0,t2:'',s2:70,ic:'',imz:56,shs:35,gw:0,gc:'#ffffff',bgr:0,bc2:'#ffffff'};
 function setAll(o){setD({...NEWD,...o});MIDS.forEach(k=>{if(o[k]!==undefined)set(k,o[k])});if(o.nt)$('#nm').dataset.t=1;else delete $('#nm').dataset.t;render()}
 const blob=async()=>{const raw=await new Promise(r=>$('#cv').toBlob(r,'image/png'));
  try{const j=JSON.stringify(getD()).replace(/[\u0080-\uffff]/g,k=>'\\u'+k.charCodeAt(0).toString(16).padStart(4,'0'));
@@ -204,4 +204,8 @@ try{const s=localStorage.getItem('fr_cur');if(s)setAll(JSON.parse(s))}catch(e){}
   set('pat',b.p);set('nm',(b.n+' (remix)').slice(0,40));$('#nm').dataset.t=1;if([...$('#gp').options].some(o=>o.value===b.g))set('gp',b.g);
   render();pushH();toast(d?'Loaded. Change anything you like.':'Loaded the pattern and name. The look was not saved with this badge.')}catch(e){toast('Could not load that badge.')}})();
 render().then(()=>{cur=snap();btns()});
+/* Nuvio view of the preview */
+(()=>{let on=true;try{on=localStorage.getItem('fr_nv')!=='0'}catch(e){}
+ const ap=()=>{$('#pv').classList.toggle('nv',on);$('#nv').setAttribute('aria-pressed',on);$('#nv').classList.toggle('pri',on)};
+ $('#nv').onclick=()=>{on=!on;try{localStorage.setItem('fr_nv',on?'1':'0')}catch(e){}ap()};ap()})();
 })();

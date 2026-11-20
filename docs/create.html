@@ -15,7 +15,7 @@
 
  <div class="cr-box cr-sticky" id="pvbox"><div class="cr-pv" id="pv"><canvas id="cv" aria-label="Badge preview"></canvas></div>
   <div class="cr-row"><span class="hint" id="meta"></span> <span class="hint warn" id="cw" hidden></span></div>
-  <div class="cr-tools"><button class="b2 sm" id="undo" disabled>Undo</button><button class="b2 sm" id="redo" disabled>Redo</button><button class="b2 sm" id="rnd">Surprise me</button><button class="b2 sm" id="savem">Save</button></div></div>
+  <div class="cr-tools"><button class="b2 sm" id="undo" disabled>Undo</button><button class="b2 sm" id="redo" disabled>Redo</button><button class="b2 sm" id="nv" aria-pressed="true">Nuvio view</button><button class="b2 sm" id="rnd">Surprise me</button><button class="b2 sm" id="savem">Save</button></div></div>
 
  <div class="cr-tabs" role="tablist" aria-label="Badge settings">
   <button role="tab" class="on" data-t="looks">Looks</button><button role="tab" data-t="text">Text</button><button role="tab" data-t="icon">Icon</button><button role="tab" data-t="bg">Colours</button><button role="tab" data-t="shape">Shape</button><button role="tab" data-t="pat">Pattern</button><button role="tab" data-t="share">Share</button>
@@ -78,6 +78,8 @@
   <p class="hint">90 matches Nuvio's own badges (6dp). 120 is a full pill.</p>
   <label class="f s">Space on the left and right <span id="pxv"></span><input type="range" id="px" min="0" max="160" value="72"></label>
   <div><button type="button" class="b2 sm" id="pxr">Reset space to 72</button></div>
+  <label class="f s">Outside margin, left and right <span id="mgv"></span><input type="range" id="mg" min="0" max="100" value="0"></label>
+  <p class="hint">Empty space added on the left and right of the badge so a glow, shadow or outline is not cut off at the sides. The badge keeps its full height.</p>
   <div class="cr-nx"><button class="b2" data-go="bg">Back</button><button class="b2 pri" data-go="pat">Next: Pattern</button></div>
  </section>
 
