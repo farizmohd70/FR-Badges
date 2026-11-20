@@ -368,3 +368,6 @@ h2{margin-bottom:8px}
 #pv.nv::before,#pv.nv::after{content:'';position:absolute;left:14px;border-radius:5px;background:#3a322d}
 #pv.nv::before{top:14px;width:62%;height:9px}#pv.nv::after{top:29px;width:40%;height:8px}
 #pv.nv canvas{border-radius:9px;outline:1px dashed rgba(255,255,255,.22);outline-offset:3px}
+.allpic{display:block;width:100%;height:auto;border-radius:14px;background:#0e1014}
+.ap-m{display:none}.ap-m .allpic{border-radius:0}.ap-m .allpic:first-child{border-radius:14px 14px 0 0}.ap-m .allpic:last-child{border-radius:0 0 14px 14px}
+@media(max-width:700px){.ap-d{display:none}.ap-m{display:block;background:#0e1014;border-radius:14px}}
