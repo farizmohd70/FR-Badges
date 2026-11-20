@@ -51,6 +51,8 @@ $('#rst').onclick=e=>{const b=e.target.closest('[data-rs]');if(!b)return;RM.styl
 $('#rsz').addEventListener('input',()=>{RM.sz=+$('#rsz').value;RM.on=true;genKey='';rmVals();preview()});
 $('#rmg').addEventListener('input',()=>{RM.mg=+$('#rmg').value;RM.on=true;genKey='';rmVals();preview()});
 $('#rgo').onclick=()=>{RM.on=true;genKey='';preview();tab('make');scrollTo({top:Math.max(0,$('.cr-tabs').getBoundingClientRect().top+scrollY-$('#pvbox').offsetHeight-12),behavior:'smooth'})};
+$('#go').onclick=async()=>{const b=$('#go');b.disabled=true;$('#msg').textContent='Loading...';const r=await P.importAny($('#imp').value);b.disabled=false;
+ if(r.err){$('#msg').textContent=r.err;return}$('#msg').textContent='';$('#imp').value='';$('#imd').open=false;P.toast('Loaded '+r.n+' badges'+(r.unknown?', skipped '+r.unknown+' not in the catalog':''))};
 $('#rp').addEventListener('toggle',()=>{if($('#rp').open){RM.on=true;genKey='';preview()}else rmOff()});
 rmCards();rmVals();
 function preview(){clearTimeout(pT);pT=setTimeout(async()=>{const my=++busy,L=look(),box=$('#pvs');
