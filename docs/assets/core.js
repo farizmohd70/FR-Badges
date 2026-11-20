@@ -173,7 +173,7 @@ let tt;P.toast=m=>{let t=document.getElementById('toast');if(!t){t=document.crea
 P.filter=(q,o)=>{o=o||{};q=(q||'').trim().toLowerCase();return CAT.badges.filter(b=>(!q||b.hay.includes(q))&&(!o.group||o.group==='all'||b.g===o.group)&&(o.show==='sel'?S.sel.has(b.id):o.show==='unsel'?!S.sel.has(b.id):true)&&(!o.lite||CAT.lite.includes(b.id)))};
 P.liteSet=new Set(CAT.lite);
 /* hash sync (plain #name only) */
-let ht;function syncHash(){clearTimeout(ht);ht=setTimeout(()=>{try{const c=P.code();if(location.hash.slice(1)!==c){busy=true;history.replaceState(null,'','#'+c);setTimeout(()=>busy=false,50)}}catch(e){}},400)}
+let ht;function syncHash(){clearTimeout(ht);ht=setTimeout(()=>{try{const c=P.code();if(location.hash.slice(1)!==c){busy=true;history.replaceState(history.state,'','#'+c);setTimeout(()=>busy=false,50)}}catch(e){}},400)}
 window.addEventListener('hashchange',()=>{if(busy)return;if(P.loadCode(location.hash))P.toast('Loaded pack from link')});
 P.init=()=>{if(!P.loadCode(location.hash))P.preset('essentials');
  try{const l=JSON.parse(localStorage.getItem('fr_com_pick')||'[]');l.forEach(x=>{if(/^[0-9a-f]{12}$/.test(x.id)&&x.n&&x.p)S.com[x.id]={n:String(x.n).slice(0,60),p:String(x.p).slice(0,1500),g:x.g}})}catch(e){}

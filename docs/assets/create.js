@@ -14,7 +14,7 @@ const v=id=>{const e=$('#'+id);return e.type==='checkbox'?e.checked:e.value};
 const set=(id,x)=>{const e=$('#'+id);if(e.type==='checkbox')e.checked=!!x;else e.value=x};
 let cvW=0;
 /* tabs */
-function tab(t){document.querySelectorAll('.cr-tabs [data-t]').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});document.querySelectorAll('.cr-p').forEach(p=>p.classList.toggle('on',p.dataset.p===t));
+function tab(t,pop){if(!pop&&FRNAV.get().tab!==t)FRNAV.push({tab:t});document.querySelectorAll('.cr-tabs [data-t]').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});document.querySelectorAll('.cr-p').forEach(p=>p.classList.toggle('on',p.dataset.p===t));
  const bar=$('.cr-tabs');if(bar){const a=bar.querySelector('.on');if(a)bar.scrollLeft=a.offsetLeft-12}
  if(t==='share')refreshShare();if(t==='pat')check()}
 document.querySelectorAll('.cr-tabs [data-t]').forEach(b=>b.onclick=()=>tab(b.dataset.t));
@@ -204,6 +204,8 @@ try{const s=localStorage.getItem('fr_cur');if(s)setAll(JSON.parse(s))}catch(e){}
   set('pat',b.p);set('nm',(b.n+' (remix)').slice(0,40));$('#nm').dataset.t=1;if([...$('#gp').options].some(o=>o.value===b.g))set('gp',b.g);
   render();pushH();toast(d?'Loaded. Change anything you like.':'Loaded the pattern and name. The look was not saved with this badge.')}catch(e){toast('Could not load that badge.')}})();
 render().then(()=>{cur=snap();btns()});
+/* refresh and back button stay on the same tab */
+{const t0=FRNAV.get().tab;if(t0&&document.querySelector('.cr-p[data-p="'+t0+'"]'))tab(t0,true);else FRNAV.rep({tab:'looks'});FRNAV.pop(s=>tab(s.tab||'looks',true))}
 /* Nuvio view of the preview */
 (()=>{let on=true;try{on=localStorage.getItem('fr_nv')!=='0'}catch(e){}
  const ap=()=>{$('#pv').classList.toggle('nv',on);$('#nv').setAttribute('aria-pressed',on);$('#nv').classList.toggle('pri',on)};

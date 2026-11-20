@@ -72,7 +72,11 @@ $('#ord').addEventListener('change',()=>{const m=v('ord');
   if(m==='rev'){S.gord.reverse();Object.keys(S.bord).forEach(g=>S.bord[g].reverse())}},'order');
  toast('Order updated.')});
 /* ---------- tabs, controls ---------- */
-function tab(t){if(['text','bg','shape'].includes(t)&&RM.on){$('#rp').open=false;rmOff()}$$('.cr-tabs [data-t]').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});$$('.cr-p').forEach(p=>p.classList.toggle('on',p.dataset.p===t));
+const rmState=()=>RM.on?{style:RM.style,sz:RM.sz,mg:RM.mg}:null;
+function applyRM(r){RM.on=!!r;if(r){RM.style=r.style;RM.sz=r.sz;RM.mg=r.mg;$('#rsz').value=r.sz;$('#rmg').value=r.mg}$('#rp').open=!!r;rmCards();rmVals();genKey='';preview();refreshMake()}
+function tab(t,pop){if(!pop&&FRNAV.get().tab!==t&&!(['text','bg','shape'].includes(t)&&RM.on)){FRNAV.rep({rm:rmState()})}
+ if(['text','bg','shape'].includes(t)&&RM.on){$('#rp').open=false;rmOff()}
+ if(!pop&&FRNAV.get().tab!==t)FRNAV.push({tab:t,rm:rmState()});$$('.cr-tabs [data-t]').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});$$('.cr-p').forEach(p=>p.classList.toggle('on',p.dataset.p===t));
  const bar=$('.cr-tabs'),a=bar.querySelector('.on');if(a)bar.scrollLeft=a.offsetLeft-12;if(t==='make'){refreshMake();quickCheck()}}
 $$('.cr-tabs [data-t]').forEach(b=>b.onclick=()=>tab(b.dataset.t));
 $$('[data-go]').forEach(b=>b.onclick=()=>{tab(b.dataset.go);const y=$('.cr-tabs').getBoundingClientRect().top+scrollY-$('#pvbox').offsetHeight-12;scrollTo({top:Math.max(0,y),behavior:'smooth'})});
@@ -264,7 +268,9 @@ function quickCheck(){clearTimeout(qT);qT=setTimeout(async()=>{const L=look(),al
  const ap=()=>{$('#pvs').classList.toggle('nv',on);$('#nv').setAttribute('aria-pressed',on);$('#nv').classList.toggle('pri',on)};
  $('#nv').onclick=()=>{on=!on;try{localStorage.setItem('fr_nv',on?'1':'0')}catch(e){}ap()};ap()})();
 /* ---------- start ---------- */
+
 if(!restore())P.preset('essentials');
 refreshSel();markEdited();vals();preview();refreshMake();
+{const s0=FRNAV.get();if(s0.rm)applyRM(s0.rm);if(s0.tab&&$('.cr-p[data-p="'+s0.tab+'"]'))tab(s0.tab,true);else FRNAV.rep({tab:'looks',rm:rmState()});FRNAV.pop(s=>{applyRM(s.rm||null);tab(s.tab||'looks',true)})}
 })();
 

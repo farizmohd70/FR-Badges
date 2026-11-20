@@ -55,3 +55,6 @@ function scan(r){$$('select',r).forEach(enhance)}
 addEventListener('resize',place);addEventListener('scroll',e=>{if(open&&!(pop&&pop.contains(e.target)))close()},true);
 document.addEventListener('DOMContentLoaded',()=>{scan();new MutationObserver(ms=>{ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1){if(n.tagName==='SELECT')enhance(n);else scan(n)}}))}).observe(document.body,{childList:true,subtree:true})});
 })();
+
+/* page state kept in the browser history, so refresh and the back button stay on the same step or tab */
+window.FRNAV={get(){const s=history.state;return s&&typeof s==='object'?s:{}},push(o){try{history.pushState({...FRNAV.get(),...o},'')}catch(e){}},rep(o){try{history.replaceState({...FRNAV.get(),...o},'')}catch(e){}},pop(f){addEventListener('popstate',()=>f(FRNAV.get()))}};

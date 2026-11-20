@@ -2,7 +2,7 @@
 
 const $=s=>document.querySelector(s),S=P.S,esc=P.esc;
 const STEPS=['Look','Badges','Order','Get pack'];
-let step=0,grp='all',q='';
+let step=Math.min(3,Math.max(0,(FRNAV.get().step|0))),grp='all',q='';
 const GD=Object.fromEntries(P.CAT.groups.map(g=>[g.id,g.name]));
 const START=[['lite','Recommended','The everyday pack most people want'],['essentials','Clean and simple','Only the important badges'],['fast','Light and fast','About 30 badges, loads quickest'],['langlite','Essentials + main languages','Key badges, 15 common languages and subtitles'],['langs','Essentials + languages','Key badges plus all languages and subtitles'],['picture','Best picture','Resolution, HDR, Dolby Vision and codecs'],['theater','Home theater','Picture and sound, with speaker layouts'],['cinephile','Cinephile','IMAX, Criterion and other editions'],['audiophile','Sound lover','Audio formats and speaker layouts'],['streaming','Streaming services','Netflix, Prime and debrid providers'],['empty','Start empty','Pick everything yourself']];
 const demoIds=()=>{const o=[];['resolution','source','audio-codec'].forEach(g=>{const b=P.byGroup[g]&&P.byGroup[g][0];if(b)o.push(b.id)});return o};
@@ -15,7 +15,7 @@ function renderSteps(){$('#steps').innerHTML=STEPS.map((s,i)=>`<button class="${
  $('#undo').disabled=!P.canUndo();stat()}
 function stat(){const bg=$('#big');if(bg)bg.innerHTML=S.sel.size>200?'<div class="warn"><span>You picked '+S.sel.size+' badges. With more than 200, streams will take longer to load.</span></div>':'';
  $('#stat').textContent=S.sel.size+' badge'+(S.sel.size===1?'':'s')+' picked'}
-function go(n){step=n;scrollTo(0,0);render()}
+function go(n,pop){n=Math.max(0,Math.min(3,n));if(!pop&&n!==step)FRNAV.push({step:n});step=n;scrollTo(0,0);render()}
 function render(){renderSteps();[v1,v2,v3,v4][step]();stat()}
 
 /* 1 look */
@@ -136,4 +136,4 @@ P.on(why=>{renderSteps();
   const c={};P.CAT.badges.forEach(b=>{if(S.sel.has(b.id))c[b.g]=(c[b.g]||0)+1});document.querySelectorAll('.chip[data-g]').forEach(x=>{const i=x.querySelector('i');if(i&&x.dataset.g!=='all'&&x.dataset.g!=='community')i.textContent=c[x.dataset.g]||0});return}
  if(why==='name'||why==='saved'||why==='samples')return;
  [v1,v2,v3,v4][step]();stat()});
-P.init();render();
+P.init();FRNAV.rep({step});FRNAV.pop(s=>go(s.step|0,true));render();

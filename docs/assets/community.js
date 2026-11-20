@@ -93,11 +93,13 @@ $('#pmx').onclick=closePack;$('#pm').addEventListener('click',e=>{if(e.target.id
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#pm').hidden)closePack()});
 $('#pmq').oninput=pkRender;
 document.querySelectorAll('#pm [data-pv]').forEach(b=>b.onclick=()=>{pkv=b.dataset.pv;document.querySelectorAll('#pm [data-pv]').forEach(x=>x.classList.toggle('on',x===b));pkRender()});
-function setView(v2){view=v2;$$('#vt [data-v]').forEach(b=>{const on=b.dataset.v===v2;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
+function setView(v2,pop){if(!pop&&v2!==view)FRNAV.push({view:v2});view=v2;$$('#vt [data-v]').forEach(b=>{const on=b.dataset.v===v2;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
  $('#list').hidden=v2!=='badges';$('#plist').hidden=v2!=='packs';const ui=$('#cat')._ui;if(ui)ui.hidden=v2!=='badges';
  $('#q').placeholder=v2==='packs'?'Search packs':'Search badges';v2==='packs'?drawPacks():draw()}
 const $$=s=>[...document.querySelectorAll(s)];
 $$('#vt [data-v]').forEach(b=>b.onclick=()=>setView(b.dataset.v));
+FRNAV.pop(s=>setView(s.view||'badges',true));
+{const sv=FRNAV.get().view;if(sv==='packs')setView('packs',true);else FRNAV.rep({view})}
 $('#q').oninput=()=>view==='packs'?drawPacks():draw();$('#cat').onchange=draw;$('#sort').onchange=()=>view==='packs'?drawPacks():draw();
 if(ADMIN)$('#note').insertAdjacentHTML('beforebegin','<p class="hint warn">Admin mode: you can edit or delete any badge here.</p>');
 fetch(BASE+'packs.json').then(r=>r.ok?r.json():[]).then(l=>{packs=Array.isArray(l)?l.filter(p=>/^[0-9a-f]{12}$/.test(p.id)):[];if(view==='packs')drawPacks()}).catch(()=>{});
@@ -105,5 +107,5 @@ const stats=W?fetch(W+'/stats').then(r=>r.json()).then(j=>{if(j&&j.ok){S=j.s||{}
 fetch(BASE+'index.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(j=>{all=(j.badges||[]).filter(b=>/^[0-9a-f]{12}$/.test(b.id));
  {const used=[...new Set(all.map(b=>b.g||'community'))];$('#cat').innerHTML='<option value="">All categories</option>'+used.map(g=>`<option value="${g}">${esc(gn(g))}</option>`).join('')}
  if(!all.length){$('#note').textContent='No badges yet. Be the first to make one.';return}
- return stats.then(()=>{draw();if(/[?&]v=packs/.test(location.search))setView('packs')})}).catch(()=>{$('#note').textContent='The community list could not be loaded right now.'});
+ return stats.then(()=>{draw();if(!FRNAV.get().view&&/[?&]v=packs/.test(location.search))setView('packs',true)})}).catch(()=>{$('#note').textContent='The community list could not be loaded right now.'});
 })();
