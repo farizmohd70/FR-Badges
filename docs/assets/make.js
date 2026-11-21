@@ -5,7 +5,15 @@ const STEPS=['Look','Badges','Order','Get pack'];
 let step=Math.min(3,Math.max(0,(FRNAV.get().step|0))),grp='all',q='';
 const GD=Object.fromEntries(P.CAT.groups.map(g=>[g.id,g.name]));
 const START=[['lite','Recommended','The everyday pack most people want'],['essentials','Clean and simple','Only the important badges'],['fast','Light and fast','About 30 badges, loads quickest'],['langlite','Essentials + main languages','Key badges, 15 common languages and subtitles'],['langs','Essentials + languages','Key badges plus all languages and subtitles'],['picture','Best picture','Resolution, HDR, Dolby Vision and codecs'],['theater','Home theater','Picture and sound, with speaker layouts'],['cinephile','Cinephile','IMAX, Criterion and other editions'],['audiophile','Sound lover','Audio formats and speaker layouts'],['streaming','Streaming services','Netflix, Prime and debrid providers'],['empty','Start empty','Pick everything yourself']];
-const demoIds=()=>{const o=[];['resolution','source','audio-codec'].forEach(g=>{const b=P.byGroup[g]&&P.byGroup[g][0];if(b)o.push(b.id)});return o};
+const demoIds=()=>{const o=[];const gs=['resolution','source','audio-codec','hero','dynamic-range','streaming','video-codec','audio-channels','languages','editions'];for(let k=0;k<3;k++)gs.forEach(g=>{const b=P.byGroup[g]&&P.byGroup[g][k];if(b&&!o.includes(b.id)&&!o.some(x=>P.byId[x].n.toUpperCase()===b.n.toUpperCase()))o.push(b.id)});return o};
+let fitT=0;function fitSw(){if(fitT)return;fitT=requestAnimationFrame(()=>{fitT=0;fitNow()})}
+function fitNow(){document.querySelectorAll('.card .sw[data-s]').forEach(w=>{const im=[...w.querySelectorAll('img')];if(!im.every(i=>i.complete))return;
+ const cs=getComputedStyle(w),W=w.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight),G=6;
+ const wd=new Map(im.map(i=>{const c=getComputedStyle(i);return [i,i.getBoundingClientRect().width+parseFloat(c.marginLeft)+parseFloat(c.marginRight)]}));
+ const left=im.slice(),used=[];
+ for(let r=0;r<3;r++){let rem=W,first=true;for(let k=0;k<left.length;){const x=left[k],need=wd.get(x)+(first?0:G);if(need<=rem){rem-=need;first=false;used.push(x);left.splice(k,1)}else k++}}
+ used.forEach(x=>{x.style.visibility='';w.appendChild(x)});left.forEach(x=>{x.style.visibility='hidden';w.appendChild(x)})})}
+window.addEventListener('resize',()=>fitSw());
 const el=(h)=>{const t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstChild};
 
 function renderSteps(){$('#steps').innerHTML=STEPS.map((s,i)=>`<button class="${i===step?'on':''} ${i<step?'done':''}" data-s="${i}"><b>${i<step?'✓':i+1}</b>${s}</button>`).join('');
@@ -21,7 +29,7 @@ function render(){renderSteps();[v1,v2,v3,v4][step]();stat()}
 /* 1 look */
 function v1(){const ids=demoIds();
  $('#view').innerHTML=`<h2>Pick a look</h2><p class="sub">This is how your badges will appear next to each stream.</p>
- <div class="cards">${P.STYLES.map(s=>`<button class="card ${S.style===s.id?'on':''}" data-st="${s.id}"><div class="sw" style="background:${P.bgCol(s.id)}">${ids.map(i=>P.img(i,'',s.id)).join('')}</div><div class="t">${s.name}</div><div class="d">${esc(s.note)}</div></button>`).join('')}</div>
+ <div class="cards">${P.STYLES.map(s=>`<button class="card ${S.style===s.id?'on':''}" data-st="${s.id}"><div class="sw" data-s="${s.id}" style="background:${P.bgCol(s.id)}">${ids.map(i=>P.img(i,'',s.id)).join('')}</div><div class="t">${s.name}</div><div class="d">${esc(s.note)}</div></button>`).join('')}</div>
  <h3>Already have a pack?</h3><p class="hint">Paste a pack link, its JSON or a share code to edit it here. Badges that are not in the FR catalog are skipped.</p>
  <textarea id="imp" style="height:76px" placeholder="https://raw.githubusercontent.com/.../badges.json" aria-label="Pack link, JSON or share code"></textarea>
  <div class="bar" style="margin-top:8px"><button class="b2 pri" id="go">Open in editor</button><span class="hint" id="msg" style="margin:0" role="status"></span></div>
@@ -30,6 +38,7 @@ function v1(){const ids=demoIds();
  $('#go').onclick=async()=>{const b=$('#go');b.disabled=true;$('#msg').textContent='Loading...';const r=await P.importAny($('#imp').value);b.disabled=false;
   if(r.err){$('#msg').textContent=r.err;return}P.toast('Loaded '+r.n+' badges'+(r.unknown?', skipped '+r.unknown+' not in the catalog':''));go(1)};
  document.querySelectorAll('[data-st]').forEach(b=>b.onclick=()=>P.setStyle(b.dataset.st));
+ document.querySelectorAll('.card .sw[data-s] img').forEach(i=>{i.loading='eager';i.onload=i.onerror=fitSw});fitSw();
  document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const n=P.preset(b.dataset.p);P.toast(n+' badges picked');go(1)})}
 
 /* 2 badges */
