@@ -14,5 +14,6 @@ window.STYLES_DATA=[
 {"id": "black-white", "name": "Black & White", "folder": "Badges-Black-White", "note": "Black glass pills, white text", "bg": "dark"},
 {"id": "white-black", "name": "White & Black", "folder": "Badges-White-Black", "note": "White glass pills, black text", "bg": "light"},
 {"id": "text-white", "name": "Text White", "folder": "Badges-Text-White", "note": "White text only", "bg": "dark"},
-{"id": "text-black", "name": "Text Black", "folder": "Badges-Text-Black", "note": "Black text only", "bg": "light"}
+{"id": "text-black", "name": "Text Black", "folder": "Badges-Text-Black", "note": "Black text only", "bg": "light"},
+{"id": "pastel", "name": "Pastel", "folder": "Badges-Pastel", "note": "Each category in its own soft colour, flags on languages", "bg": "dark"}
 ];

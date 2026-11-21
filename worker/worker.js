@@ -33,7 +33,7 @@ const C_RAW = 'https://raw.githubusercontent.com/' + C_OWNER + '/' + C_REPO + '/
 const SITE_ORIGINS = ['https://farizmohd70.github.io', 'http://localhost:8123', 'http://127.0.0.1:8123'];
 // Built-in copy of the style folders. The live list is read from docs/assets/styles.js in your repo,
 // so a new style only needs a new line there (and its folder). This copy is the fallback.
-let STYLES = ["Badges", "Badges-Neon", "Badges-Solid", "Badges-Light", "Badges-Icon-Dark", "Badges-Split", "Badges-Frost", "Badges-Neon-Icon", "Badges-Minimal", "Badges-Icon-Light", "Badges-Black-White", "Badges-White-Black", "Badges-Text-White", "Badges-Text-Black"];
+let STYLES = ["Badges", "Badges-Neon", "Badges-Solid", "Badges-Light", "Badges-Icon-Dark", "Badges-Split", "Badges-Frost", "Badges-Neon-Icon", "Badges-Minimal", "Badges-Icon-Light", "Badges-Black-White", "Badges-White-Black", "Badges-Text-White", "Badges-Text-Black", "Badges-Pastel"];
 let stylesAt = 0;
 async function loadStyles() {
   if (Date.now() - stylesAt < 600000) return;
