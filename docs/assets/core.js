@@ -53,7 +53,10 @@ function syncCom(){const keep=new Set();
 const restore=s=>{const o=JSON.parse(s);S.name=o.name;S.style=o.style;S.sel=new Set(o.sel);S.over=o.over;S.pat=o.pat||{};S.com=o.com||{};S.gord=o.gord;S.bord=o.bord;syncCom()};
 P.on=f=>subs.push(f);
 function emit(why){subs.forEach(f=>{try{f(why)}catch(e){console.error(e)}});syncHash()}
-const FAM={};CAT.badges.forEach(b=>{const m=/^(.+)-(1l|code|name)$/.exec(b.id);if(m&&byId[m[1]]&&(['lang-code','lang-name'].includes(b.g)||m[2]==='1l')){(FAM[m[1]]=FAM[m[1]]||[m[1]]).push(b.id)}});
+const FAM={};CAT.badges.forEach(b=>{const m=/^(.+)-1l$/.exec(b.id);if(m&&byId[m[1]]){(FAM[m[1]]=FAM[m[1]]||[m[1]]).push(b.id)}});
+/* one version per language and kind: lang-xx, lang-xx-code, lang-xx-name / sub-xx, sub-xx-code / dub-xx-code, dub-xx-name */
+const LG=new Set(['languages','lang-code','lang-name','dub-code','dub-name','subtitles','sub-code']);
+CAT.badges.forEach(b=>{if(!LG.has(b.g)||b.g==='removed')return;const m=/^(lang|sub|dub)-(.+?)(?:-(code|name))?$/.exec(b.id);if(!m)return;const k='#'+m[1]+':'+m[2];(FAM[k]=FAM[k]||[]).push(b.id)});
 const famOf={};Object.values(FAM).forEach(a=>a.forEach(i=>famOf[i]=a));
 const ORD={};CAT.badges.forEach((b,i)=>ORD[b.id]=i);
 function oneOfEach(before){const seen=new Set(),swaps=[];[...S.sel].forEach(id=>{const f=famOf[id];if(!f||seen.has(f))return;seen.add(f);const on=f.filter(x=>S.sel.has(x));if(on.length<2)return;const nw=on.filter(x=>!before.has(x));const pool=nw.length?nw:on;const keep=pool.sort((x,y)=>ORD[x]-ORD[y])[0];on.forEach(x=>{if(x!==keep){S.sel.delete(x);if(before.has(x))swaps.push([x,keep])}})});if(swaps.length&&P.toast)P.toast(swaps.length>1?'Swapped '+swaps.length+' badges for their other version (one version of each)':'Swapped '+byId[swaps[0][0]].n+' for '+byId[swaps[0][1]].n+' (one version of each)')}
