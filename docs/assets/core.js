@@ -125,6 +125,7 @@ P.importAny=async t=>{t=(t||'').trim();if(!t)return{err:'Paste a link, JSON or s
 /* adaptive Dolby Vision / HDR: plain badges only step aside for combo badges that are in the pack */
 const ADP_DV=['hero-dolby-vision','hero-dolby-vision-1l','dr-dolby-vision','dr-dolby-vision-1l'],ADP_CB=['dr-dv-hdr','dr-dv-hdr10plus','dr-dv-hdr10','dr-dv-p7','dr-dv-p8'];
 function adaptPat(id,sel,pat,def){
+ const G1='(?:[^\\n]*\\n)?[ ]*(?:4k|2160p|1080p)[ ]+(?:dv[ ]*\\|[ ]*)?hdr[ ]*$',G3='(?:[^\\n]*\\n)?[ ]*(?:4k|2160p|1080p)[ ]+dv(?:[ ]*\\|[ ]*hdr)?[ ]*$';
  const k=ADP_DV.includes(id)?'dv':id==='dr-hdr10plus'?'p':id==='dr-hdr10'?'t':id==='dr-hdr'?'h':null;
  if(!k||pat(id)!==def(id))return pat(id);
  const alts=[];
@@ -132,11 +133,11 @@ function adaptPat(id,sel,pat,def){
   if(m)alts.push('(?:'+m[1]+')');else if(/^(\(\?i\))?[^(]|^\(\?i\)\\b/.test(p)&&!/^\(\?[a-z]+\)\^/.test(p))alts.push('.*?'+p.replace(/^\(\?i\)/,''));else return pat(id)}
  const ex=alts.length?'(?:'+alts.join('|')+')':'',DV='dolby[\\s._-]*vision|dovi|dv',
   hp='.*?(?<![a-z0-9])(?:hdr10\\+|hdr10[\\s._-]*plus|hdr[\\s._-]*10[\\s._-]*\\+)';
- if(k==='dv')return ex?'(?is)^(?!'+ex+').*?\\b('+DV+')\\b':'(?i)\\b('+DV+')\\b';
+ if(k==='dv')return '(?is)^(?!'+G3+')'+(ex?'(?!'+ex+')':'')+'.*?\\b('+DV+')\\b';
  const lead=a=>a.length?'(?is)^(?!'+a.join('|')+')':'(?is)^';
  if(k==='p')return lead(ex?[ex]:[])+hp;
  if(k==='t')return lead(ex?[ex,hp]:[hp])+'.*?\\b(hdr10|hdr[\\s._-]*10)\\b(?!\\s*(?:\\+|plus))';
- return lead((ex?[ex]:[]).concat([hp,'.*?\\bhlg\\b','.*?\\bhdr[\\s._-]*10']))+'.*?\\bhdr\\b(?!\\s*(?:10|\\+))';
+ return lead([G1].concat(ex?[ex]:[],[hp,'.*?\\bhlg\\b','.*?\\bhdr[\\s._-]*10']))+'.*?\\bhdr\\b(?!\\s*(?:10|\\+))';
 }
 /* matching */
 const reC={};
