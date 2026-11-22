@@ -191,7 +191,8 @@ P.copy=(text,msg)=>{const done=()=>P.toast(msg||'Copied');
  const fb=()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0;top:0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}ta.remove();ok?done():P.toast('Select the text and copy it')};
  try{navigator.clipboard.writeText(text).then(done,fb)}catch(e){fb()}};
 let tt;P.toast=m=>{let t=document.getElementById('toast');if(!t){t=document.createElement('div');t.id='toast';t.setAttribute('role','status');document.body.appendChild(t)}t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),1800)};
-P.filter=(q,o)=>{o=o||{};q=(q||'').trim().toLowerCase();return CAT.badges.filter(b=>(!q||b.hay.includes(q))&&(!o.group||o.group==='all'||b.g===o.group)&&(o.show==='sel'?S.sel.has(b.id):o.show==='unsel'?!S.sel.has(b.id):true)&&(!o.lite||CAT.lite.includes(b.id)))};
+P.same1l=id=>{if(!id.endsWith('-1l'))return false;const st=STYLES.find(x=>x.id===P.styleOf(id));return!!(st&&st.same1l)};
+P.filter=(q,o)=>{o=o||{};q=(q||'').trim().toLowerCase();return CAT.badges.filter(b=>(!q||b.hay.includes(q))&&!(P.same1l(b.id)&&!S.sel.has(b.id))&&(!o.group||o.group==='all'||b.g===o.group)&&(o.show==='sel'?S.sel.has(b.id):o.show==='unsel'?!S.sel.has(b.id):true)&&(!o.lite||CAT.lite.includes(b.id)))};
 P.liteSet=new Set(CAT.lite);
 /* hash sync (plain #name only) */
 let ht;function syncHash(){clearTimeout(ht);ht=setTimeout(()=>{try{const c=P.code();if(location.hash.slice(1)!==c){busy=true;history.replaceState(history.state,'','#'+c);setTimeout(()=>busy=false,50)}}catch(e){}},400)}
