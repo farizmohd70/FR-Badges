@@ -273,6 +273,10 @@ function quickCheck(){clearTimeout(qT);qT=setTimeout(async()=>{const L=look(),al
 
 if(!restore())P.preset('essentials');
 refreshSel();markEdited();vals();preview();refreshMake();
+{const s=FRNAV.get();if(Array.isArray(s.og))$$('#grp .sg').forEach(d=>{d.open=s.og.includes(d.dataset.g)});
+ if(s.sq){$('#sq').value=s.sq;$('#sq').oninput()}
+ $('#grp').addEventListener('toggle',()=>FRNAV.rep({og:$$('#grp .sg[open]').map(d=>d.dataset.g)}),true);
+ $('#sq').addEventListener('input',()=>FRNAV.rep({sq:$('#sq').value}))}
 {const s0=FRNAV.get();if(s0.rm)applyRM(s0.rm);if(s0.tab&&$('.cr-p[data-p="'+s0.tab+'"]'))tab(s0.tab,true);else FRNAV.rep({tab:'looks',rm:rmState()});FRNAV.pop(s=>{applyRM(s.rm||null);tab(s.tab||'looks',true)})}
 })();
 

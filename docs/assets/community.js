@@ -33,7 +33,7 @@ function renderAdm(){if(!ADMIN)return;let el=document.getElementById('adm');if(!
  const m={};let none=0;for(const x of all)x.u?((m[x.u]=m[x.u]||{b:0,p:0}).b++):none++;for(const x of packs)x.u?((m[x.u]=m[x.u]||{b:0,p:0}).p++):none++;
  const ids=Object.keys(m).sort((a,b)=>(m[b].b+m[b].p)-(m[a].b+m[a].p));
  el.innerHTML=`<b>${ids.length}</b> makers · <b>${all.length}</b> badges · <b>${packs.length}</b> packs${none?` · ${none} older items without a maker id`:''}`+(ids.length?'<div class="bar" style="margin-top:6px;flex-wrap:wrap">'+ids.slice(0,12).map(i=>`<button class="b2 sm${maker===i?' on':''}" data-mk="${i}">${i} · ${m[i].b} badge${m[i].b===1?'':'s'}, ${m[i].p} pack${m[i].p===1?'':'s'}</button>`).join('')+(maker?'<button class="b2 sm" data-mk="">Show all</button>':'')+'</div>':'');
- el.onclick=e=>{const t=e.target.closest('[data-mk]');if(!t)return;maker=t.dataset.mk===maker?'':t.dataset.mk;view==='packs'?drawPacks():draw()}}
+ el.onclick=e=>{const t=e.target.closest('[data-mk]');if(!t)return;maker=t.dataset.mk===maker?'':t.dataset.mk;keepF();view==='packs'?drawPacks():draw()}}
 function draw(){const q=$('#q').value.trim().toLowerCase(),cat=$('#cat').value,so=$('#sort').value;
  let l=all.filter(b=>(!q||(b.n+' '+b.p).toLowerCase().includes(q))&&(!cat||(b.g||'community')===cat)&&(!maker||b.u===maker)&&(ADMIN||reps(b)<HIDE_AT));
  if(so==='liked')l=l.slice().sort((a,b)=>likes(b)-likes(a));
@@ -100,12 +100,14 @@ const $$=s=>[...document.querySelectorAll(s)];
 $$('#vt [data-v]').forEach(b=>b.onclick=()=>setView(b.dataset.v));
 FRNAV.pop(s=>setView(s.view||'badges',true));
 {const sv=FRNAV.get().view;if(sv==='packs')setView('packs',true);else FRNAV.rep({view})}
-$('#q').oninput=()=>view==='packs'?drawPacks():draw();$('#cat').onchange=draw;$('#sort').onchange=()=>view==='packs'?drawPacks():draw();
+function keepF(){FRNAV.rep({q:$('#q').value,cat:$('#cat').value,so:$('#sort').value,mk:maker})}
+{const s=FRNAV.get();if(s.q)$('#q').value=s.q;if(s.so)$('#sort').value=s.so;maker=s.mk||''}
+$('#q').oninput=()=>{keepF();view==='packs'?drawPacks():draw()};$('#cat').onchange=()=>{keepF();draw()};$('#sort').onchange=()=>{keepF();view==='packs'?drawPacks():draw()};
 if(ADMIN)$('#note').insertAdjacentHTML('beforebegin','<p class="hint warn">Admin mode: you can edit or delete any badge here.</p>');
 fetch(BASE+'packs.json').then(r=>r.ok?r.json():[]).then(l=>{packs=Array.isArray(l)?l.filter(p=>/^[0-9a-f]{12}$/.test(p.id)):[];if(view==='packs')drawPacks()}).catch(()=>{});
 const stats=W?fetch(W+'/stats').then(r=>r.json()).then(j=>{if(j&&j.ok){S=j.s||{};hasStats=true;$('#sortw').hidden=false}}).catch(()=>{}):Promise.resolve();
 fetch(BASE+'index.json').then(r=>{if(!r.ok)throw 0;return r.json()}).then(j=>{all=(j.badges||[]).filter(b=>/^[0-9a-f]{12}$/.test(b.id));
- {const used=[...new Set(all.map(b=>b.g||'community'))];$('#cat').innerHTML='<option value="">All categories</option>'+used.map(g=>`<option value="${g}">${esc(gn(g))}</option>`).join('')}
+ {const used=[...new Set(all.map(b=>b.g||'community'))];$('#cat').innerHTML='<option value="">All categories</option>'+used.map(g=>`<option value="${g}">${esc(gn(g))}</option>`).join('');const c0=FRNAV.get().cat;if(c0&&used.includes(c0))$('#cat').value=c0}
  if(!all.length){$('#note').textContent='No badges yet. Be the first to make one.';return}
  return stats.then(()=>{draw();if(!FRNAV.get().view&&/[?&]v=packs/.test(location.search))setView('packs',true)})}).catch(()=>{$('#note').textContent='The community list could not be loaded right now.'});
 })();

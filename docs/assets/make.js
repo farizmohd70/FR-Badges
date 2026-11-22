@@ -2,7 +2,7 @@
 
 const $=s=>document.querySelector(s),S=P.S,esc=P.esc;
 const STEPS=['Look','Badges','Order','Get pack'];
-let step=Math.min(3,Math.max(0,(FRNAV.get().step|0))),grp='all',q='';
+let step=Math.min(3,Math.max(0,(FRNAV.get().step|0))),grp=FRNAV.get().grp||'all',q=FRNAV.get().q||'';
 const GD=Object.fromEntries(P.CAT.groups.map(g=>[g.id,g.name]));
 const START=[['lite','Recommended','The everyday pack most people want'],['essentials','Clean and simple','Only the important badges'],['fast','Light and fast','About 30 badges, loads quickest'],['langlite','Essentials + main languages','Key badges, 15 common languages and subtitles'],['langs','Essentials + languages','Key badges plus all languages and subtitles'],['picture','Best picture','Resolution, HDR, Dolby Vision and codecs'],['theater','Home theater','Picture and sound, with speaker layouts'],['cinephile','Cinephile','IMAX, Criterion and other editions'],['audiophile','Sound lover','Audio formats and speaker layouts'],['streaming','Streaming services','Netflix, Prime and debrid providers'],['empty','Start empty','Pick everything yourself']];
 const demoIds=()=>{const o=[];const gs=['resolution','source','audio-codec','hero','dynamic-range','streaming','video-codec','audio-channels','languages','editions'];for(let k=0;k<3;k++)gs.forEach(g=>{const b=P.byGroup[g]&&P.byGroup[g][k];if(b&&!o.includes(b.id)&&!o.some(x=>P.byId[x].n.toUpperCase()===b.n.toUpperCase()))o.push(b.id)});return o};
@@ -51,10 +51,10 @@ function v2(){const oc=document.getElementById('chips');if(oc)chipX=oc.scrollLef
  $('#view').innerHTML=`<h2>Choose your badges</h2><p class="sub">Tap a badge to add it. Tap again to remove it.</p>
  <div id="big"></div><div class="bar"><input type="search" id="q" placeholder="Search, like 4K or Atmos" value="${esc(q)}"><button class="b2" id="all">Pick all shown</button><button class="b2" id="none">Clear shown</button><a class="b2" href="create" style="text-decoration:none;display:inline-flex;align-items:center">Create your own badge</a></div>
  <div class="chips" id="chips"></div><div id="grid"></div>`;
- const ch=[['all','All']].concat(P.CAT.groups.map(g=>[g.id,g.name]),[['community','Community made']]);
+ const ch=[['all','All']].concat(P.CAT.groups.map(g=>[g.id,g.name]),[['community','Community made']]);if(!ch.some(c=>c[0]===grp))grp='all';
  counts.community=P.comCount();
  $('#chips').innerHTML=ch.map(([id,n])=>`<button class="chip ${grp===id?'on':''}" data-g="${id}">${esc(n)}${id==='all'?'':`<i>${counts[id]||0}</i>`}</button>`).join('');
- $('#chips').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{grp=b.dataset.g;v2()});
+ $('#chips').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{grp=b.dataset.g;FRNAV.rep({grp});v2()});
  {const c=$('#chips');c.scrollLeft=chipX;const on=c.querySelector('.chip.on');if(on){const l=on.offsetLeft-c.offsetLeft,r=l+on.offsetWidth;if(l<c.scrollLeft)c.scrollLeft=l-8;else if(r>c.scrollLeft+c.clientWidth)c.scrollLeft=r-c.clientWidth+8}window.scrollTo(0,oy)}
  const list=()=>P.filter(q,{group:grp});
  const tile=b=>`<button class="tile ${S.sel.has(b.id)?'on':''}" data-id="${b.id}"><div class="im" style="background:${P.bgOf(b.id)}">${P.img(b.id)}</div><div class="n">${esc(b.n)}</div></button>`;
@@ -74,7 +74,7 @@ function v2(){const oc=document.getElementById('chips');if(oc)chipX=oc.scrollLef
   $('#grid').querySelectorAll('[data-pc]').forEach(x=>x.onclick=()=>P.setMany(ids(x.dataset.pc),false));
   secCounts()};
  draw();
- $('#q').oninput=e=>{q=e.target.value;draw()};
+ $('#q').oninput=e=>{q=e.target.value;FRNAV.rep({q});draw()};
  $('#all').onclick=()=>P.setMany(list().map(b=>b.id),true);
  $('#none').onclick=()=>P.setMany(list().map(b=>b.id),false)}
 
