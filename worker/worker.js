@@ -171,12 +171,31 @@ async function fromList(code) {
   return items;
 }
 
+/* adaptive Dolby Vision / HDR: plain badges only step aside for combo badges that are in the pack */
+const ADP_DV=['hero-dolby-vision','hero-dolby-vision-1l','dr-dolby-vision','dr-dolby-vision-1l'],ADP_CB=['dr-dv-hdr','dr-dv-hdr10plus','dr-dv-hdr10','dr-dv-p7','dr-dv-p8'];
+function adaptPat(id,sel,pat,def){
+ const k=ADP_DV.includes(id)?'dv':id==='dr-hdr10plus'?'p':id==='dr-hdr10'?'t':id==='dr-hdr'?'h':null;
+ if(!k||pat(id)!==def(id))return pat(id);
+ const alts=[];
+ for(const c of ADP_CB){if(!sel.has(c))continue;const p=pat(c),m=/^\(\?is\)\^([\s\S]*)\.\*$/.exec(p);
+  if(m)alts.push('(?:'+m[1]+')');else if(/^(\(\?i\))?[^(]|^\(\?i\)\\b/.test(p)&&!/^\(\?[a-z]+\)\^/.test(p))alts.push('.*?'+p.replace(/^\(\?i\)/,''));else return pat(id)}
+ const ex=alts.length?'(?:'+alts.join('|')+')':'',DV='dolby[\\s._-]*vision|dovi|dv',
+  hp='.*?(?<![a-z0-9])(?:hdr10\\+|hdr10[\\s._-]*plus|hdr[\\s._-]*10[\\s._-]*\\+)';
+ if(k==='dv')return ex?'(?is)^(?!'+ex+').*?\\b('+DV+')\\b':'(?i)\\b('+DV+')\\b';
+ const lead=a=>a.length?'(?is)^(?!'+a.join('|')+')':'(?is)^';
+ if(k==='p')return lead(ex?[ex]:[])+hp;
+ if(k==='t')return lead(ex?[ex,hp]:[hp])+'.*?\\b(hdr10|hdr[\\s._-]*10)\\b(?!\\s*(?:\\+|plus))';
+ return lead((ex?[ex]:[]).concat([hp,'.*?\\bhlg\\b','.*?\\bhdr[\\s._-]*10']))+'.*?\\bhdr\\b(?!\\s*(?:10|\\+))';
+}
+
 function manifest(items) {
+  const sel = new Set(items.map(i => i.b.id)), pats = {};
+  items.forEach(i => { pats[i.b.id] = i.pat || i.b.p; });
   const groups = [];
   items.forEach(({ b }) => { if (!groups.includes(b.g)) groups.push(b.g); });
   return {
     filters: items.map(({ b, style, pat, url }) => ({
-      id: b.id, groupId: b.g, name: b.n, pattern: pat || b.p,
+      id: b.id, groupId: b.g, name: b.n, pattern: adaptPat(b.id, sel, id => pats[id], () => b.p),
       imageURL: url || RAW + STYLES[style] + '/' + b.f,
       tagColor: '#00000000', borderColor: '#00000000', textColor: '#00000000',
       tagStyle: 'filled and bordered', isEnabled: true, type: 'filter',

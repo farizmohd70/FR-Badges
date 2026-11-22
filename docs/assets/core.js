@@ -89,7 +89,7 @@ P.dropBadge=(id,beforeId)=>P.commit(()=>{if(id===beforeId||byId[id].g!==byId[bef
 P.dropGroup=(g,beforeG)=>P.commit(()=>{if(g===beforeG)return;const a=S.gord;a.splice(a.indexOf(g),1);a.splice(a.indexOf(beforeG),0,g)},'order');
 P.resetOrder=()=>P.commit(()=>{S.gord=CAT.groups.map(g=>g.id);CAT.groups.forEach(g=>S.bord[g.id]=byGroup[g.id].map(b=>b.id))},'order');
 P.manifest=()=>{const bs=P.ordered(),gs=P.activeGroups();
- return{filters:bs.map(b=>({id:b.id,groupId:b.g,name:b.n,pattern:P.pat(b.id),imageURL:P.rawUrl(b.id),tagColor:'#00000000',borderColor:'#00000000',textColor:'#00000000',tagStyle:'filled and bordered',isEnabled:true,type:'filter'})),
+ return{filters:bs.map(b=>({id:b.id,groupId:b.g,name:b.n,pattern:P.outPat(b.id),imageURL:P.rawUrl(b.id),tagColor:'#00000000',borderColor:'#00000000',textColor:'#00000000',tagStyle:'filled and bordered',isEnabled:true,type:'filter'})),
  groups:gs.map(g=>({id:g,name:gInfo[g].name,color:gInfo[g].color,borderColor:gInfo[g].border||gInfo[g].color,isExpanded:true}))}};
 P.comUrl=id=>(window.FR_COMMUNITY||'')+'badges/'+id+'.png';
 P.toggleCom=(id,m)=>P.commit(()=>{if(S.com[id])delete S.com[id];else if(m)S.com[id]={n:m.n,p:m.p,g:okGroup(m.g)}},'sel');
@@ -122,16 +122,33 @@ P.importAny=async t=>{t=(t||'').trim();if(!t)return{err:'Paste a link, JSON or s
   let txt;try{const r=await fetch(u);if(!r.ok)return{err:'That link did not open ('+r.status+'). Check the address.'};txt=await r.text()}catch(e){return{err:'That site does not allow loading from here. Open the link, copy the text, and paste the text instead.'}}
   return P.importText(txt)}
  return P.importText(t)};
+/* adaptive Dolby Vision / HDR: plain badges only step aside for combo badges that are in the pack */
+const ADP_DV=['hero-dolby-vision','hero-dolby-vision-1l','dr-dolby-vision','dr-dolby-vision-1l'],ADP_CB=['dr-dv-hdr','dr-dv-hdr10plus','dr-dv-hdr10','dr-dv-p7','dr-dv-p8'];
+function adaptPat(id,sel,pat,def){
+ const k=ADP_DV.includes(id)?'dv':id==='dr-hdr10plus'?'p':id==='dr-hdr10'?'t':id==='dr-hdr'?'h':null;
+ if(!k||pat(id)!==def(id))return pat(id);
+ const alts=[];
+ for(const c of ADP_CB){if(!sel.has(c))continue;const p=pat(c),m=/^\(\?is\)\^([\s\S]*)\.\*$/.exec(p);
+  if(m)alts.push('(?:'+m[1]+')');else if(/^(\(\?i\))?[^(]|^\(\?i\)\\b/.test(p)&&!/^\(\?[a-z]+\)\^/.test(p))alts.push('.*?'+p.replace(/^\(\?i\)/,''));else return pat(id)}
+ const ex=alts.length?'(?:'+alts.join('|')+')':'',DV='dolby[\\s._-]*vision|dovi|dv',
+  hp='.*?(?<![a-z0-9])(?:hdr10\\+|hdr10[\\s._-]*plus|hdr[\\s._-]*10[\\s._-]*\\+)';
+ if(k==='dv')return ex?'(?is)^(?!'+ex+').*?\\b('+DV+')\\b':'(?i)\\b('+DV+')\\b';
+ const lead=a=>a.length?'(?is)^(?!'+a.join('|')+')':'(?is)^';
+ if(k==='p')return lead(ex?[ex]:[])+hp;
+ if(k==='t')return lead(ex?[ex,hp]:[hp])+'.*?\\b(hdr10|hdr[\\s._-]*10)\\b(?!\\s*(?:\\+|plus))';
+ return lead((ex?[ex]:[]).concat([hp,'.*?\\bhlg\\b','.*?\\bhdr[\\s._-]*10']))+'.*?\\bhdr\\b(?!\\s*(?:10|\\+))';
+}
 /* matching */
 const reC={};
-P.reFor=id=>{const p=S.pat[id];if(p==null)return byId[id].re;if(p in reC)return reC[p];let r=null;const[bd,f]=flags(p);try{r=new RegExp(bd,f)}catch(e){try{r=new RegExp(bd,f+'u')}catch(e2){}}return reC[p]=r};
+P.outPat=id=>byId[id]._com||id.startsWith('com-')?P.pat(id):adaptPat(id,S.sel,P.pat,x=>byId[x].p);
+P.reFor=id=>{let p=S.pat[id];if(p==null){p=P.outPat(id);if(p===byId[id].p)return byId[id].re}if(p in reC)return reC[p];let r=null;const[bd,f]=flags(p);try{r=new RegExp(bd,f)}catch(e){try{r=new RegExp(bd,f+'u')}catch(e2){}}return reC[p]=r};
 P.pat=id=>S.pat[id]!=null?S.pat[id]:byId[id].p;
 P.checkPat=p=>{if(!(p||'').trim())return'The pattern is empty';const[bd,f]=flags(p);try{new RegExp(bd,f);return''}catch(e){try{new RegExp(bd,f+'u');return''}catch(e2){return e2.message}}};
 P.testPat=(p,t)=>{const[bd,f]=flags(p);let r;try{r=new RegExp(bd,f)}catch(e){r=new RegExp(bd,f+'u')}return r.test(t)};
 P.setPat=(id,p)=>P.commit(()=>{p=(p||'').trim();if(!p||p===byId[id].p)delete S.pat[id];else S.pat[id]=p},'pat');
 P.match=(text,onlySel)=>{const out=[];const list=onlySel?P.ordered():CAT.badges;for(const b of list){const r=P.reFor(b.id);if(r){try{if(r.test(text))out.push(b)}catch(e){}}}return out};
 P.suggest=()=>{const c={};P.samples.forEach(t=>P.match(t,false).forEach(b=>{if(!S.sel.has(b.id))c[b.id]=(c[b.id]||0)+1}));return Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([id,n])=>({b:byId[id],n}))};
-P.health=()=>{const sel=P.ordered(),issues=[];const t0=performance.now();let reps=3;for(let r=0;r<reps;r++)P.samples.forEach(t=>sel.forEach(b=>{if(b.re)b.re.test(t)}));
+P.health=()=>{const sel=P.ordered(),issues=[];const t0=performance.now();let reps=3;for(let r=0;r<reps;r++)P.samples.forEach(t=>sel.forEach(b=>{const r=P.reFor(b.id);if(r)r.test(t)}));
  const ms=(performance.now()-t0)/reps/Math.max(1,P.samples.length);const per=P.samples.map(t=>({t,n:P.match(t,true).length}));
  if(!sel.length)issues.push({lvl:'warn',msg:'No badges selected yet.'});
  if(sel.length>250)issues.push({lvl:'warn',msg:`${sel.length} patterns run on every stream. Packs above about 250 can feel slower on older phones.`});
