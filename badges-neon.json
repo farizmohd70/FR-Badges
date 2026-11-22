@@ -17,7 +17,7 @@
       "id": "edition-imax",
       "groupId": "editions",
       "name": "IMAX",
-      "pattern": "(?i)\\bimax\\b(?!\\s*enhanced)",
+      "pattern": "(?i)\\bimax\\b(?![\\s._-]*enhanced)",
       "imageURL": "https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/Badges-Neon/imax.png",
       "tagColor": "#00000000",
       "borderColor": "#00000000",
@@ -523,7 +523,7 @@
     {
       "id": "dr-dv-hdr",
       "groupId": "dynamic-range",
-      "name": "DV + HDR10",
+      "name": "DV + HDR",
       "pattern": "(?is)^(?!(?:[^\\n]*\\n)?[ ]*(?:4k|2160p|1080p)[ ]+dv[ ]*\\|[ ]*hdr[ ]*$)(?=.*\\b(?:dolby[\\s._-]*vision|dovi|dv)\\b)(?!.*(?<![a-z0-9])(?:hdr10\\+|hdr10[\\s._-]*plus|hdr[\\s._-]*10[\\s._-]*\\+))(?=.*\\bhdr)(?!.*\\b(?:dv[\\s._-]?p7|dovi[\\s._-]?p7|profile[\\s._-]?7|dv[\\s._-]?p8|dovi[\\s._-]?p8|profile[\\s._-]?8)\\b).*",
       "imageURL": "https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/Badges-Neon/dv-hdr.png",
       "tagColor": "#00000000",
