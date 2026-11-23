@@ -126,7 +126,7 @@ P.importAny=async t=>{t=(t||'').trim();if(!t)return{err:'Paste a link, JSON or s
 /* adaptive Dolby Vision / HDR: plain badges only step aside for combo badges that are in the pack */
 const ADP_DV=['hero-dolby-vision','hero-dolby-vision-1l','dr-dolby-vision','dr-dolby-vision-1l'],ADP_CB=['dr-dv-hdr','dr-dv-hdr10plus','dr-dv-hdr10','dr-dv-p7','dr-dv-p8'];
 function adaptPat(id,sel,pat,def){
- const G1='(?:[^\\n]*\\n)?[ ]*(?:4k|2160p|1080p)[ ]+(?:dv[ ]*\\|[ ]*)?hdr[ ]*$',G3='(?:[^\\n]*\\n)?[ ]*(?:4k|2160p|1080p)[ ]+dv(?:[ ]*\\|[ ]*hdr)?[ ]*$';
+ const G1='(?:[^\\n]*\\n|(?:\\[[^\\]\\n]{1,12}\\][ ]*)?torrentio[ ]+)?[ ]*(?:4k|2160p|1080p)[ ]+(?:dv[ ]*\\|[ ]*)?hdr\\s*$',G3='(?:[^\\n]*\\n|(?:\\[[^\\]\\n]{1,12}\\][ ]*)?torrentio[ ]+)?[ ]*(?:4k|2160p|1080p)[ ]+dv(?:[ ]*\\|[ ]*hdr)?\\s*$';
  const k=ADP_DV.includes(id)?'dv':id==='dr-hdr10plus'?'p':id==='dr-hdr10'?'t':id==='dr-hdr'?'h':null;
  if(!k||pat(id)!==def(id))return pat(id);
  const alts=[];
