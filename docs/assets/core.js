@@ -53,7 +53,7 @@ function syncCom(){const keep=new Set();
  Object.keys(S.bord).forEach(g=>{S.bord[g]=S.bord[g].filter(k=>!k.startsWith('com-')||keep.has(k))})}
 const restore=s=>{const o=JSON.parse(s);S.name=o.name;S.style=o.style;S.sel=new Set(o.sel);S.over=o.over;S.pat=o.pat||{};S.com=o.com||{};S.gord=o.gord;S.bord=o.bord;CAT.groups.forEach(g=>{if(!S.bord[g.id])S.bord[g.id]=byGroup[g.id].map(b=>b.id);insG(g.id)});syncCom()};
 P.on=f=>subs.push(f);
-function emit(why){subs.forEach(f=>{try{f(why)}catch(e){console.error(e)}});syncHash()}
+function emit(why){subs.forEach(f=>{try{f(why)}catch(e){console.error(e)}});syncHash();if(P.draftOn){clearTimeout(dt);dt=setTimeout(saveDraft,250)}}
 const FAM={};CAT.badges.forEach(b=>{const m=/^(.+)-1l$/.exec(b.id);if(m&&byId[m[1]]){(FAM[m[1]]=FAM[m[1]]||[m[1]]).push(b.id)}});
 /* one version per language and kind: lang-xx, lang-xx-code, lang-xx-name / sub-xx, sub-xx-code / dub-xx-code, dub-xx-name */
 const LG=new Set(['languages','lang-code','lang-name','dub-code','dub-name','subtitles','sub-code']);
@@ -198,9 +198,22 @@ P.liteSet=new Set(CAT.lite);
 /* hash sync (plain #name only) */
 let ht;function syncHash(){clearTimeout(ht);ht=setTimeout(()=>{try{const c=P.code();if(location.hash.slice(1)!==c){busy=true;history.replaceState(history.state,'','#'+c);setTimeout(()=>busy=false,50)}}catch(e){}},400)}
 window.addEventListener('hashchange',()=>{if(busy)return;if(P.loadCode(location.hash))P.toast('Loaded pack from link')});
-P.init=()=>{if(!P.loadCode(location.hash))P.preset('essentials');
+/* autosave the pack being built (make page only) */
+const DK='fr_draft';let dt;P.draftOn=false;
+const saveDraft=()=>{try{const o=JSON.parse(snap());o.bg=S.bg;o.t=Date.now();localStorage.setItem(DK,JSON.stringify(o))}catch(e){}};
+const loadDraft=()=>{try{const d=JSON.parse(localStorage.getItem(DK)||'null');if(!d||!Array.isArray(d.sel)||!d.sel.length||!d.bord||!d.gord)return false;
+ const ok=id=>byId[id]||String(id).startsWith('com-');
+ d.sel=d.sel.filter(ok);Object.keys(d.bord).forEach(g=>{d.bord[g]=(d.bord[g]||[]).filter(ok)});d.gord=d.gord.filter(g=>gInfo[g]);d.over=d.over||{};
+ Object.keys(d.over).forEach(k=>{if(!byId[k]||!STYLES.some(x=>x.id===d.over[k]))delete d.over[k]});if(!STYLES.some(x=>x.id===d.style))d.style=S.style;
+ restore(JSON.stringify(d));if(d.bg)S.bg=d.bg;return true}catch(e){return false}};
+window.addEventListener('pagehide',()=>{if(P.draftOn)saveDraft()});
+document.addEventListener('visibilitychange',()=>{if(P.draftOn&&document.visibilityState==='hidden')saveDraft()});
+P.init=o=>{let drafted=false;if(o&&o.draft){drafted=loadDraft();P.draftOn=true}
+ const h=location.hash;
+ if(drafted){if(/^#?pk-\d+-[0-9a-f]+$/i.test(h)&&h.slice(1)!==P.code())P.loadCode(h)}
+ else if(!P.loadCode(h))P.preset('essentials');
  try{const l=JSON.parse(localStorage.getItem('fr_com_pick')||'[]');l.forEach(x=>{if(/^[0-9a-f]{12}$/.test(x.id)&&x.n&&x.p)S.com[x.id]={n:String(x.n).slice(0,60),p:String(x.p).slice(0,1500),g:x.g}})}catch(e){}
- syncCom();undo=[];redo=[];emit('all')};
+ syncCom();undo=[];redo=[];emit('all');if(drafted)setTimeout(()=>P.toast('Restored your last pack'),300)};
 window.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&e.key==='z'&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();P.undo()}if((e.ctrlKey||e.metaKey)&&(e.key==='y'||(e.shiftKey&&e.key==='z'))&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();P.redo()}});
 window.P=P;
 })();

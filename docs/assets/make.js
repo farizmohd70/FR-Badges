@@ -145,4 +145,4 @@ P.on(why=>{renderSteps();
   const c={};P.CAT.badges.forEach(b=>{if(S.sel.has(b.id))c[b.g]=(c[b.g]||0)+1});document.querySelectorAll('.chip[data-g]').forEach(x=>{const i=x.querySelector('i');if(i&&x.dataset.g!=='all'&&x.dataset.g!=='community')i.textContent=c[x.dataset.g]||0});return}
  if(why==='name'||why==='saved'||why==='samples')return;
  [v1,v2,v3,v4][step]();stat()});
-P.init();FRNAV.rep({step});FRNAV.pop(s=>go(s.step|0,true));render();
+P.init({draft:true});FRNAV.rep({step});FRNAV.pop(s=>go(s.step|0,true));render();
