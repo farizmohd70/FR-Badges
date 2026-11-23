@@ -4,12 +4,12 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/for-Nuvio-8b5cf6?style=for-the-badge" alt="for Nuvio">
-  <img src="https://img.shields.io/badge/badges-1366-0ea5e9?style=for-the-badge" alt="badges 1366">
+  <img src="https://img.shields.io/badge/badges-1386-0ea5e9?style=for-the-badge" alt="badges 1386">
   <img src="https://img.shields.io/badge/styles-14-ec4899?style=for-the-badge" alt="styles 14">
   <img src="https://img.shields.io/badge/languages-167-10b981?style=for-the-badge" alt="languages 167">
 </p>
 
-<p align="center"><b>Modern badge pack for Nuvio.</b><br>1366 badges in 15 styles: hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, streaming platforms, debrid services, 167 languages, 167 subtitle badges and dubbed and short-name versions for every language. Every style has a ready-to-use filter manifest, and the website lets you build your own pack.</p>
+<p align="center"><b>Modern badge pack for Nuvio.</b><br>1386 badges in 15 styles: hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, streaming platforms, debrid services, 167 languages, 167 subtitle badges and dubbed and short-name versions for every language. Every style has a ready-to-use filter manifest, and the website lets you build your own pack.</p>
 
 <p align="center"><a href="https://farizmohd70.github.io/FR-Badges/"><b>Website</b></a> · <a href="https://farizmohd70.github.io/FR-Badges/make.html"><b>Make your pack</b></a></p>
 
@@ -82,6 +82,7 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 | Hero Badges | 5 | REMUX, 4K, Dolby Vision, Dolby Atmos, Cached |
 | Editions & Cuts | 18 | IMAX, IMAX Enhanced, Open Matte, Criterion, Director's/Extended/Theatrical/Final Cut, Special, Unrated, Hybrid, Remastered, Proper/Repack, SeaDex, Black & White, True-Hue, Uncensored, Regraded |
 | Release Source | 15 | REMUX, UHD Blu-ray, Blu-ray, WEB-DL, WEBRip, HDTV, DVD, TVRip, HDRip, HC HDRip, SCR, TC, TS, CAM, R5 |
+| Release Group Tiers | 20 | Ranked release groups as icon and number: REMUX 1-3, BLU-RAY 1-8, WEB 1-6, plus an Unranked badge for each source |
 | Resolution | 10 | 8K, 4K, 1440p, 1080p, 720p, 576p, 480p, 360p, 240p, 144p |
 | Dynamic Range & Color | 15 | Dolby Vision, DV P7/P8, DV+HDR10, DV+HDR10+, HDR10+, HDR10, HDR, HLG, 12/10/8-bit, SDR, AI Enhanced |
 | 3D & Broadcast | 6 | 3D, HFR, 60 FPS, 50 FPS, Live TV, Interlaced |
@@ -100,7 +101,7 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 | Subtitles | 167 | One subtitle badge for every language, such as "Hindi Sub" (full language name) |
 | Subtitles Short | 167 | The same subtitles with a short code, such as HIN SUB |
 
-**Total: 1366 badges per style.** The ready-made manifests (`badges.json` and the style files) are the Lite pack with 219 of them. The rest are available when you build your own pack on the [website](https://farizmohd70.github.io/FR-Badges/make.html).
+**Total: 1386 badges per style.** The ready-made manifests (`badges.json` and the style files) are the Lite pack with 219 of them. The rest are available when you build your own pack on the [website](https://farizmohd70.github.io/FR-Badges/make.html).
 
 </details>
 
