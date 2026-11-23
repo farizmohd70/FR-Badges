@@ -79,10 +79,10 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 
 | Group | Count | Badges |
 |---|---|---|
+| Release Group Tiers | 20 | Ranked release groups as icon and number: REMUX 1-3, BLU-RAY 1-8, WEB 1-6, plus an Unranked badge for each source |
 | Hero Badges | 5 | REMUX, 4K, Dolby Vision, Dolby Atmos, Cached |
 | Editions & Cuts | 18 | IMAX, IMAX Enhanced, Open Matte, Criterion, Director's/Extended/Theatrical/Final Cut, Special, Unrated, Hybrid, Remastered, Proper/Repack, SeaDex, Black & White, True-Hue, Uncensored, Regraded |
 | Release Source | 15 | REMUX, UHD Blu-ray, Blu-ray, WEB-DL, WEBRip, HDTV, DVD, TVRip, HDRip, HC HDRip, SCR, TC, TS, CAM, R5 |
-| Release Group Tiers | 20 | Ranked release groups as icon and number: REMUX 1-3, BLU-RAY 1-8, WEB 1-6, plus an Unranked badge for each source |
 | Resolution | 10 | 8K, 4K, 1440p, 1080p, 720p, 576p, 480p, 360p, 240p, 144p |
 | Dynamic Range & Color | 15 | Dolby Vision, DV P7/P8, DV+HDR10, DV+HDR10+, HDR10+, HDR10, HDR, HLG, 12/10/8-bit, SDR, AI Enhanced |
 | 3D & Broadcast | 6 | 3D, HFR, 60 FPS, 50 FPS, Live TV, Interlaced |

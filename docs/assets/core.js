@@ -42,7 +42,8 @@ let undo=[],redo=[],subs=[],busy=false;
 const snap=()=>JSON.stringify({name:S.name,style:S.style,sel:[...S.sel],over:S.over,pat:S.pat,com:S.com,gord:S.gord,bord:S.bord});
 const compile=p=>{const[bd,f]=flags(p);try{return new RegExp(bd,f)}catch(e){try{return new RegExp(bd,f+'u')}catch(e2){return null}}};
 const okGroup=g=>CAT.groups.some(x=>x.id===g)&&!['oneline','lang-code','lang-name'].includes(g)?g:'community';
-const ensureGroup=g=>{if(!S.bord[g])S.bord[g]=[];if(!S.gord.includes(g))S.gord.push(g)};
+const insG=g=>{const a=S.gord;if(a.includes(g))return;const ci=CAT.groups.findIndex(x=>x.id===g);let at=a.length;if(ci>=0)for(let k=ci+1;k<CAT.groups.length;k++){const j=a.indexOf(CAT.groups[k].id);if(j>=0){at=j;break}}a.splice(at,0,g)};
+const ensureGroup=g=>{if(!S.bord[g])S.bord[g]=[];insG(g)};
 function syncCom(){const keep=new Set();
  Object.entries(S.com).forEach(([id,m])=>{const k='com-'+id;keep.add(k);m.g=okGroup(m.g);ensureGroup(m.g);
   byId[k]={id:k,g:m.g,n:m.n,p:m.p,f:'',_com:id,re:compile(m.p)};S.sel.add(k);
@@ -50,7 +51,7 @@ function syncCom(){const keep=new Set();
   if(!S.bord[m.g].includes(k))S.bord[m.g].push(k)});
  [...S.sel].forEach(k=>{if(k.startsWith('com-')&&!keep.has(k))S.sel.delete(k)});
  Object.keys(S.bord).forEach(g=>{S.bord[g]=S.bord[g].filter(k=>!k.startsWith('com-')||keep.has(k))})}
-const restore=s=>{const o=JSON.parse(s);S.name=o.name;S.style=o.style;S.sel=new Set(o.sel);S.over=o.over;S.pat=o.pat||{};S.com=o.com||{};S.gord=o.gord;S.bord=o.bord;syncCom()};
+const restore=s=>{const o=JSON.parse(s);S.name=o.name;S.style=o.style;S.sel=new Set(o.sel);S.over=o.over;S.pat=o.pat||{};S.com=o.com||{};S.gord=o.gord;S.bord=o.bord;CAT.groups.forEach(g=>{if(!S.bord[g.id])S.bord[g.id]=byGroup[g.id].map(b=>b.id);insG(g.id)});syncCom()};
 P.on=f=>subs.push(f);
 function emit(why){subs.forEach(f=>{try{f(why)}catch(e){console.error(e)}});syncHash()}
 const FAM={};CAT.badges.forEach(b=>{const m=/^(.+)-1l$/.exec(b.id);if(m&&byId[m[1]]){(FAM[m[1]]=FAM[m[1]]||[m[1]]).push(b.id)}});
