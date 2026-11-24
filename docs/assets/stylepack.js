@@ -44,7 +44,7 @@ async function drawRepo(cv,id,style,sz,mg){
  const w=Math.max(1,Math.round(im.naturalWidth*h/im.naturalHeight));
  let pad=Math.round(mg*h/240);const maxW=Math.floor(h*5.7);if(w+2*pad>maxW)pad=Math.max(0,Math.floor((maxW-w)/2));
  cv.width=w+2*pad;cv.height=h;const c=cv.getContext('2d');c.clearRect(0,0,cv.width,cv.height);c.imageSmoothingQuality='high';c.drawImage(im,pad,0,w,h);return cv}
-function rmCards(){$('#rst').innerHTML=P.STYLES.map(s=>`<button type="button" class="card${RM.style===s.id?' on':''}" data-rs="${s.id}"><div class="sw" style="background:${s.bg==='light'?'#e9ecf2':'#4a4e57'}"><img src="${P.rawUrl('hero-remux',s.id)}" alt="" loading="lazy"></div><div class="t">${esc(s.name)}</div><div class="d">${esc(s.note)}</div></button>`).join('')}
+function rmCards(){$('#rst').innerHTML=P.STYLES_UI.map(s=>`<button type="button" class="card${RM.style===s.id?' on':''}" data-rs="${s.id}"><div class="sw" style="background:${s.bg==='light'?'#e9ecf2':'#4a4e57'}"><img src="${P.rawUrl('hero-remux',s.id)}" alt="" loading="lazy"></div><div class="t">${esc(s.name)}</div><div class="d">${esc(s.note)}</div></button>`).join('')}
 function rmVals(){$('#rszv').textContent=RM.sz+'%';$('#rmgv').textContent=RM.mg}
 function rmOff(){if(!RM.on)return;RM.on=false;genKey='';refreshMake();preview()}
 $('#rst').onclick=e=>{const b=e.target.closest('[data-rs]');if(!b)return;RM.style=b.dataset.rs;RM.on=true;genKey='';rmCards();preview()};

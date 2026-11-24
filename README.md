@@ -44,7 +44,7 @@ You can also reopen an existing pack from its link, JSON or share code and keep 
 Tap a style to jump to its link and the full preview sheet. Every preview sheet shows all badges of that style on a grey background.
 
 <table>
-<tr><td align="center"><a href="#glass"><img src="assets/gallery/glass.png" width="420" alt="Glass"></a><br><b>Glass</b></td><td align="center"><a href="#black--white"><img src="assets/gallery/black-white.png" width="420" alt="Black & White"></a><br><b>Black & White</b></td></tr><tr><td align="center"><a href="#white--black"><img src="assets/gallery/white-black.png" width="420" alt="White & Black"></a><br><b>White & Black</b></td><td align="center"><a href="#neon"><img src="assets/gallery/neon.png" width="420" alt="Neon"></a><br><b>Neon</b></td></tr><tr><td align="center"><a href="#solid"><img src="assets/gallery/solid.png" width="420" alt="Solid"></a><br><b>Solid</b></td><td align="center"><a href="#icon-dark"><img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark"></a><br><b>Icon Dark</b></td></tr><tr><td align="center"><a href="#split"><img src="assets/gallery/split.png" width="420" alt="Split"></a><br><b>Split</b></td><td align="center"><a href="#frost"><img src="assets/gallery/frost.png" width="420" alt="Frost"></a><br><b>Frost</b></td></tr><tr><td align="center"><a href="#neon-icon"><img src="assets/gallery/neon-icon.png" width="420" alt="Neon Icon"></a><br><b>Neon Icon</b></td><td align="center"><a href="#minimal"><img src="assets/gallery/minimal.png" width="420" alt="Minimal"></a><br><b>Minimal</b></td></tr><tr><td align="center"><a href="#light"><img src="assets/gallery/light.png" width="420" alt="Light"></a><br><b>Light</b></td><td align="center"><a href="#icon-light"><img src="assets/gallery/icon-light.png" width="420" alt="Icon Light"></a><br><b>Icon Light</b></td></tr><tr><td align="center"><a href="#text-white"><img src="assets/gallery/text-white.png" width="420" alt="Text White"></a><br><b>Text White</b></td><td align="center"><a href="#text-black"><img src="assets/gallery/text-black.png" width="420" alt="Text Black"></a><br><b>Text Black</b></td></tr><tr><td align="center" colspan="2"><a href="#pastel"><img src="assets/gallery/pastel.png" width="420" alt="Pastel"></a><br><b>Pastel</b></td></tr>
+<tr><td align="center"><a href="#glass"><img src="assets/gallery/glass.png" width="420" alt="Glass"></a><br><b>Glass</b></td><td align="center"><a href="#solid"><img src="assets/gallery/solid.png" width="420" alt="Solid"></a><br><b>Solid</b></td></tr><tr><td align="center"><a href="#light"><img src="assets/gallery/light.png" width="420" alt="Light"></a><br><b>Light</b></td><td align="center"><a href="#pastel"><img src="assets/gallery/pastel.png" width="420" alt="Pastel"></a><br><b>Pastel</b></td></tr><tr><td align="center"><a href="#frost"><img src="assets/gallery/frost.png" width="420" alt="Frost"></a><br><b>Frost</b></td><td align="center"><a href="#black--white"><img src="assets/gallery/black-white.png" width="420" alt="Black & White"></a><br><b>Black & White</b></td></tr><tr><td align="center"><a href="#white--black"><img src="assets/gallery/white-black.png" width="420" alt="White & Black"></a><br><b>White & Black</b></td><td align="center"><a href="#text-white"><img src="assets/gallery/text-white.png" width="420" alt="Text White"></a><br><b>Text White</b></td></tr><tr><td align="center"><a href="#text-black"><img src="assets/gallery/text-black.png" width="420" alt="Text Black"></a><br><b>Text Black</b></td><td align="center"><a href="#neon"><img src="assets/gallery/neon.png" width="420" alt="Neon"></a><br><b>Neon</b></td></tr><tr><td align="center"><a href="#neon-icon"><img src="assets/gallery/neon-icon.png" width="420" alt="Neon Icon"></a><br><b>Neon Icon</b></td><td align="center"><a href="#icon-dark"><img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark"></a><br><b>Icon Dark</b></td></tr><tr><td align="center"><a href="#icon-light"><img src="assets/gallery/icon-light.png" width="420" alt="Icon Light"></a><br><b>Icon Light</b></td><td align="center"><a href="#split"><img src="assets/gallery/split.png" width="420" alt="Split"></a><br><b>Split</b></td></tr><tr><td align="center" colspan="2"><a href="#minimal"><img src="assets/gallery/minimal.png" width="420" alt="Minimal"></a><br><b>Minimal</b></td></tr>
 </table>
 
 ## Styles
@@ -55,20 +55,20 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 | Style | Look | Folder | Manifest |
 |---|---|---|---|
 | **Glass** | Dark tinted glass pills (text only) | `Badges` | `badges.json` |
-| **Neon** | Glowing gradient text, no background (dark UIs) | `Badges-Neon` | `badges-neon.json` |
 | **Solid** | Vivid gradient fills | `Badges-Solid` | `badges-solid.json` |
-| **Icon Dark** | Gradient icon tiles on dark glass | `Badges-Icon-Dark` | `badges-icon-dark.json` |
-| **Split** | Colored icon segment joined to a dark label | `Badges-Split` | `badges-split.json` |
-| **Frost** | Translucent frosted glass for posters and backdrops | `Badges-Frost` | `badges-frost.json` |
-| **Neon Icon** | Glowing gradient icons and text, no background (dark UIs) | `Badges-Neon-Icon` | `badges-neon-icon.json` |
-| **Minimal** | Flat dark pills with a colored dot | `Badges-Minimal` | `badges-minimal.json` |
-| **Pastel** | Each category in its own soft colour, flags on languages | `Badges-Pastel` | `badges-pastel.json` |
 | **Light** | Soft pastel pills (light UIs) | `Badges-Light` | `badges-light.json` |
-| **Icon Light** | Gradient icon tiles on pastel | `Badges-Icon-Light` | `badges-icon-light.json` |
+| **Pastel** | Each category in its own soft colour, flags on languages | `Badges-Pastel` | `badges-pastel.json` |
+| **Frost** | Translucent frosted glass for posters and backdrops | `Badges-Frost` | `badges-frost.json` |
 | **Black & White** | Black glass pills with white text | `Badges-Black-White` | `badges-black-white.json` |
 | **White & Black** | White glass pills with black text | `Badges-White-Black` | `badges-white-black.json` |
 | **Text White** | White text only, no background | `Badges-Text-White` | `badges-text-white.json` |
 | **Text Black** | Black text only, no background | `Badges-Text-Black` | `badges-text-black.json` |
+| **Neon** | Glowing gradient text, no background (dark UIs) | `Badges-Neon` | `badges-neon.json` |
+| **Neon Icon** | Glowing gradient icons and text, no background (dark UIs) | `Badges-Neon-Icon` | `badges-neon-icon.json` |
+| **Icon Dark** | Gradient icon tiles on dark glass | `Badges-Icon-Dark` | `badges-icon-dark.json` |
+| **Icon Light** | Gradient icon tiles on pastel | `Badges-Icon-Light` | `badges-icon-light.json` |
+| **Split** | Colored icon segment joined to a dark label | `Badges-Split` | `badges-split.json` |
+| **Minimal** | Flat dark pills with a colored dot | `Badges-Minimal` | `badges-minimal.json` |
 
 </details>
 
@@ -122,6 +122,66 @@ Copy the link for the style you want and use **one** style at a time. The guide 
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges.json
+```
+
+### Solid
+
+<img src="assets/gallery/solid.png" width="420" alt="Solid">
+
+<details>
+<summary>Preview</summary>
+
+[![Solid preview](Previews/preview-solid.png)](Previews/preview-solid.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-solid.json
+```
+
+### Light
+
+<img src="assets/gallery/light.png" width="420" alt="Light">
+
+<details>
+<summary>Preview</summary>
+
+[![Light preview](Previews/preview-light.png)](Previews/preview-light.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
+```
+
+### Pastel
+
+<img src="assets/gallery/pastel.png" width="420" alt="Pastel">
+
+<details>
+<summary>Preview</summary>
+
+[![Pastel preview](Previews/preview-pastel.png)](Previews/preview-pastel.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-pastel.json
+```
+
+### Frost
+
+<img src="assets/gallery/frost.png" width="420" alt="Frost">
+
+<details>
+<summary>Preview</summary>
+
+[![Frost preview](Previews/preview-frost.png)](Previews/preview-frost.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-frost.json
 ```
 
 ### Black & White
@@ -199,66 +259,6 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-text-black.j
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon.json
 ```
 
-### Solid
-
-<img src="assets/gallery/solid.png" width="420" alt="Solid">
-
-<details>
-<summary>Preview</summary>
-
-[![Solid preview](Previews/preview-solid.png)](Previews/preview-solid.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-solid.json
-```
-
-### Icon Dark
-
-<img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark">
-
-<details>
-<summary>Preview</summary>
-
-[![Icon Dark preview](Previews/preview-icon-dark.png)](Previews/preview-icon-dark.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-dark.json
-```
-
-### Split
-
-<img src="assets/gallery/split.png" width="420" alt="Split">
-
-<details>
-<summary>Preview</summary>
-
-[![Split preview](Previews/preview-split.png)](Previews/preview-split.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-split.json
-```
-
-### Frost
-
-<img src="assets/gallery/frost.png" width="420" alt="Frost">
-
-<details>
-<summary>Preview</summary>
-
-[![Frost preview](Previews/preview-frost.png)](Previews/preview-frost.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-frost.json
-```
-
 ### Neon Icon
 
 <img src="assets/gallery/neon-icon.png" width="420" alt="Neon Icon">
@@ -274,49 +274,19 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-frost.json
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon-icon.json
 ```
 
-### Minimal
+### Icon Dark
 
-<img src="assets/gallery/minimal.png" width="420" alt="Minimal">
-
-<details>
-<summary>Preview</summary>
-
-[![Minimal preview](Previews/preview-minimal.png)](Previews/preview-minimal.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-minimal.json
-```
-
-### Pastel
-
-<img src="assets/gallery/pastel.png" width="420" alt="Pastel">
+<img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark">
 
 <details>
 <summary>Preview</summary>
 
-[![Pastel preview](Previews/preview-pastel.png)](Previews/preview-pastel.png)
+[![Icon Dark preview](Previews/preview-icon-dark.png)](Previews/preview-icon-dark.png)
 
 </details>
 
 ```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-pastel.json
-```
-
-### Light
-
-<img src="assets/gallery/light.png" width="420" alt="Light">
-
-<details>
-<summary>Preview</summary>
-
-[![Light preview](Previews/preview-light.png)](Previews/preview-light.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-dark.json
 ```
 
 ### Icon Light
@@ -336,6 +306,35 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-light.j
 
 If the app caches images, clear its cache after switching styles.
 
+### Split
+
+<img src="assets/gallery/split.png" width="420" alt="Split">
+
+<details>
+<summary>Preview</summary>
+
+[![Split preview](Previews/preview-split.png)](Previews/preview-split.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-split.json
+```
+
+### Minimal
+
+<img src="assets/gallery/minimal.png" width="420" alt="Minimal">
+
+<details>
+<summary>Preview</summary>
+
+[![Minimal preview](Previews/preview-minimal.png)](Previews/preview-minimal.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-minimal.json
+```
 ## License
 
 [MIT](LICENSE) © farizmohd70

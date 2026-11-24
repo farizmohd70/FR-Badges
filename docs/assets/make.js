@@ -29,7 +29,7 @@ function render(){renderSteps();[v1,v2,v3,v4][step]();stat()}
 /* 1 look */
 function v1(){const ids=demoIds();
  $('#view').innerHTML=`<h2>Pick a look</h2><p class="sub">This is how your badges will appear next to each stream.</p>
- <div class="cards">${P.STYLES.map(s=>`<button class="card ${S.style===s.id?'on':''}" data-st="${s.id}"><div class="sw" data-s="${s.id}" style="background:${P.bgCol(s.id)}">${ids.map(i=>P.img(i,'',s.id)).join('')}</div><div class="t">${s.name}</div><div class="d">${esc(s.note)}</div></button>`).join('')}</div>
+ <div class="cards">${P.STYLES_UI.map(s=>`<button class="card ${S.style===s.id?'on':''}" data-st="${s.id}"><div class="sw" data-s="${s.id}" style="background:${P.bgCol(s.id)}">${ids.map(i=>P.img(i,'',s.id)).join('')}</div><div class="t">${s.name}</div><div class="d">${esc(s.note)}</div></button>`).join('')}</div>
  <h3>Already have a pack?</h3><p class="hint">Paste a pack link, its JSON or a share code to edit it here. Badges that are not in the FR catalog are skipped.</p>
  <textarea id="imp" style="height:76px" placeholder="https://raw.githubusercontent.com/.../badges.json" aria-label="Pack link, JSON or share code"></textarea>
  <div class="bar" style="margin-top:8px"><button class="b2 pri" id="go">Open in editor</button><span class="hint" id="msg" style="margin:0" role="status"></span></div>

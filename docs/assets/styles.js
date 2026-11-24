@@ -1,3 +1,4 @@
+// Display order (STYLE_ORDER) is separate from this list, so reordering it never breaks old links.
 // One line per style. To add a style: upload its folder, then add a line at the END of this list.
 // The website and the Worker both read this file. Never reorder or delete lines, old links depend on the order.
 window.STYLES_DATA=[
@@ -17,3 +18,5 @@ window.STYLES_DATA=[
 {"id": "text-black", "name": "Text Black", "folder": "Badges-Text-Black", "note": "Black text only", "bg": "light"},
 {"id": "pastel", "name": "Pastel", "folder": "Badges-Pastel", "note": "Each category in its own soft colour, flags on languages", "bg": "dark", "same1l": true}
 ];
+window.STYLE_ORDER=["glass", "solid", "light", "pastel", "frost", "black-white", "white-black", "text-white", "text-black", "neon", "neon-icon", "icon-dark", "icon-light", "split", "minimal"];
+window.STYLES_SHOW=window.STYLE_ORDER.map(i=>window.STYLES_DATA.find(s=>s.id===i)).filter(Boolean).concat(window.STYLES_DATA.filter(s=>!window.STYLE_ORDER.includes(s.id)));

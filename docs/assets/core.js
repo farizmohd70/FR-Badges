@@ -37,7 +37,7 @@ const SAMPLES=[
  'Night Harbor 2024 IMAX 1080p BluRay x265 10bit DTS-HD MA 7.1 Dual Audio Eng Hin',
  'Night Harbor 2024 1080p AMZN WEB-DL DD5.1 H264 English Subs'
 ];
-const P={CAT,S,STYLES,PRESETS,byId,byGroup,gInfo,samples:SAMPLES.slice(),badRe,RAW};
+const P={CAT,S,STYLES,STYLES_UI:window.STYLES_SHOW||STYLES,PRESETS,byId,byGroup,gInfo,samples:SAMPLES.slice(),badRe,RAW};
 let undo=[],redo=[],subs=[],busy=false;
 const snap=()=>JSON.stringify({name:S.name,style:S.style,sel:[...S.sel],over:S.over,pat:S.pat,com:S.com,gord:S.gord,bord:S.bord});
 const compile=p=>{const[bd,f]=flags(p);try{return new RegExp(bd,f)}catch(e){try{return new RegExp(bd,f+'u')}catch(e2){return null}}};
