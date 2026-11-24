@@ -61,7 +61,7 @@ CAT.badges.forEach(b=>{if(!LG.has(b.g)||b.g==='removed')return;const m=/^(lang|s
 const famOf={};Object.values(FAM).forEach(a=>a.forEach(i=>famOf[i]=a));
 const ORD={};CAT.badges.forEach((b,i)=>ORD[b.id]=i);
 function oneOfEach(before){const seen=new Set(),swaps=[];[...S.sel].forEach(id=>{const f=famOf[id];if(!f||seen.has(f))return;seen.add(f);const on=f.filter(x=>S.sel.has(x));if(on.length<2)return;const nw=on.filter(x=>!before.has(x));const pool=nw.length?nw:on;const keep=pool.sort((x,y)=>ORD[x]-ORD[y])[0];on.forEach(x=>{if(x!==keep){S.sel.delete(x);if(before.has(x))swaps.push([x,keep])}})});if(swaps.length&&P.toast)P.toast(swaps.length>1?'Swapped '+swaps.length+' badges for their other version (one version of each)':'Swapped '+byId[swaps[0][0]].n+' for '+byId[swaps[0][1]].n+' (one version of each)')}
-P.commit=(fn,why)=>{const a=snap(),before=new Set(S.sel);fn();syncCom();oneOfEach(before);if(snap()!==a){undo.push(a);if(undo.length>100)undo.shift();redo=[]}emit(why||'sel')};
+P.commit=(fn,why)=>{const a=snap(),before=new Set(S.sel);fn();syncCom();oneOfEach(before);if(P.dvwOn&&P.dvwOn())P.dvwApply(true);if(snap()!==a){undo.push(a);if(undo.length>100)undo.shift();redo=[]}emit(why||'sel')};
 P.undo=()=>{if(!undo.length)return false;redo.push(snap());restore(undo.pop());emit('all');return true};
 P.redo=()=>{if(!redo.length)return false;undo.push(snap());restore(redo.pop());emit('all');return true};
 P.canUndo=()=>undo.length>0;P.canRedo=()=>redo.length>0;
@@ -145,6 +145,11 @@ function adaptPat(id,sel,pat,def){
 /* matching */
 const reC={};
 P.outPat=id=>byId[id]._com||id.startsWith('com-')?P.pat(id):adaptPat(id,S.sel,P.pat,x=>byId[x].p);
+/* "Dolby Vision wins": HDR badges stay quiet when the stream says Dolby Vision (stored as normal custom patterns, so share links and the Worker need nothing new) */
+const DVW_IDS=['dr-hdr10plus','dr-hdr10','dr-hdr','dr-hlg'],DVW='(?!.*\\b(?:dolby[\\s._-]*vision|dovi|dv)\\b)';
+P.dvwOn=()=>DVW_IDS.some(id=>S.sel.has(id)&&S.pat[id]&&S.pat[id].includes(DVW));
+P.dvwApply=on=>{if(on)['dr-dv-hdr','dr-dv-hdr10','dr-dv-hdr10plus'].forEach(i=>S.sel.delete(i));DVW_IDS.forEach(id=>{const cur=S.pat[id];if(cur!=null&&!cur.includes(DVW))return;delete S.pat[id];if(!on||!S.sel.has(id))return;const b=P.outPat(id);let np=null;if(b.startsWith('(?is)^'))np='(?is)^'+DVW+b.slice(6);else if(b.startsWith('(?i)'))np='(?is)^'+DVW+'.*?'+b.slice(4);if(np)S.pat[id]=np})};
+P.setDvw=on=>P.commit(()=>P.dvwApply(on),'pat');
 P.reFor=id=>{let p=S.pat[id];if(p==null){p=P.outPat(id);if(p===byId[id].p)return byId[id].re}if(p in reC)return reC[p];let r=null;const[bd,f]=flags(p);try{r=new RegExp(bd,f)}catch(e){try{r=new RegExp(bd,f+'u')}catch(e2){}}return reC[p]=r};
 P.pat=id=>S.pat[id]!=null?S.pat[id]:byId[id].p;
 P.checkPat=p=>{if(!(p||'').trim())return'The pattern is empty';const[bd,f]=flags(p);try{new RegExp(bd,f);return''}catch(e){try{new RegExp(bd,f+'u');return''}catch(e2){return e2.message}}};
