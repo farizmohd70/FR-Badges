@@ -508,6 +508,19 @@
       "type": "filter"
     },
     {
+      "id": "dr-dv-hdr10",
+      "groupId": "dynamic-range",
+      "name": "DV + HDR10",
+      "pattern": "(?is)^(?=.*\\b(?:dolby[\\s._-]*vision|dovi|dv)\\b)(?!.*(?<![a-z0-9])(?:hdr10\\+|hdr10[\\s._-]*plus|hdr[\\s._-]*10[\\s._-]*\\+))(?=.*\\bhdr[\\s._-]*10\\b(?!\\s*(?:\\+|plus)))(?!.*\\b(?:dv[\\s._-]?p7|dovi[\\s._-]?p7|profile[\\s._-]?7|dv[\\s._-]?p8|dovi[\\s._-]?p8|profile[\\s._-]?8)\\b).*",
+      "imageURL": "https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/Badges-Neon-Icon/dv-hdr10.png",
+      "tagColor": "#00000000",
+      "borderColor": "#00000000",
+      "textColor": "#00000000",
+      "tagStyle": "filled and bordered",
+      "isEnabled": true,
+      "type": "filter"
+    },
+    {
       "id": "dr-dv-hdr10plus",
       "groupId": "dynamic-range",
       "name": "DV + HDR10+",

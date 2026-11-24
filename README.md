@@ -101,7 +101,7 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 | Subtitles | 167 | One subtitle badge for every language, such as "Hindi Sub" (full language name) |
 | Subtitles Short | 167 | The same subtitles with a short code, such as HIN SUB |
 
-**Total: 1386 badges per style.** The ready-made manifests (`badges.json` and the style files) are the Lite pack with 219 of them. The rest are available when you build your own pack on the [website](https://farizmohd70.github.io/FR-Badges/make.html).
+**Total: 1386 badges per style.** The ready-made manifests (`badges.json` and the style files) are the Lite pack with 220 of them. The rest are available when you build your own pack on the [website](https://farizmohd70.github.io/FR-Badges/make.html).
 
 </details>
 
