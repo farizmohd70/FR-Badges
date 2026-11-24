@@ -100,9 +100,11 @@ P.comCount=()=>Object.keys(S.com).length;
 P.manifestText=()=>JSON.stringify(P.manifest(),null,2);
 P.bytes=()=>new Blob([JSON.stringify(P.manifest())]).size;
 /* share code: pk-<style index>-<hex bitmask over catalog order> */
-P.code=()=>{const n=CAT.all.length,len=Math.ceil(n/4);let h='';for(let k=0;k<len;k++){let v=0;for(let j=0;j<4;j++){const i=k*4+j;if(i<n&&S.sel.has(CAT.all[i].id))v|=1<<j}h+=v.toString(16)}return'pk-'+STYLES.findIndex(s=>s.id===S.style)+'-'+h};
-P.loadCode=c=>{const m=/^#?pk-(\d+)-([0-9a-f]+)$/i.exec((c||'').trim());if(!m||!STYLES[+m[1]])return null;const ids=[];const h=m[2];for(let k=0;k<h.length;k++){const v=parseInt(h[k],16);for(let j=0;j<4;j++){const i=k*4+j;if(v>>j&1&&CAT.all[i]&&!CAT.all[i].x)ids.push(CAT.all[i].id)}}
- P.commit(()=>{S.style=STYLES[+m[1]].id;S.sel=new Set(ids)},'all');return ids.length};
+const gcode=()=>{const d=CAT.groups.map(g=>g.id);const o=S.gord.filter(g=>d.includes(g));if(o.length===d.length&&o.every((g,k)=>g===d[k]))return'';return'-o'+o.map(g=>d.indexOf(g).toString(36).padStart(2,'0')).join('')};
+P.code=()=>{const n=CAT.all.length,len=Math.ceil(n/4);let h='';for(let k=0;k<len;k++){let v=0;for(let j=0;j<4;j++){const i=k*4+j;if(i<n&&S.sel.has(CAT.all[i].id))v|=1<<j}h+=v.toString(16)}return'pk-'+STYLES.findIndex(s=>s.id===S.style)+'-'+h+gcode()};
+P.loadCode=c=>{const m=/^#?pk-(\d+)-([0-9a-f]+)(?:-o([0-9a-z]+))?$/i.exec((c||'').trim());if(!m||!STYLES[+m[1]])return null;const ids=[];const h=m[2];for(let k=0;k<h.length;k++){const v=parseInt(h[k],16);for(let j=0;j<4;j++){const i=k*4+j;if(v>>j&1&&CAT.all[i]&&!CAT.all[i].x)ids.push(CAT.all[i].id)}}
+ const ord=[];if(m[3]){const d=CAT.groups.map(g=>g.id);for(let k=0;k+1<m[3].length;k+=2){const g=d[parseInt(m[3].slice(k,k+2),36)];if(g&&!ord.includes(g))ord.push(g)}}
+ P.commit(()=>{S.style=STYLES[+m[1]].id;S.sel=new Set(ids);if(ord.length){S.gord=ord.concat(S.gord.filter(g=>!ord.includes(g)));CAT.groups.forEach(g=>insG(g.id))}},'all');return ids.length};
 P.importText=t=>{t=(t||'').trim();if(!t)return{err:'Nothing to import'};const c=P.loadCode(t);if(c!=null)return{n:c,unknown:0,kind:'share code'};
  let items=[],unk=0,gseq=[];
  try{const j=JSON.parse(t);const arr=j.filters||j.badges||(Array.isArray(j)?j:null);if(!arr)return{err:'No badges found in that JSON'};
@@ -200,17 +202,17 @@ let ht;function syncHash(){clearTimeout(ht);ht=setTimeout(()=>{try{const c=P.cod
 window.addEventListener('hashchange',()=>{if(busy)return;if(P.loadCode(location.hash))P.toast('Loaded pack from link')});
 /* autosave the pack being built (make page only) */
 const DK='fr_draft';let dt;P.draftOn=false;
-const saveDraft=()=>{try{const o=JSON.parse(snap());o.bg=S.bg;o.t=Date.now();localStorage.setItem(DK,JSON.stringify(o))}catch(e){}};
+const saveDraft=()=>{try{const o=JSON.parse(snap());o.bg=S.bg;o.smp=P.samples.slice(0,12);o.t=Date.now();localStorage.setItem(DK,JSON.stringify(o))}catch(e){}};
 const loadDraft=()=>{try{const d=JSON.parse(localStorage.getItem(DK)||'null');if(!d||!Array.isArray(d.sel)||!d.sel.length||!d.bord||!d.gord)return false;
  const ok=id=>byId[id]||String(id).startsWith('com-');
  d.sel=d.sel.filter(ok);Object.keys(d.bord).forEach(g=>{d.bord[g]=(d.bord[g]||[]).filter(ok)});d.gord=d.gord.filter(g=>gInfo[g]);d.over=d.over||{};
  Object.keys(d.over).forEach(k=>{if(!byId[k]||!STYLES.some(x=>x.id===d.over[k]))delete d.over[k]});if(!STYLES.some(x=>x.id===d.style))d.style=S.style;
- restore(JSON.stringify(d));if(d.bg)S.bg=d.bg;return true}catch(e){return false}};
+ restore(JSON.stringify(d));if(d.bg)S.bg=d.bg;if(Array.isArray(d.smp)&&d.smp.length)P.samples.splice(0,P.samples.length,...d.smp.filter(x=>typeof x==='string').slice(0,12));return true}catch(e){return false}};
 window.addEventListener('pagehide',()=>{if(P.draftOn)saveDraft()});
 document.addEventListener('visibilitychange',()=>{if(P.draftOn&&document.visibilityState==='hidden')saveDraft()});
 P.init=o=>{let drafted=false;if(o&&o.draft){drafted=loadDraft();P.draftOn=true}
  const h=location.hash;
- if(drafted){if(/^#?pk-\d+-[0-9a-f]+$/i.test(h)&&h.slice(1)!==P.code())P.loadCode(h)}
+ if(drafted){if(/^#?pk-\d+-[0-9a-f]+(?:-o[0-9a-z]+)?$/i.test(h)&&h.slice(1)!==P.code())P.loadCode(h)}
  else if(!P.loadCode(h))P.preset('essentials');
  try{const l=JSON.parse(localStorage.getItem('fr_com_pick')||'[]');l.forEach(x=>{if(/^[0-9a-f]{12}$/.test(x.id)&&x.n&&x.p)S.com[x.id]={n:String(x.n).slice(0,60),p:String(x.p).slice(0,1500),g:x.g}})}catch(e){}
  syncCom();undo=[];redo=[];emit('all');if(drafted)setTimeout(()=>P.toast('Restored your last pack'),300)};
