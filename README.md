@@ -56,7 +56,7 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 |---|---|---|---|
 | **Glass** | Dark tinted glass pills (text only) | `Badges` | `badges.json` |
 | **Glass Vibrant** | Glass pills in vivid candy colours, white text | `Badges-Glass-Vibrant` | `badges-glass-vibrant.json` |
-| **Solid** | Vivid gradient fills | `Badges-Solid` | `badges-solid.json` |
+| **Solid** | Flat single-colour pills, white text | `Badges-Solid` | `badges-solid.json` |
 | **Light** | Soft pastel pills (light UIs) | `Badges-Light` | `badges-light.json` |
 | **Pastel** | Each category in its own soft colour, flags on languages | `Badges-Pastel` | `badges-pastel.json` |
 | **Frost** | Translucent frosted glass for posters and backdrops | `Badges-Frost` | `badges-frost.json` |

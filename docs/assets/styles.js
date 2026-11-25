@@ -4,7 +4,7 @@
 window.STYLES_DATA=[
 {"id": "glass", "name": "Glass", "folder": "Badges", "note": "Dark tinted glass pills", "bg": "dark"},
 {"id": "neon", "name": "Neon", "folder": "Badges-Neon", "note": "Glowing gradient text, no background", "bg": "dark"},
-{"id": "solid", "name": "Solid", "folder": "Badges-Solid", "note": "Vivid gradient fills", "bg": "dark"},
+{"id": "solid", "name": "Solid", "folder": "Badges-Solid", "note": "Flat single-colour pills, white text", "bg": "dark"},
 {"id": "light", "name": "Light", "folder": "Badges-Light", "note": "Soft pastel pills for light screens", "bg": "light"},
 {"id": "icon-dark", "name": "Icon Dark", "folder": "Badges-Icon-Dark", "note": "Gradient icon tiles on dark glass", "bg": "dark"},
 {"id": "split", "name": "Split", "folder": "Badges-Split", "note": "Colored icon joined to a dark label", "bg": "dark"},
