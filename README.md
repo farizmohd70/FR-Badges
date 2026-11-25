@@ -9,7 +9,7 @@
   <img src="https://img.shields.io/badge/languages-167-10b981?style=for-the-badge" alt="languages 167">
 </p>
 
-<p align="center"><b>Modern badge pack for Nuvio.</b><br>1386 badges in 15 styles: hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, streaming platforms, debrid services, 167 languages, 167 subtitle badges and dubbed and short-name versions for every language. Every style has a ready-to-use filter manifest, and the website lets you build your own pack.</p>
+<p align="center"><b>Modern badge pack for Nuvio.</b><br>1386 badges in 16 styles: hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, streaming platforms, debrid services, 167 languages, 167 subtitle badges and dubbed and short-name versions for every language. Every style has a ready-to-use filter manifest, and the website lets you build your own pack.</p>
 
 <p align="center"><a href="https://farizmohd70.github.io/FR-Badges/"><b>Website</b></a> · <a href="https://farizmohd70.github.io/FR-Badges/make.html"><b>Make your pack</b></a></p>
 
@@ -32,7 +32,7 @@
 The site shows every style live and lets you build a pack without editing any files.
 
 1. Open **[Make your pack](https://farizmohd70.github.io/FR-Badges/make.html)**.
-2. Pick a look (15 styles), then a starting set of badges. The Lite pack is a good start.
+2. Pick a look (16 styles), then a starting set of badges. The Lite pack is a good start.
 3. Tap the badges you want. You can search or browse by group, and mix styles per badge.
 4. Set the order. Nuvio shows badges in that order.
 5. Copy your link and paste it into Nuvio under **Fusion badge URLs**. Clear the cache afterwards.
@@ -44,7 +44,7 @@ You can also reopen an existing pack from its link, JSON or share code and keep 
 Tap a style to jump to its link and the full preview sheet. Every preview sheet shows all badges of that style on a grey background.
 
 <table>
-<tr><td align="center"><a href="#glass"><img src="assets/gallery/glass.png" width="420" alt="Glass"></a><br><b>Glass</b></td><td align="center"><a href="#solid"><img src="assets/gallery/solid.png" width="420" alt="Solid"></a><br><b>Solid</b></td></tr><tr><td align="center"><a href="#light"><img src="assets/gallery/light.png" width="420" alt="Light"></a><br><b>Light</b></td><td align="center"><a href="#pastel"><img src="assets/gallery/pastel.png" width="420" alt="Pastel"></a><br><b>Pastel</b></td></tr><tr><td align="center"><a href="#frost"><img src="assets/gallery/frost.png" width="420" alt="Frost"></a><br><b>Frost</b></td><td align="center"><a href="#black--white"><img src="assets/gallery/black-white.png" width="420" alt="Black & White"></a><br><b>Black & White</b></td></tr><tr><td align="center"><a href="#white--black"><img src="assets/gallery/white-black.png" width="420" alt="White & Black"></a><br><b>White & Black</b></td><td align="center"><a href="#text-white"><img src="assets/gallery/text-white.png" width="420" alt="Text White"></a><br><b>Text White</b></td></tr><tr><td align="center"><a href="#text-black"><img src="assets/gallery/text-black.png" width="420" alt="Text Black"></a><br><b>Text Black</b></td><td align="center"><a href="#neon"><img src="assets/gallery/neon.png" width="420" alt="Neon"></a><br><b>Neon</b></td></tr><tr><td align="center"><a href="#neon-icon"><img src="assets/gallery/neon-icon.png" width="420" alt="Neon Icon"></a><br><b>Neon Icon</b></td><td align="center"><a href="#icon-dark"><img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark"></a><br><b>Icon Dark</b></td></tr><tr><td align="center"><a href="#icon-light"><img src="assets/gallery/icon-light.png" width="420" alt="Icon Light"></a><br><b>Icon Light</b></td><td align="center"><a href="#split"><img src="assets/gallery/split.png" width="420" alt="Split"></a><br><b>Split</b></td></tr><tr><td align="center" colspan="2"><a href="#minimal"><img src="assets/gallery/minimal.png" width="420" alt="Minimal"></a><br><b>Minimal</b></td></tr>
+<tr><td align="center"><a href="#glass"><img src="assets/gallery/glass.png" width="420" alt="Glass"></a><br><b>Glass</b></td><td align="center"><a href="#glass-vibrant"><img src="assets/gallery/glass-vibrant.png" width="420" alt="Glass Vibrant"></a><br><b>Glass Vibrant</b></td></tr><tr><td align="center"><a href="#solid"><img src="assets/gallery/solid.png" width="420" alt="Solid"></a><br><b>Solid</b></td><td align="center"><a href="#light"><img src="assets/gallery/light.png" width="420" alt="Light"></a><br><b>Light</b></td></tr><tr><td align="center"><a href="#pastel"><img src="assets/gallery/pastel.png" width="420" alt="Pastel"></a><br><b>Pastel</b></td><td align="center"><a href="#frost"><img src="assets/gallery/frost.png" width="420" alt="Frost"></a><br><b>Frost</b></td></tr><tr><td align="center"><a href="#black--white"><img src="assets/gallery/black-white.png" width="420" alt="Black & White"></a><br><b>Black & White</b></td><td align="center"><a href="#white--black"><img src="assets/gallery/white-black.png" width="420" alt="White & Black"></a><br><b>White & Black</b></td></tr><tr><td align="center"><a href="#text-white"><img src="assets/gallery/text-white.png" width="420" alt="Text White"></a><br><b>Text White</b></td><td align="center"><a href="#text-black"><img src="assets/gallery/text-black.png" width="420" alt="Text Black"></a><br><b>Text Black</b></td></tr><tr><td align="center"><a href="#neon"><img src="assets/gallery/neon.png" width="420" alt="Neon"></a><br><b>Neon</b></td><td align="center"><a href="#neon-icon"><img src="assets/gallery/neon-icon.png" width="420" alt="Neon Icon"></a><br><b>Neon Icon</b></td></tr><tr><td align="center"><a href="#icon-dark"><img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark"></a><br><b>Icon Dark</b></td><td align="center"><a href="#icon-light"><img src="assets/gallery/icon-light.png" width="420" alt="Icon Light"></a><br><b>Icon Light</b></td></tr><tr><td align="center"><a href="#split"><img src="assets/gallery/split.png" width="420" alt="Split"></a><br><b>Split</b></td><td align="center"><a href="#minimal"><img src="assets/gallery/minimal.png" width="420" alt="Minimal"></a><br><b>Minimal</b></td></tr>
 </table>
 
 ## Styles
@@ -55,6 +55,7 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 | Style | Look | Folder | Manifest |
 |---|---|---|---|
 | **Glass** | Dark tinted glass pills (text only) | `Badges` | `badges.json` |
+| **Glass Vibrant** | Glass pills in vivid candy colours, white text | `Badges-Glass-Vibrant` | `badges-glass-vibrant.json` |
 | **Solid** | Vivid gradient fills | `Badges-Solid` | `badges-solid.json` |
 | **Light** | Soft pastel pills (light UIs) | `Badges-Light` | `badges-light.json` |
 | **Pastel** | Each category in its own soft colour, flags on languages | `Badges-Pastel` | `badges-pastel.json` |
@@ -122,6 +123,21 @@ Copy the link for the style you want and use **one** style at a time. The guide 
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges.json
+```
+
+### Glass Vibrant
+
+<img src="assets/gallery/glass-vibrant.png" width="420" alt="Glass Vibrant">
+
+<details>
+<summary>Preview</summary>
+
+[![Glass Vibrant preview](Previews/preview-glass-vibrant.png)](Previews/preview-glass-vibrant.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-glass-vibrant.json
 ```
 
 ### Solid
