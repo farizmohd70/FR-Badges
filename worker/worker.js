@@ -42,7 +42,7 @@ async function loadStyles() {
   try {
     const r = await fetch(RAW + 'docs/assets/styles.js', { cf: { cacheTtl: 600 } });
     const t = await r.text();
-    const data = JSON.parse(t.slice(t.indexOf('['), t.lastIndexOf(']') + 1)), list = data.map(s => s.folder);
+    const data = JSON.parse(t.slice(t.indexOf('['), t.indexOf('\n];', t.indexOf('[')) + 2)), list = data.map(s => s.folder);
     if (list.length >= STYLES.length) { STYLES = list; EXTS = {}; data.forEach((s, i) => { if (s.ext) EXTS[i] = s.ext; }); }
   } catch (e) {}
 }
