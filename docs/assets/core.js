@@ -78,7 +78,7 @@ const cache={};
 P.src=(id,style)=>P.rawUrl(id,style);
 P.img=(id,cls,style)=>`<img class="${cls||''}" alt="${esc(byId[id].n)}" src="${P.src(id,style)}" draggable="false">`;
 P.bgCol=sid=>'#4a4e57';P.bgOf=id=>P.bgCol(P.styleOf(id));
-P.rawUrl=(id,style)=>byId[id]._com?P.comUrl(byId[id]._com):RAW+STYLES.find(s=>s.id===(style||P.styleOf(id))).folder+'/'+byId[id].f;
+P.rawUrl=(id,style)=>byId[id]._com?P.comUrl(byId[id]._com):(st=>RAW+st.folder+'/'+(st.ext?byId[id].f.replace(/\.png$/,'.'+st.ext):byId[id].f))(STYLES.find(s=>s.id===(style||P.styleOf(id))));
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 P.esc=esc;
 P.ordered=()=>{const o=[];S.gord.forEach(g=>S.bord[g].forEach(id=>{if(S.sel.has(id))o.push(byId[id])}));return o};

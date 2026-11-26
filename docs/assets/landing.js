@@ -10,7 +10,8 @@ const ROWS=[
  [['Night.Harbor.2024.'],['720p','res-720p'],['.'],['WEBRip','source-webrip'],['.'],['AAC','acodec-aac'],['.'],['2.0','ch-2-0'],['.'],['x264','codec-avc'],['-GRP']],
  [['Night.Harbor.2024.'],['HDCAM','source-cam'],['.'],['XviD','codec-xvid'],['-GRP']]];
 let style='glass';
-const src=(id,s)=>RAW+FD[s||style]+'/'+D.f[id];
+const EXT=Object.fromEntries(window.STYLES_DATA.filter(s=>s.ext).map(s=>[s.id,s.ext]));
+const src=(id,s)=>{const k=s||style,f=D.f[id];return RAW+FD[k]+'/'+(EXT[k]?f.replace(/\.png$/,'.'+EXT[k]):f)};
 const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const col=id=>D.c[id];
 function rows(){document.getElementById('rows').innerHTML=ROWS.map((r,ri)=>{
