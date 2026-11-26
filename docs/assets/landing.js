@@ -2,7 +2,7 @@ window.LANDING={"f":{"lang-en-code":"lang-en-code.png","lang-ja-code":"lang-ja-c
 
 const RAW="https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/",FD=Object.fromEntries(window.STYLES_DATA.map(s=>[s.id,s.folder]));
 const D=window.LANDING;
-const ST=(window.STYLES_SHOW||window.STYLES_DATA).map(s=>[s.id,s.name,s.note,s.bg]);const BG=id=>'#4a4e57';
+const ST=(window.STYLES_SHOW||window.STYLES_DATA).map(s=>[s.id,s.name,s.note,s.bg,!!s.animated]);const BG=id=>'#4a4e57';
 const ROWS=[
  [['Night.Harbor.2024.'],['2160p','res-4k'],['.'],['UHD.BluRay','source-uhd-bluray'],['.'],['REMUX','source-remux'],['.'],['DV.HDR10+','dr-dv-hdr10plus'],['.'],['TrueHD.Atmos','acodec-atmos'],['.'],['7.1','ch-7-1'],['.'],['HEVC','codec-hevc'],['-GRP']],
  [['Night.Harbor.2024.'],['1080p','res-1080p'],['.'],['NF','stream-netflix'],['.'],['WEB-DL','source-webdl'],['.'],['DDP5.1','acodec-ddplus'],['.'],['H.264','codec-avc'],['-GRP']],
@@ -18,8 +18,8 @@ function rows(){document.getElementById('rows').innerHTML=ROWS.map((r,ri)=>{
  let raw='',b='';r.forEach(([t,id],i)=>{if(id){const k=ri+'-'+i;raw+=`<span class="tk" data-k="${k}" style="--c:${col(id)}">${esc(t)}</span>`;b+=`<img data-k="${k}" style="--c:${col(id)}" alt="${esc(D.n[id])}" src="${src(id)}">`}else raw+=esc(t)});
  return`<div class="srow"><div class="raw">${raw}</div><div class="bds" style="background:${BG(style)}">${b}</div></div>`}).join('');
  document.querySelectorAll('#rows [data-k]').forEach(e=>{const on=v=>document.querySelectorAll('#rows [data-k="'+e.dataset.k+'"]').forEach(x=>x.classList.toggle('hl',v));e.onmouseenter=()=>on(1);e.onmouseleave=()=>on(0)})}
-function seg(){const s=document.getElementById('seg');s.innerHTML=ST.map(([id,n])=>`<option value="${id}" ${id===style?'selected':''}>${n}</option>`).join('');s.onchange=()=>set(s.value)}
-function looks(){const g=document.getElementById('looks-g');if(!g)return;g.innerHTML=ST.map(([id,n,d])=>`<button class="look" aria-pressed="${id===style}" data-s="${id}"><div class="im" style="background:${BG(id)}">${D.look.map(i=>`<img alt="${esc(D.n[i])}" src="${src(i,id)}">`).join('')}</div><div><b>${n}</b><span>${d}</span></div></button>`).join('');
+function seg(){const s=document.getElementById('seg');s.innerHTML=ST.map(([id,n,d,b,an])=>`<option value="${id}" ${id===style?'selected':''}>${n}${an?' (animated)':''}</option>`).join('');s.onchange=()=>set(s.value)}
+function looks(){const g=document.getElementById('looks-g');if(!g)return;g.innerHTML=ST.map(([id,n,d,b,an],i)=>(an&&!ST[i-1][4]?'<h3 class="sec" style="grid-column:1/-1;margin:14px 0 0;font-size:15px">Animated</h3>':'')+`<button class="look" aria-pressed="${id===style}" data-s="${id}"><div class="im" style="background:${BG(id)}">${D.look.map(i=>`<img alt="${esc(D.n[i])}" src="${src(i,id)}">`).join('')}</div><div><b>${n}</b><span>${d}</span></div></button>`).join('');
  document.querySelectorAll('.look').forEach(b=>b.onclick=()=>{set(b.dataset.s);scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})})}
 function idx(){document.getElementById('idx').innerHTML=D.groups.map(g=>`<div class="ir" style="--c:${g.color}"><div class="n"><i></i><span>${esc(g.name)}</span><em>${g.n}</em></div><div class="s">${g.s.map(i=>`<img alt="${esc(D.n[i])}" src="${src(i)}">`).join('')}</div></div>`).join('')}
 function set(s){style=s;seg();rows();looks();idx()}

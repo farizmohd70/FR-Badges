@@ -20,7 +20,8 @@ window.STYLES_DATA=[
 {"id": "glass-vibrant", "name": "Glass Vibrant", "folder": "Badges-Glass-Vibrant", "note": "Glass pills in vivid candy colours, white text", "bg": "dark"},
 {"id": "pixel", "name": "Pixel", "folder": "Badges-Pixel", "note": "Pixel-art blocks with chunky retro text", "bg": "dark"},
 {"id": "glow-bar", "name": "Glow Bar", "folder": "Badges-Glow-Bar", "note": "Bold text, no background, with a glowing accent line", "bg": "dark"},
-{"id": "midnight-teal", "name": "Midnight Teal", "folder": "Badges-Midnight-Teal", "note": "Animated liquid glass, streaming intros in the background", "bg": "dark", "ext": "webp"}
+{"id": "midnight-teal", "name": "Midnight Teal", "folder": "Badges-Midnight-Teal", "note": "Animated liquid glass, streaming intros in the background", "bg": "dark", "ext": "webp", "animated": true},
+{"id": "shimmer", "name": "Shimmer", "folder": "Badges-Shimmer", "note": "Animated shimmering text, no background, flag and brand colours", "bg": "dark", "ext": "webp", "animated": true}
 ];
-window.STYLE_ORDER=["glass", "glass-vibrant", "pixel", "glow-bar", "midnight-teal", "solid", "light", "pastel", "frost", "black-white", "white-black", "text-white", "text-black", "neon", "neon-icon", "icon-dark", "icon-light", "split", "minimal"];
+window.STYLE_ORDER=["glass", "glass-vibrant", "frost", "black-white", "white-black", "solid", "minimal", "pastel", "light", "icon-dark", "icon-light", "split", "text-white", "text-black", "neon", "neon-icon", "glow-bar", "pixel", "midnight-teal", "shimmer"];
 window.STYLES_SHOW=window.STYLE_ORDER.map(i=>window.STYLES_DATA.find(s=>s.id===i)).filter(Boolean).concat(window.STYLES_DATA.filter(s=>!window.STYLE_ORDER.includes(s.id)));

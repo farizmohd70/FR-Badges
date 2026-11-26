@@ -9,7 +9,7 @@
   <img src="https://img.shields.io/badge/languages-167-10b981?style=for-the-badge" alt="languages 167">
 </p>
 
-<p align="center"><b>Modern badge pack for Nuvio.</b><br>1386 badges in 19 styles: hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, streaming platforms, debrid services, 167 languages, 167 subtitle badges and dubbed and short-name versions for every language. Every style has a ready-to-use filter manifest, and the website lets you build your own pack.</p>
+<p align="center"><b>Modern badge pack for Nuvio.</b><br>1386 badges in 20 styles: hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, streaming platforms, debrid services, 167 languages, 167 subtitle badges and dubbed and short-name versions for every language. Every style has a ready-to-use filter manifest, and the website lets you build your own pack.</p>
 
 <p align="center"><a href="https://farizmohd70.github.io/FR-Badges/"><b>Website</b></a> · <a href="https://farizmohd70.github.io/FR-Badges/make.html"><b>Make your pack</b></a></p>
 
@@ -32,7 +32,7 @@
 The site shows every style live and lets you build a pack without editing any files.
 
 1. Open **[Make your pack](https://farizmohd70.github.io/FR-Badges/make.html)**.
-2. Pick a look (19 styles), then a starting set of badges. The Lite pack is a good start.
+2. Pick a look (20 styles), then a starting set of badges. The Lite pack is a good start.
 3. Tap the badges you want. You can search or browse by group, and mix styles per badge.
 4. Set the order. Nuvio shows badges in that order.
 5. Copy your link and paste it into Nuvio under **Fusion badge URLs**. Clear the cache afterwards.
@@ -44,7 +44,12 @@ You can also reopen an existing pack from its link, JSON or share code and keep 
 Tap a style to jump to its link and the full preview sheet. Every preview sheet shows all badges of that style on a grey background.
 
 <table>
-<tr><td align="center"><a href="#glass"><img src="assets/gallery/glass.png" width="420" alt="Glass"></a><br><b>Glass</b></td><td align="center"><a href="#glass-vibrant"><img src="assets/gallery/glass-vibrant.png" width="420" alt="Glass Vibrant"></a><br><b>Glass Vibrant</b></td></tr><tr><td align="center"><a href="#solid"><img src="assets/gallery/solid.png" width="420" alt="Solid"></a><br><b>Solid</b></td><td align="center"><a href="#light"><img src="assets/gallery/light.png" width="420" alt="Light"></a><br><b>Light</b></td></tr><tr><td align="center"><a href="#pastel"><img src="assets/gallery/pastel.png" width="420" alt="Pastel"></a><br><b>Pastel</b></td><td align="center"><a href="#frost"><img src="assets/gallery/frost.png" width="420" alt="Frost"></a><br><b>Frost</b></td></tr><tr><td align="center"><a href="#black--white"><img src="assets/gallery/black-white.png" width="420" alt="Black & White"></a><br><b>Black & White</b></td><td align="center"><a href="#white--black"><img src="assets/gallery/white-black.png" width="420" alt="White & Black"></a><br><b>White & Black</b></td></tr><tr><td align="center"><a href="#text-white"><img src="assets/gallery/text-white.png" width="420" alt="Text White"></a><br><b>Text White</b></td><td align="center"><a href="#text-black"><img src="assets/gallery/text-black.png" width="420" alt="Text Black"></a><br><b>Text Black</b></td></tr><tr><td align="center"><a href="#neon"><img src="assets/gallery/neon.png" width="420" alt="Neon"></a><br><b>Neon</b></td><td align="center"><a href="#neon-icon"><img src="assets/gallery/neon-icon.png" width="420" alt="Neon Icon"></a><br><b>Neon Icon</b></td></tr><tr><td align="center"><a href="#icon-dark"><img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark"></a><br><b>Icon Dark</b></td><td align="center"><a href="#icon-light"><img src="assets/gallery/icon-light.png" width="420" alt="Icon Light"></a><br><b>Icon Light</b></td></tr><tr><td align="center"><a href="#split"><img src="assets/gallery/split.png" width="420" alt="Split"></a><br><b>Split</b></td><td align="center"><a href="#minimal"><img src="assets/gallery/minimal.png" width="420" alt="Minimal"></a><br><b>Minimal</b></td></tr><tr><td align="center"><a href="#pixel"><img src="assets/gallery/pixel.png" width="420" alt="Pixel"></a><br><b>Pixel</b></td><td align="center"><a href="#glow-bar"><img src="assets/gallery/glow-bar.png" width="420" alt="Glow Bar"></a><br><b>Glow Bar</b></td></tr><tr><td align="center"><a href="#midnight-teal-animated"><img src="assets/gallery/midnight-teal.png" width="420" alt="Midnight Teal"></a><br><b>Midnight Teal</b> (animated)</td></tr>
+<tr><td align="center"><a href="#glass"><img src="assets/gallery/glass.png" width="420" alt="Glass"></a><br><b>Glass</b></td><td align="center"><a href="#glass-vibrant"><img src="assets/gallery/glass-vibrant.png" width="420" alt="Glass Vibrant"></a><br><b>Glass Vibrant</b></td></tr><tr><td align="center"><a href="#frost"><img src="assets/gallery/frost.png" width="420" alt="Frost"></a><br><b>Frost</b></td><td align="center"><a href="#black--white"><img src="assets/gallery/black-white.png" width="420" alt="Black & White"></a><br><b>Black & White</b></td></tr><tr><td align="center"><a href="#white--black"><img src="assets/gallery/white-black.png" width="420" alt="White & Black"></a><br><b>White & Black</b></td><td align="center"><a href="#solid"><img src="assets/gallery/solid.png" width="420" alt="Solid"></a><br><b>Solid</b></td></tr><tr><td align="center"><a href="#minimal"><img src="assets/gallery/minimal.png" width="420" alt="Minimal"></a><br><b>Minimal</b></td><td align="center"><a href="#pastel"><img src="assets/gallery/pastel.png" width="420" alt="Pastel"></a><br><b>Pastel</b></td></tr><tr><td align="center"><a href="#light"><img src="assets/gallery/light.png" width="420" alt="Light"></a><br><b>Light</b></td><td align="center"><a href="#icon-dark"><img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark"></a><br><b>Icon Dark</b></td></tr><tr><td align="center"><a href="#icon-light"><img src="assets/gallery/icon-light.png" width="420" alt="Icon Light"></a><br><b>Icon Light</b></td><td align="center"><a href="#split"><img src="assets/gallery/split.png" width="420" alt="Split"></a><br><b>Split</b></td></tr><tr><td align="center"><a href="#text-white"><img src="assets/gallery/text-white.png" width="420" alt="Text White"></a><br><b>Text White</b></td><td align="center"><a href="#text-black"><img src="assets/gallery/text-black.png" width="420" alt="Text Black"></a><br><b>Text Black</b></td></tr><tr><td align="center"><a href="#neon"><img src="assets/gallery/neon.png" width="420" alt="Neon"></a><br><b>Neon</b></td><td align="center"><a href="#neon-icon"><img src="assets/gallery/neon-icon.png" width="420" alt="Neon Icon"></a><br><b>Neon Icon</b></td></tr><tr><td align="center"><a href="#glow-bar"><img src="assets/gallery/glow-bar.png" width="420" alt="Glow Bar"></a><br><b>Glow Bar</b></td><td align="center"><a href="#pixel"><img src="assets/gallery/pixel.png" width="420" alt="Pixel"></a><br><b>Pixel</b></td></tr></table>
+
+### Animated
+
+<table>
+<tr><td align="center"><a href="#midnight-teal"><img src="assets/gallery/midnight-teal.png" width="420" alt="Midnight Teal"></a><br><b>Midnight Teal</b> (animated)</td><td align="center"><a href="#shimmer"><img src="assets/gallery/shimmer.png" width="420" alt="Shimmer"></a><br><b>Shimmer</b> (animated)</td></tr>
 </table>
 
 ## Styles
@@ -56,23 +61,29 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 |---|---|---|---|
 | **Glass** | Dark tinted glass pills (text only) | `Badges` | `badges.json` |
 | **Glass Vibrant** | Glass pills in vivid candy colours, white text | `Badges-Glass-Vibrant` | `badges-glass-vibrant.json` |
-| **Pixel** | Pixel-art blocks with chunky retro text | `Badges-Pixel` | `badges-pixel.json` |
-| **Glow Bar** | Bold text, no background, with a glowing accent line | `Badges-Glow-Bar` | `badges-glow-bar.json` |
-| **Midnight Teal** (animated) | Animated liquid glass pills; streaming badges play the platform's intro blurred in the background | `Badges-Midnight-Teal` | `badges-midnight-teal.json` |
-| **Solid** | Flat single-colour pills, white text | `Badges-Solid` | `badges-solid.json` |
-| **Light** | Soft pastel pills (light UIs) | `Badges-Light` | `badges-light.json` |
-| **Pastel** | Each category in its own soft colour, flags on languages | `Badges-Pastel` | `badges-pastel.json` |
 | **Frost** | Translucent frosted glass for posters and backdrops | `Badges-Frost` | `badges-frost.json` |
 | **Black & White** | Black glass pills with white text | `Badges-Black-White` | `badges-black-white.json` |
 | **White & Black** | White glass pills with black text | `Badges-White-Black` | `badges-white-black.json` |
+| **Solid** | Flat single-colour pills, white text | `Badges-Solid` | `badges-solid.json` |
+| **Minimal** | Flat dark pills with a colored dot | `Badges-Minimal` | `badges-minimal.json` |
+| **Pastel** | Each category in its own soft colour, flags on languages | `Badges-Pastel` | `badges-pastel.json` |
+| **Light** | Soft pastel pills (light UIs) | `Badges-Light` | `badges-light.json` |
+| **Icon Dark** | Gradient icon tiles on dark glass | `Badges-Icon-Dark` | `badges-icon-dark.json` |
+| **Icon Light** | Gradient icon tiles on pastel | `Badges-Icon-Light` | `badges-icon-light.json` |
+| **Split** | Colored icon segment joined to a dark label | `Badges-Split` | `badges-split.json` |
 | **Text White** | White text only, no background | `Badges-Text-White` | `badges-text-white.json` |
 | **Text Black** | Black text only, no background | `Badges-Text-Black` | `badges-text-black.json` |
 | **Neon** | Glowing gradient text, no background (dark UIs) | `Badges-Neon` | `badges-neon.json` |
 | **Neon Icon** | Glowing gradient icons and text, no background (dark UIs) | `Badges-Neon-Icon` | `badges-neon-icon.json` |
-| **Icon Dark** | Gradient icon tiles on dark glass | `Badges-Icon-Dark` | `badges-icon-dark.json` |
-| **Icon Light** | Gradient icon tiles on pastel | `Badges-Icon-Light` | `badges-icon-light.json` |
-| **Split** | Colored icon segment joined to a dark label | `Badges-Split` | `badges-split.json` |
-| **Minimal** | Flat dark pills with a colored dot | `Badges-Minimal` | `badges-minimal.json` |
+| **Glow Bar** | Bold text, no background, with a glowing accent line | `Badges-Glow-Bar` | `badges-glow-bar.json` |
+| **Pixel** | Pixel-art blocks with chunky retro text | `Badges-Pixel` | `badges-pixel.json` |
+
+**Animated**
+
+| Style | Look | Folder | Manifest |
+|---|---|---|---|
+| **Midnight Teal** | Animated liquid glass pills; streaming badges play the platform's intro blurred in the background | `Badges-Midnight-Teal` | `badges-midnight-teal.json` |
+| **Shimmer** | Animated shimmering text with no background; flag and brand colours | `Badges-Shimmer` | `badges-shimmer.json` |
 
 </details>
 
@@ -143,104 +154,6 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges.json
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-glass-vibrant.json
 ```
 
-### Pixel
-
-<img src="assets/gallery/pixel.png" width="420" alt="Pixel">
-
-<details>
-<summary>Preview</summary>
-
-[![Pixel preview](Previews/preview-pixel.png)](Previews/preview-pixel.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-pixel.json
-```
-
-### Glow Bar
-
-<img src="assets/gallery/glow-bar.png" width="420" alt="Glow Bar">
-
-<details>
-<summary>Preview</summary>
-
-[![Glow Bar preview](Previews/preview-glow-bar.png)](Previews/preview-glow-bar.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-glow-bar.json
-```
-
-### Midnight Teal (animated)
-
-<p>
-<img src="Badges-Midnight-Teal/4k.webp" height="56" alt="4K UHD">
-<img src="Badges-Midnight-Teal/dv-hdr.webp" height="56" alt="DV+HDR">
-<img src="Badges-Midnight-Teal/atmos.webp" height="56" alt="Dolby Atmos">
-<img src="Badges-Midnight-Teal/netflix.webp" height="56" alt="Netflix">
-<img src="Badges-Midnight-Teal/lang-fr.webp" height="56" alt="French">
-</p>
-
-Animated WebP badges with liquid glass colour, Glass-style tints, flag-colour liquid for languages and subtitles, and blurred streaming intros behind platform badges. The gallery images show a still frame; the badges animate in Nuvio.
-
-<details>
-<summary>Preview</summary>
-
-[![Midnight Teal preview](Previews/preview-midnight-teal.png)](Previews/preview-midnight-teal.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-midnight-teal.json
-```
-
-### Solid
-
-<img src="assets/gallery/solid.png" width="420" alt="Solid">
-
-<details>
-<summary>Preview</summary>
-
-[![Solid preview](Previews/preview-solid.png)](Previews/preview-solid.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-solid.json
-```
-
-### Light
-
-<img src="assets/gallery/light.png" width="420" alt="Light">
-
-<details>
-<summary>Preview</summary>
-
-[![Light preview](Previews/preview-light.png)](Previews/preview-light.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
-```
-
-### Pastel
-
-<img src="assets/gallery/pastel.png" width="420" alt="Pastel">
-
-<details>
-<summary>Preview</summary>
-
-[![Pastel preview](Previews/preview-pastel.png)](Previews/preview-pastel.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-pastel.json
-```
-
 ### Frost
 
 <img src="assets/gallery/frost.png" width="420" alt="Frost">
@@ -284,6 +197,113 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-black-white.
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-white-black.json
+```
+
+### Solid
+
+<img src="assets/gallery/solid.png" width="420" alt="Solid">
+
+<details>
+<summary>Preview</summary>
+
+[![Solid preview](Previews/preview-solid.png)](Previews/preview-solid.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-solid.json
+```
+
+### Minimal
+
+<img src="assets/gallery/minimal.png" width="420" alt="Minimal">
+
+<details>
+<summary>Preview</summary>
+
+[![Minimal preview](Previews/preview-minimal.png)](Previews/preview-minimal.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-minimal.json
+```
+
+### Pastel
+
+<img src="assets/gallery/pastel.png" width="420" alt="Pastel">
+
+<details>
+<summary>Preview</summary>
+
+[![Pastel preview](Previews/preview-pastel.png)](Previews/preview-pastel.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-pastel.json
+```
+
+### Light
+
+<img src="assets/gallery/light.png" width="420" alt="Light">
+
+<details>
+<summary>Preview</summary>
+
+[![Light preview](Previews/preview-light.png)](Previews/preview-light.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-light.json
+```
+
+### Icon Dark
+
+<img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark">
+
+<details>
+<summary>Preview</summary>
+
+[![Icon Dark preview](Previews/preview-icon-dark.png)](Previews/preview-icon-dark.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-dark.json
+```
+
+### Icon Light
+
+<img src="assets/gallery/icon-light.png" width="420" alt="Icon Light">
+
+<details>
+<summary>Preview</summary>
+
+[![Icon Light preview](Previews/preview-icon-light.png)](Previews/preview-icon-light.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-light.json
+```
+
+If the app caches images, clear its cache after switching styles.
+
+### Split
+
+<img src="assets/gallery/split.png" width="420" alt="Split">
+
+<details>
+<summary>Preview</summary>
+
+[![Split preview](Previews/preview-split.png)](Previews/preview-split.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-split.json
 ```
 
 ### Text White
@@ -346,67 +366,86 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon.json
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-neon-icon.json
 ```
 
-### Icon Dark
+### Glow Bar
 
-<img src="assets/gallery/icon-dark.png" width="420" alt="Icon Dark">
-
-<details>
-<summary>Preview</summary>
-
-[![Icon Dark preview](Previews/preview-icon-dark.png)](Previews/preview-icon-dark.png)
-
-</details>
-
-```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-dark.json
-```
-
-### Icon Light
-
-<img src="assets/gallery/icon-light.png" width="420" alt="Icon Light">
+<img src="assets/gallery/glow-bar.png" width="420" alt="Glow Bar">
 
 <details>
 <summary>Preview</summary>
 
-[![Icon Light preview](Previews/preview-icon-light.png)](Previews/preview-icon-light.png)
+[![Glow Bar preview](Previews/preview-glow-bar.png)](Previews/preview-glow-bar.png)
 
 </details>
 
 ```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-icon-light.json
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-glow-bar.json
 ```
 
-If the app caches images, clear its cache after switching styles.
+### Pixel
 
-### Split
-
-<img src="assets/gallery/split.png" width="420" alt="Split">
+<img src="assets/gallery/pixel.png" width="420" alt="Pixel">
 
 <details>
 <summary>Preview</summary>
 
-[![Split preview](Previews/preview-split.png)](Previews/preview-split.png)
+[![Pixel preview](Previews/preview-pixel.png)](Previews/preview-pixel.png)
 
 </details>
 
 ```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-split.json
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-pixel.json
 ```
 
-### Minimal
+### Animated
 
-<img src="assets/gallery/minimal.png" width="420" alt="Minimal">
+Animated WebP packs. These are available as ready-made links; the website lists them too.
+
+#### Midnight Teal
+
+<p>
+<img src="Badges-Midnight-Teal/4k.webp" height="56" alt="4K UHD">
+<img src="Badges-Midnight-Teal/dv-hdr.webp" height="56" alt="DV+HDR">
+<img src="Badges-Midnight-Teal/atmos.webp" height="56" alt="Dolby Atmos">
+<img src="Badges-Midnight-Teal/netflix.webp" height="56" alt="Netflix">
+<img src="Badges-Midnight-Teal/lang-fr.webp" height="56" alt="French">
+</p>
+
+Animated WebP badges with liquid glass colour, Glass-style tints, flag-colour liquid for languages and subtitles, and blurred streaming intros behind platform badges. The gallery images show a still frame; the badges animate in Nuvio.
 
 <details>
 <summary>Preview</summary>
 
-[![Minimal preview](Previews/preview-minimal.png)](Previews/preview-minimal.png)
+[![Midnight Teal preview](Previews/preview-midnight-teal.png)](Previews/preview-midnight-teal.png)
 
 </details>
 
 ```
-https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-minimal.json
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-midnight-teal.json
 ```
+
+#### Shimmer
+
+<p>
+<img src="Badges-Shimmer/4k.webp" height="56" alt="4K UHD">
+<img src="Badges-Shimmer/dv-hdr.webp" height="56" alt="DV+HDR">
+<img src="Badges-Shimmer/atmos.webp" height="56" alt="Dolby Atmos">
+<img src="Badges-Shimmer/netflix.webp" height="56" alt="Netflix">
+<img src="Badges-Shimmer/lang-fr.webp" height="56" alt="French">
+</p>
+
+Animated WebP badges with no background. Text shimmers with a moving light sweep and a soft glow; flag badges use the flag colours and streaming badges use the brand accent colour. The gallery images show a still frame; the badges animate in Nuvio.
+
+<details>
+<summary>Preview</summary>
+
+[![Shimmer preview](Previews/preview-shimmer.png)](Previews/preview-shimmer.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-shimmer.json
+```
+
 ## License
 
 [MIT](LICENSE) © farizmohd70
