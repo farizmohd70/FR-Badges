@@ -398,22 +398,22 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-pixel.json
 
 ### Animated
 
-Animated WebP packs. These are available as ready-made links; the website lists them too.
+Animated GIF packs. These are available as ready-made links; the website lists them too.
 
 #### Midnight Teal
 
 <p>
-<img src="Badges-Midnight-Teal/4k.webp" height="56" alt="4K UHD">
-<img src="Badges-Midnight-Teal/dv-hdr.webp" height="56" alt="DV+HDR">
-<img src="Badges-Midnight-Teal/atmos.webp" height="56" alt="Dolby Atmos">
-<img src="Badges-Midnight-Teal/netflix.webp" height="56" alt="Netflix">
-<img src="Badges-Midnight-Teal/lang-fr.webp" height="56" alt="French">
+<img src="Badges-Midnight-Teal/4k.gif" height="56" alt="4K UHD">
+<img src="Badges-Midnight-Teal/dv-hdr.gif" height="56" alt="DV+HDR">
+<img src="Badges-Midnight-Teal/atmos.gif" height="56" alt="Dolby Atmos">
+<img src="Badges-Midnight-Teal/netflix.gif" height="56" alt="Netflix">
+<img src="Badges-Midnight-Teal/lang-fr.gif" height="56" alt="French">
 </p>
 
 <details>
 <summary>Preview</summary>
 
-Animated WebP badges with liquid glass colour, Glass-style tints, flag-colour liquid for languages and subtitles, and blurred streaming intros behind platform badges. The gallery images show a still frame; the badges animate in Nuvio.
+Animated GIF badges with liquid glass colour, Glass-style tints, flag-colour liquid for languages and subtitles, and blurred streaming intros behind platform badges. The gallery images show a still frame; the badges animate in Nuvio.
 
 [![Midnight Teal preview](Previews/preview-midnight-teal.png)](Previews/preview-midnight-teal.png)
 
@@ -426,17 +426,17 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-midnight-tea
 #### Shimmer
 
 <p>
-<img src="Badges-Shimmer/4k.webp" height="56" alt="4K UHD">
-<img src="Badges-Shimmer/dv-hdr.webp" height="56" alt="DV+HDR">
-<img src="Badges-Shimmer/atmos.webp" height="56" alt="Dolby Atmos">
-<img src="Badges-Shimmer/netflix.webp" height="56" alt="Netflix">
-<img src="Badges-Shimmer/lang-fr.webp" height="56" alt="French">
+<img src="Badges-Shimmer/4k.gif" height="56" alt="4K UHD">
+<img src="Badges-Shimmer/dv-hdr.gif" height="56" alt="DV+HDR">
+<img src="Badges-Shimmer/atmos.gif" height="56" alt="Dolby Atmos">
+<img src="Badges-Shimmer/netflix.gif" height="56" alt="Netflix">
+<img src="Badges-Shimmer/lang-fr.gif" height="56" alt="French">
 </p>
 
 <details>
 <summary>Preview</summary>
 
-Animated WebP badges with no background. Text shimmers with a moving light sweep and a soft glow; flag badges use the flag colours and streaming badges use the brand accent colour. The gallery images show a still frame; the badges animate in Nuvio.
+Animated GIF badges with no background. Text shimmers with a moving light sweep and a soft glow; flag badges use the flag colours and streaming badges use the brand accent colour. The gallery images show a still frame; the badges animate in Nuvio.
 
 [![Shimmer preview](Previews/preview-shimmer.png)](Previews/preview-shimmer.png)
 
@@ -456,4 +456,4 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-shimmer.json
 - Sized for Nuvio's badge height. Neon and Neon Icon have no background, so they are cropped tight to the text.
 - Only one badge shows per attribute: one resolution, one codec, one HDR type, and so on.
 - Language and subtitle badges never overlap: "Hindi Subs" shows the subtitle badge, "Hindi" the language badge.
-- Animated styles use WebP and are available as ready-made links only.
+- Animated styles use GIF and are available as ready-made links only.
