@@ -5,7 +5,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/for-Nuvio-8b5cf6?style=for-the-badge" alt="for Nuvio">
   <img src="https://img.shields.io/badge/badges-1386-0ea5e9?style=for-the-badge" alt="badges 1386">
-  <img src="https://img.shields.io/badge/styles-14-ec4899?style=for-the-badge" alt="styles 14">
+  <img src="https://img.shields.io/badge/styles-20-ec4899?style=for-the-badge" alt="styles 20">
   <img src="https://img.shields.io/badge/languages-167-10b981?style=for-the-badge" alt="languages 167">
 </p>
 
@@ -410,10 +410,10 @@ Animated WebP packs. These are available as ready-made links; the website lists 
 <img src="Badges-Midnight-Teal/lang-fr.webp" height="56" alt="French">
 </p>
 
-Animated WebP badges with liquid glass colour, Glass-style tints, flag-colour liquid for languages and subtitles, and blurred streaming intros behind platform badges. The gallery images show a still frame; the badges animate in Nuvio.
-
 <details>
 <summary>Preview</summary>
+
+Animated WebP badges with liquid glass colour, Glass-style tints, flag-colour liquid for languages and subtitles, and blurred streaming intros behind platform badges. The gallery images show a still frame; the badges animate in Nuvio.
 
 [![Midnight Teal preview](Previews/preview-midnight-teal.png)](Previews/preview-midnight-teal.png)
 
@@ -433,10 +433,10 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-midnight-tea
 <img src="Badges-Shimmer/lang-fr.webp" height="56" alt="French">
 </p>
 
-Animated WebP badges with no background. Text shimmers with a moving light sweep and a soft glow; flag badges use the flag colours and streaming badges use the brand accent colour. The gallery images show a still frame; the badges animate in Nuvio.
-
 <details>
 <summary>Preview</summary>
+
+Animated WebP badges with no background. Text shimmers with a moving light sweep and a soft glow; flag badges use the flag colours and streaming badges use the brand accent colour. The gallery images show a still frame; the badges animate in Nuvio.
 
 [![Shimmer preview](Previews/preview-shimmer.png)](Previews/preview-shimmer.png)
 
@@ -452,7 +452,8 @@ https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-shimmer.json
 
 ## Notes
 
-- Badges are original designs with plain-text labels. They are not the official logos of Dolby, DTS, IMAX, Blu-ray Disc, streaming services or others.
-- All badges are sized for Nuvio's 16dp badge height, so text fills the chip and edges stay clear of its rounded corners. Images have no transparent margin, except the Neon style, which has a small one on the left and right so its two-line text is not cut by the app's rounded badge boundary. Neon and Neon Icon have no background shape, so they are cropped tight to the text.
+- Badges are original designs, not the official logos of Dolby, DTS, IMAX, Disc or streaming services.
+- Sized for Nuvio's badge height. Neon and Neon Icon have no background, so they are cropped tight to the text.
 - Only one badge shows per attribute: one resolution, one codec, one HDR type, and so on.
-- Language and subtitle badges never overlap: "Hindi Subs" shows the Hindi subtitle badge only, and "Hindi" without "subs" shows the Hindi language badge only.
+- Language and subtitle badges never overlap: "Hindi Subs" shows the subtitle badge, "Hindi" the language badge.
+- Animated styles use WebP and are available as ready-made links only.
