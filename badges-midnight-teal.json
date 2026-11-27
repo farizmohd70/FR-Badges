@@ -2211,6 +2211,32 @@
       "type": "filter"
     },
     {
+      "id": "stream-criterion-ch-intro",
+      "groupId": "streaming-intro",
+      "name": "Criterion Channel (Intro)",
+      "pattern": "(?i)\\bcriterion[\\s._-]*channel\\b",
+      "imageURL": "https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/Badges-Midnight-Teal/intro-criterion-ch.gif",
+      "tagColor": "#00000000",
+      "borderColor": "#00000000",
+      "textColor": "#00000000",
+      "tagStyle": "filled and bordered",
+      "isEnabled": false,
+      "type": "filter"
+    },
+    {
+      "id": "stream-curiositystream-intro",
+      "groupId": "streaming-intro",
+      "name": "Curiosity Stream (Intro)",
+      "pattern": "(?i)\\bcuriosity[\\s._-]*stream\\b",
+      "imageURL": "https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/Badges-Midnight-Teal/intro-curiosity.gif",
+      "tagColor": "#00000000",
+      "borderColor": "#00000000",
+      "textColor": "#00000000",
+      "tagStyle": "filled and bordered",
+      "isEnabled": false,
+      "type": "filter"
+    },
+    {
       "id": "debrid-realdebrid",
       "groupId": "debrid",
       "name": "Real-Debrid",
