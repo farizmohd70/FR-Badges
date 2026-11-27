@@ -198,7 +198,7 @@ function manifest(items) {
   return {
     filters: items.map(({ b, style, pat, url }) => ({
       id: b.id, groupId: b.g, name: b.n, pattern: adaptPat(b.id, sel, id => pats[id], () => b.p),
-      imageURL: url || (b.alt === 'logo' ? RAW + 'Badges-Logo-Only/' + b.f : b.alt === 'intro' ? RAW + 'Badges-Midnight-Teal/intro-' + b.f : RAW + STYLES[style] + '/' + (EXTS[style] ? b.f.replace(/\.png$/, '.' + EXTS[style]) : b.f)),
+      imageURL: url || (b.alt === 'logo' ? RAW + (EXTS[style] ? 'Badges-Logo-Only/' : STYLES[style] + '/logo-') + b.f : b.alt === 'intro' ? RAW + 'Badges-Midnight-Teal/intro-' + b.f : RAW + STYLES[style] + '/' + (EXTS[style] ? b.f.replace(/\.png$/, '.' + EXTS[style]) : b.f)),
       tagColor: '#00000000', borderColor: '#00000000', textColor: '#00000000',
       tagStyle: 'filled and bordered', isEnabled: true, type: 'filter',
     })),
