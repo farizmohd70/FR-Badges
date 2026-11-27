@@ -23,7 +23,7 @@ const PRESETS={
  picture:{name:'Best picture',desc:'Resolution, HDR, Dolby Vision, codecs and sources',ids:()=>CAT.badges.filter(b=>['hero','resolution','dynamic-range','video-codec','video-format','source'].includes(b.g)).map(b=>b.id)},
  theater:{name:'Home theater',desc:'Picture and sound together, with speaker layouts',ids:()=>CAT.badges.filter(b=>['hero','resolution','dynamic-range','video-codec','source','audio-codec','audio-channels'].includes(b.g)).map(b=>b.id)},
  cinephile:{name:'Cinephile',desc:'Editions like IMAX and Criterion, plus quality tags',ids:()=>CAT.badges.filter(b=>['hero','editions','source','resolution','dynamic-range'].includes(b.g)).map(b=>b.id)},
- everything:{name:'Everything',desc:'All 473 badges, one version of each',ids:()=>CAT.badges.filter(b=>!['oneline','lang-code','lang-name'].includes(b.g)&&!/-1l$/.test(b.id)).map(b=>b.id)},
+ everything:{name:'Everything',desc:'All 473 badges, one version of each',ids:()=>CAT.badges.filter(b=>!['oneline','lang-code','lang-name','streaming-logo','streaming-intro'].includes(b.g)&&!/-1l$/.test(b.id)).map(b=>b.id)},
  empty:{name:'Blank',desc:'Start from nothing',ids:()=>[]}
 };
 ['audiophile','streaming','picture','theater','cinephile'].forEach(k=>{const f=PRESETS[k].ids;PRESETS[k].ids=()=>nodup(f())});
@@ -78,7 +78,7 @@ const cache={};
 P.src=(id,style)=>P.rawUrl(id,style);
 P.img=(id,cls,style)=>`<img class="${cls||''}" alt="${esc(byId[id].n)}" src="${P.src(id,style)}" draggable="false">`;
 P.bgCol=sid=>'#4a4e57';P.bgOf=id=>P.bgCol(P.styleOf(id));
-P.rawUrl=(id,style)=>byId[id]._com?P.comUrl(byId[id]._com):(st=>RAW+st.folder+'/'+(st.ext?byId[id].f.replace(/\.png$/,'.'+st.ext):byId[id].f))(STYLES.find(s=>s.id===(style||P.styleOf(id))));
+P.rawUrl=(id,style)=>byId[id]._com?P.comUrl(byId[id]._com):byId[id].alt==='logo'?RAW+'Badges-Logo-Only/'+byId[id].f:byId[id].alt==='intro'?RAW+'Badges-Midnight-Teal/intro-'+byId[id].f:(st=>RAW+st.folder+'/'+(st.ext?byId[id].f.replace(/\.png$/,'.'+st.ext):byId[id].f))(STYLES.find(s=>s.id===(style||P.styleOf(id))));
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 P.esc=esc;
 P.ordered=()=>{const o=[];S.gord.forEach(g=>S.bord[g].forEach(id=>{if(S.sel.has(id))o.push(byId[id])}));return o};

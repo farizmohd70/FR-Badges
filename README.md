@@ -4,12 +4,12 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/for-Nuvio-8b5cf6?style=for-the-badge" alt="for Nuvio">
-  <img src="https://img.shields.io/badge/badges-1386-0ea5e9?style=for-the-badge" alt="badges 1386">
+  <img src="https://img.shields.io/badge/badges-1466-0ea5e9?style=for-the-badge" alt="badges 1466">
   <img src="https://img.shields.io/badge/styles-20-ec4899?style=for-the-badge" alt="styles 20">
   <img src="https://img.shields.io/badge/languages-167-10b981?style=for-the-badge" alt="languages 167">
 </p>
 
-<p align="center"><b>Modern badge pack for Nuvio.</b><br>1386 badges in 20 styles: hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, streaming platforms, debrid services, 167 languages, 167 subtitle badges and dubbed and short-name versions for every language. Every style has a ready-to-use filter manifest, and the website lets you build your own pack.</p>
+<p align="center"><b>Modern badge pack for Nuvio.</b><br>1466 badges in 20 styles: hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, streaming platforms, debrid services, 167 languages, 167 subtitle badges and dubbed and short-name versions for every language. Every style has a ready-to-use filter manifest, and the website lets you build your own pack.</p>
 
 <p align="center"><a href="https://farizmohd70.github.io/FR-Badges/"><b>Website</b></a> · <a href="https://farizmohd70.github.io/FR-Badges/make.html"><b>Make your pack</b></a></p>
 
@@ -116,7 +116,7 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 | Subtitles | 167 | One subtitle badge for every language, such as "Hindi Sub" (full language name) |
 | Subtitles Short | 167 | The same subtitles with a short code, such as HIN SUB |
 
-**Total: 1386 badges per style.** The ready-made manifests (`badges.json` and the style files) are the Lite pack with 220 of them. The rest are available when you build your own pack on the [website](https://farizmohd70.github.io/FR-Badges/make.html).
+**Total: 1466 badges (1386 per style, plus 46 logo-only and 34 intro-only streaming badges).** The ready-made manifests (`badges.json` and the style files) are the Lite pack with 220 of them, plus an optional "Streaming Platforms (Logo only)" group (Midnight Teal: "Intro only") that is switched off by default. The rest are available when you build your own pack on the [website](https://farizmohd70.github.io/FR-Badges/make.html).
 
 </details>
 
