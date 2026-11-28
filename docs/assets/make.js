@@ -5,8 +5,8 @@ let tab=['badge','style'].includes(QS.get('tab'))?QS.get('tab'):'build';
 let sub=FRNAV.get().sub==='ord'?'ord':'sel',grp=FRNAV.get().grp||'all',q=FRNAV.get().q||'';
 const START=[['lite','Lite pack','The everyday pack most people want'],['essentials','Essentials','Only the important badges'],['fast','Light and fast','About 30 badges, loads quickest'],['langlite','Essentials + main languages','Key badges, 15 common languages and subtitles'],['langs','Essentials + languages','Key badges plus all languages and subtitles'],['picture','Best picture','Resolution, HDR, Dolby Vision and codecs'],['theater','Home theater','Picture and sound, with speaker layouts'],['cinephile','Cinephile','IMAX, Criterion and other editions'],['audiophile','Sound lover','Audio formats and speaker layouts'],['streaming','Streaming services','Netflix, Prime and debrid providers'],['empty','Start empty','Pick everything yourself']];
 const demoIds=()=>{const o=[];const gs=['resolution','source','audio-codec','hero','dynamic-range','streaming','video-codec','audio-channels','languages','editions'];for(let k=0;k<3;k++)gs.forEach(g=>{const b=P.byGroup[g]&&P.byGroup[g][k];if(b&&!o.includes(b.id)&&!o.some(x=>P.byId[x].n.toUpperCase()===b.n.toUpperCase()))o.push(b.id)});return o};
-const IC={all:'<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2.5 10.5l3.5 3.5 6-7M9 14l1.2 1.2L17.5 7"/></svg>',clr:'<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg>'};
-const inf=t=>`<span class="infw"><button type="button" class="inf" aria-label="More info">!</button><span class="infp" role="tooltip">${t}</span></span>`;
+const IC={all:ic('checks'),clr:ic('eraser')};
+const inf=t=>`<span class="infw"><button type="button" class="inf" aria-label="More info">${ic('info')}</button><span class="infp" role="tooltip">${t}</span></span>`;
 const kb=()=>(P.bytes()/1024).toFixed(0);
 
 /* ---- tabs ---- */
@@ -20,8 +20,9 @@ document.querySelectorAll('#tabs [data-t]').forEach(b=>b.onclick=()=>setTab(b.da
 
 /* ---- step 1 ---- */
 function rLook(){const ids=demoIds().slice(0,4);
- $('#look').innerHTML=P.STYLES_UI.map((s,i,A)=>(s.animated&&!(A[i-1]&&A[i-1].animated)?'<div class="rgn">Animated</div>':'')+`<button type="button" class="lk2" aria-pressed="${S.style===s.id}" data-st="${s.id}"><span class="sw" style="background:${P.bgCol(s.id)}">${ids.map(i=>P.img(i,'',s.id)).join('')}</span><span><b>${esc(s.name)}</b><small>${esc(s.note)}</small></span></button>`).join('');
+ $('#look').innerHTML=P.STYLES_UI.map((s,i,A)=>(s.animated&&!(A[i-1]&&A[i-1].animated)?'<div class="rgn">Animated</div>':'')+`<div class="lk2w"><button type="button" class="lk2" aria-pressed="${S.style===s.id}" data-st="${s.id}"><span class="sw" style="background:${P.bgCol(s.id)}">${ids.map(i=>P.img(i,'',s.id)).join('')}</span><span><b>${esc(s.name)}</b></span></button><span class="infw lkinf"><button type="button" class="inf" aria-label="About ${esc(s.name)}">${ic('info')}</button><span class="infp" role="tooltip">${esc(s.note)}</span></span></div>`).join('');
  document.querySelectorAll('[data-st]').forEach(b=>b.onclick=()=>P.setStyle(b.dataset.st))}
+function rLook2(){}
 function markLook(){document.querySelectorAll('[data-st]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.st===S.style))}
 function rPre(){$('#presets').innerHTML='<span class="l">Start from</span>'+START.map(([k,n,d])=>`<button type="button" class="b2 sm" data-p="${k}" title="${esc(d)}">${esc(n)}</button>`).join('');
  document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const n=P.preset(b.dataset.p);P.toast(n+' badges picked');setSub('sel')})}
@@ -34,7 +35,7 @@ function comHtml(){const l=comAll();if(!l.length)return `<div class="empty">${CO
  return `<div class="bar" style="margin:0 0 10px"><span class="hint" style="margin:0">Community made</span>${inf('Badges shared by other people. <a href="community">See them all</a>. They are added to the end of your pack.')}</div><div class="grid">${l.map(b=>`<button type="button" class="tile ${S.com[b.id]?'on':''}" data-com="${b.id}"><div class="im" style="background:var(--bd)"><img src="${P.comUrl(b.id)}" alt="" loading="lazy" style="max-height:30px;max-width:90%"></div><div class="n">${esc(b.n)}</div></button>`).join('')}</div>`}
 function rSel(){const oc=document.getElementById('chips');if(oc)chipX=oc.scrollLeft;const oy=window.scrollY;const counts={};P.CAT.badges.forEach(b=>{if(S.sel.has(b.id))counts[b.g]=(counts[b.g]||0)+1});
  $('#sel').innerHTML=`<div id="big"></div><div style="display:flex;gap:8px;align-items:center;margin:0 0 12px"><label style="display:flex;gap:8px;align-items:center;cursor:pointer;font-size:13px"><input type="checkbox" id="dvw"><b style="font-weight:500">Dolby Vision wins</b> <span class="hint" style="margin:0">(optional)</span></label>${inf('When a stream says Dolby Vision, the HDR10, HDR10+, HDR and HLG badges stay hidden, so you only get one badge. This turns off the DV + HDR combo badges.')}</div>
- <div class="bar"><input type="search" id="q" placeholder="Search, like 4K or Atmos" value="${esc(q)}" aria-label="Search badges"><button type="button" class="ib" id="all" aria-label="Pick all shown" title="Pick all shown">${IC.all}</button><button type="button" class="ib" id="none" aria-label="Clear shown" title="Clear shown">${IC.clr}</button><button type="button" class="b2" id="mkb">Create your own badge</button></div>
+ <div class="bar"><input type="search" id="q" placeholder="Search, like 4K or Atmos" value="${esc(q)}" aria-label="Search badges"><button type="button" class="ib" id="all" aria-label="Pick all shown" title="Pick all shown">${IC.all}</button><button type="button" class="ib" id="none" aria-label="Clear shown" title="Clear shown">${IC.clr}</button><button type="button" class="b2" id="mkb">${ic('badge')}Create your own badge</button></div>
  <div class="chips" id="chips" role="tablist" aria-label="Category"></div><div id="grid"></div>`;
  {const c=document.getElementById('dvw');if(c){c.checked=P.dvwOn();c.onchange=()=>P.setDvw(c.checked)}}
  $('#mkb').onclick=()=>setTab('badge');
@@ -72,7 +73,7 @@ function peHtml(id){const t=lastTest||(P.samples.find(x=>{try{return P.testPat(P
  return`<div class="pe"><label for="pt">Regex pattern for ${esc(P.byId[id].n)}</label><textarea id="pt" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off">${esc(P.pat(id))}</textarea>
  <label for="pq">Test it on a stream title</label><input type="text" id="pq" value="${esc(t)}" spellcheck="false">
  <div class="pr" id="pr"></div>
- <div class="bar"><button type="button" class="b2 pri sm" id="ps">Save</button><button type="button" class="b2 sm" id="pz">Reset to default</button><button type="button" class="b2 sm" id="px">Close</button>
+ <div class="bar"><button type="button" class="b2 pri sm" id="ps">${ic('save')}Save</button><button type="button" class="b2 sm" id="pz">Reset to default</button><button type="button" class="b2 sm" id="px">Close</button>
  ${inf('Nuvio tests this pattern on each stream title. Start with <code>(?i)</code> to ignore capital letters. A custom pattern makes your link a little longer.')}</div></div>`}
 function peBind(){if(!editing)return;const id=editing,pt=$('#pt'),pq=$('#pq'),pr=$('#pr');if(!pt)return;
  const upd=()=>{lastTest=pq.value;const e=P.checkPat(pt.value);if(e){pr.className='pr bad';pr.textContent='Not a valid pattern: '+e;$('#ps').disabled=true;return}
@@ -84,9 +85,9 @@ function peBind(){if(!editing)return;const id=editing,pt=$('#pt'),pq=$('#pq'),pr
 function rOrd(){const act=P.activeGroups();
  if(!act.length){$('#ord').innerHTML=`<div class="empty">You have not picked any badges yet.</div><button type="button" class="b2 pri" id="g2">Select badges</button>`;$('#g2').onclick=()=>setSub('sel');return}
  $('#ord').innerHTML=`<div id="big2"></div>
- <div class="bar"><button type="button" class="b2 sm" id="rst">Reset order</button>${inf('Nuvio shows badges in this order, top to bottom. Drag a row or use the arrows.')}${Object.keys(S.over).length?'<button type="button" class="b2 sm" id="rso">Use one style for all</button>':''}</div>
- ${act.map((g,gi)=>{const ids=P.groupSel(g),c=P.gInfo[g];return`<div class="grp"><div class="gh"><span class="dot" style="background:${c.color}"></span>${esc(c.name)}<span class="c">${ids.length}</span><button type="button" class="ib" data-gm="${g}" data-d="-1" aria-label="Move group up" ${gi===0?'disabled':''}>&uarr;</button><button type="button" class="ib" data-gm="${g}" data-d="1" aria-label="Move group down" ${gi===act.length-1?'disabled':''}>&darr;</button></div>
- ${ids.map((id,i)=>`<div class="rw" draggable="true" data-bid="${id}"><div class="row"><div class="im" style="background:${P.bgOf(id)}">${P.img(id)}</div><div class="n">${esc(P.byId[id].n)}${S.pat[id]!=null?' <span class="ed">edited</span>':''}</div>${P.byId[id]._com?`<select class="sty" data-cg="${P.byId[id]._com}" aria-label="Group">${P.comGroups().map(([gid,gn])=>`<option value="${gid}" ${P.byId[id].g===gid?'selected':''}>${esc(gn)}</option>`).join('')}</select>`:`<select class="sty" data-so="${id}" aria-label="Style">${P.STYLES.map(x=>`<option value="${x.id}" ${P.styleOf(id)===x.id?'selected':''}>${x.name}</option>`).join('')}</select>`}<button type="button" class="ib" data-bm="${id}" data-d="-1" aria-label="Move up" ${i===0?'disabled':''}>&uarr;</button><button type="button" class="ib" data-bm="${id}" data-d="1" aria-label="Move down" ${i===ids.length-1?'disabled':''}>&darr;</button><button type="button" class="ib${S.pat[id]!=null?' on':''}" data-pe="${id}" aria-label="Edit pattern" title="Edit pattern">{}</button><button type="button" class="ib" data-rm="${id}" aria-label="Remove">&times;</button></div>${editing===id?peHtml(id):''}</div>`).join('')}</div>`}).join('')}`;
+ <div class="bar"><button type="button" class="b2 sm" id="rst">${ic('reset')}Reset order</button>${inf('Nuvio shows badges in this order, top to bottom. Drag a row or use the arrows.')}${Object.keys(S.over).length?'<button type="button" class="b2 sm" id="rso">Use one style for all</button>':''}</div>
+ ${act.map((g,gi)=>{const ids=P.groupSel(g),c=P.gInfo[g];return`<div class="grp"><div class="gh"><span class="dot" style="background:${c.color}"></span>${esc(c.name)}<span class="c">${ids.length}</span><button type="button" class="ib" data-gm="${g}" data-d="-1" aria-label="Move group up" ${gi===0?'disabled':''}>${ic('up')}</button><button type="button" class="ib" data-gm="${g}" data-d="1" aria-label="Move group down" ${gi===act.length-1?'disabled':''}>${ic('down')}</button></div>
+ ${ids.map((id,i)=>`<div class="rw" draggable="true" data-bid="${id}"><div class="row"><span class="grip" aria-hidden="true">${ic('grip')}</span><div class="im" style="background:${P.bgOf(id)}">${P.img(id)}</div><div class="n">${esc(P.byId[id].n)}${S.pat[id]!=null?' <span class="ed">edited</span>':''}</div>${P.byId[id]._com?`<select class="sty" data-cg="${P.byId[id]._com}" aria-label="Group">${P.comGroups().map(([gid,gn])=>`<option value="${gid}" ${P.byId[id].g===gid?'selected':''}>${esc(gn)}</option>`).join('')}</select>`:`<select class="sty" data-so="${id}" aria-label="Style">${P.STYLES.map(x=>`<option value="${x.id}" ${P.styleOf(id)===x.id?'selected':''}>${x.name}</option>`).join('')}</select>`}<button type="button" class="ib" data-bm="${id}" data-d="-1" aria-label="Move up" ${i===0?'disabled':''}>${ic('up')}</button><button type="button" class="ib" data-bm="${id}" data-d="1" aria-label="Move down" ${i===ids.length-1?'disabled':''}>${ic('down')}</button><button type="button" class="ib${S.pat[id]!=null?' on':''}" data-pe="${id}" aria-label="Edit pattern" title="Edit pattern">${ic('braces')}</button><button type="button" class="ib" data-rm="${id}" aria-label="Remove">${ic('x')}</button></div>${editing===id?peHtml(id):''}</div>`).join('')}</div>`}).join('')}`;
  const mv=fn=>{const y=scrollY;fn();scrollTo(0,y)};
  const o=$('#ord');
  o.querySelectorAll('[data-gm]').forEach(b=>b.onclick=()=>mv(()=>P.moveGroup(b.dataset.gm,+b.dataset.d)));
@@ -118,7 +119,7 @@ function rPv(){const pv=$('#pv');pv.style.background=P.bgCol(S.style);
 let dragG=null;
 function rSo(){const act=P.activeGroups();$('#soc').textContent=S.sel.size+' badge'+(S.sel.size===1?'':'s');
  if(!act.length){$('#so').innerHTML='<p class="hint" style="margin:0">Nothing selected yet. Pick a starting preset or tap badges in step 2.</p>';return}
- $('#so').innerHTML='<div class="so-list">'+act.map((g,i)=>{const c=P.gInfo[g];return`<div class="so" draggable="true" data-g="${g}"><i style="background:${c.color}"></i><span class="nm">${esc(c.name)}</span><span class="ct">${P.groupSel(g).length}</span><button type="button" class="ib" data-gm="${g}" data-d="-1" aria-label="Move ${esc(c.name)} up" ${i===0?'disabled':''}>&uarr;</button><button type="button" class="ib" data-gm="${g}" data-d="1" aria-label="Move ${esc(c.name)} down" ${i===act.length-1?'disabled':''}>&darr;</button></div>`}).join('')+'</div>';
+ $('#so').innerHTML='<div class="so-list">'+act.map((g,i)=>{const c=P.gInfo[g];return`<div class="so" draggable="true" data-g="${g}"><span class="grip" aria-hidden="true">${ic('grip')}</span><i style="background:${c.color}"></i><span class="nm">${esc(c.name)}</span><span class="ct">${P.groupSel(g).length}</span><button type="button" class="ib" data-gm="${g}" data-d="-1" aria-label="Move ${esc(c.name)} up" ${i===0?'disabled':''}>${ic('up')}</button><button type="button" class="ib" data-gm="${g}" data-d="1" aria-label="Move ${esc(c.name)} down" ${i===act.length-1?'disabled':''}>${ic('down')}</button></div>`}).join('')+'</div>';
  const o=$('#so');
  o.querySelectorAll('[data-gm]').forEach(b=>b.onclick=()=>P.moveGroup(b.dataset.gm,+b.dataset.d));
  o.querySelectorAll('.so').forEach(r=>{
@@ -131,10 +132,10 @@ let curUrl='',ut=0;
 function rOut(){const ph=/YOUR-/.test(window.FR_WORKER||'');
  $('#out').innerHTML=`<div class="kv"><span>Badges and size</span><b id="kv"></b></div>
  <label class="hint" for="nm" style="display:block;margin:0 0 4px">Pack name</label><input type="text" id="nm" value="${esc(S.name)}" style="width:100%;margin-bottom:12px" maxlength="40">
- <label class="hint" for="lk" style="display:block;margin:0 0 4px">URL</label><div class="urlbox"><input type="text" readonly id="lk" value="Making your URL..."><button type="button" class="b2 pri" id="cp">Copy</button></div>
- <p class="hint" id="lkh" style="margin:8px 0 0"><a id="tst" href="#" target="_blank" rel="noopener">Open the URL to test it</a>${ph?'<br>Set your Worker address in <code>assets/config.js</code> to make this URL work.':''}</p>
+ <label class="hint" for="lk" style="display:block;margin:0 0 4px">URL</label><div class="urlbox"><input type="text" readonly id="lk" value="Making your URL..."><button type="button" class="b2 pri" id="cp">${ic('copy')}Copy</button></div>
+ <p class="hint" id="lkh" style="margin:8px 0 0"><a id="tst" href="#" target="_blank" rel="noopener" style="display:inline-flex;gap:6px;align-items:center">${ic('external')}Open the URL to test it</a>${ph?'<br>Set your Worker address in <code>assets/config.js</code> to make this URL work.':''}</p>
  <p class="nvp"><b>Nuvio</b> › Profile › Layout › Streams › <b>Fusion badge URLs</b><br>Paste the URL, then clear the Nuvio cache and reopen a stream list.</p>
- <details class="imp"><summary>More options</summary><div class="bar" style="margin-top:10px"><button type="button" class="b2 sm" id="sv">Save in this browser</button><button type="button" class="b2 sm" id="cj">Copy JSON</button><button type="button" class="b2 sm" id="cc">Copy share code</button></div><p class="hint">Share code: <code id="code" style="word-break:break-all"></code></p></details>`;
+ <details class="imp"><summary>More options</summary><div class="bar" style="margin-top:10px"><button type="button" class="b2 sm" id="sv">${ic('save')}Save in this browser</button><button type="button" class="b2 sm" id="cj">${ic('code')}Copy JSON</button><button type="button" class="b2 sm" id="cc">${ic('link')}Copy share code</button></div><p class="hint">Share code: <code id="code" style="word-break:break-all"></code></p></details>`;
  $('#nm').oninput=e=>P.rename(e.target.value||'My FR Pack');
  $('#cp').onclick=()=>copyUrl();
  $('#cj').onclick=()=>P.copy(P.manifestText(),'JSON copied');
@@ -148,8 +149,8 @@ function stat(){const b=$('#big'),b2=$('#big2'),w=S.sel.size>200?'<div class="wa
 function rSide(){rPv();rSo();rUrl();stat()}
 
 /* ---- mobile drawer ---- */
-function openSide(){$('#side').classList.add('open');$('#scrim').hidden=false;$('#mpv').textContent='Close';$('#mpv').setAttribute('aria-expanded','true')}
-function closeSide(){$('#side').classList.remove('open');$('#scrim').hidden=true;$('#mpv').textContent='Preview';$('#mpv').setAttribute('aria-expanded','false')}
+function openSide(){$('#side').classList.add('open');$('#scrim').hidden=false;$('#mpv span').textContent='Close';$('#mpv').setAttribute('aria-expanded','true')}
+function closeSide(){$('#side').classList.remove('open');$('#scrim').hidden=true;$('#mpv span').textContent='Preview';$('#mpv').setAttribute('aria-expanded','false')}
 $('#mpv').onclick=()=>$('#side').classList.contains('open')?closeSide():openSide();
 $('#scrim').onclick=closeSide;
 $('#mcp').onclick=copyUrl;
@@ -178,6 +179,3 @@ FRNAV.pop(s=>{if(s.sub)setSub(s.sub,true)});
 setTab(tab);
 {const ld=QS.get('load');if(ld&&/^https?:\/\//.test(ld)){P.importAny(ld).then(r=>{if(r.err){P.toast(r.err);return}P.toast('Loaded '+r.n+' badges'+(r.unknown?', skipped '+r.unknown+' not in the catalog':''));setSub('sel')})}}
 
-/* info popovers: hover, focus or tap the ! icon */
-document.addEventListener('click',e=>{const b=e.target.closest('.inf');document.querySelectorAll('.infw.open').forEach(w=>{if(!b||w!==b.parentNode)w.classList.remove('open')});if(b)b.parentNode.classList.toggle('open')});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.infw.open').forEach(w=>w.classList.remove('open'))});

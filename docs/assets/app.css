@@ -104,7 +104,7 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
 .facts .tag{border:0;padding:0}
 .demo{background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:8px;min-width:0;overflow:hidden}
 .dh{display:flex;align-items:center;gap:12px;padding:10px 12px;border-bottom:1px solid var(--border-subtle)}
-.dh .t{flex:1;font:500 12px var(--f-m);color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em}
+.dh .t{flex:0 1 auto;font:500 12px var(--f-m);color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em}
 .dh .ui-sel,.dh select{padding:6px 10px;font-size:13px;min-width:150px}
 .rs-list{display:grid;gap:0;border-bottom:1px solid var(--border-subtle)}
 .rs{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--border-subtle);padding:9px 14px;font:400 12.5px/1.4 var(--f-m);color:var(--text-secondary);cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -323,3 +323,30 @@ section.lib-g{padding-top:0}
 .infp{display:none;position:absolute;left:0;top:26px;z-index:30;width:min(320px,calc(100vw - 32px));background:var(--bg-elevated);border:1px solid var(--border-strong);border-radius:8px;box-shadow:var(--pop-shadow);padding:10px 12px;font-size:13px;line-height:1.5;color:var(--text-primary);font-weight:400;text-align:left}
 .infw:hover .infp,.infw:focus-within .infp,.infw.open .infp{display:block}
 .infp a{color:var(--text-primary)}
+
+/* icons */
+.ic{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block}
+.btn,.b2{display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btn .ic,.b2 .ic{width:16px;height:16px}
+.b2.sm .ic{width:14px;height:14px}
+.ib .ic{width:16px;height:16px}
+.hnav a .ic{width:16px;height:16px}
+.hnav .gh .ic{width:19px;height:19px}
+.hnav .gh svg{fill:none}
+.mbtn .ic{width:18px;height:18px}
+.tabs button,.chip,.lnk{display:inline-flex;align-items:center;gap:7px}
+.tabs button .ic,.chip .ic{width:15px;height:15px}
+.srch .ic{position:absolute;left:11px;top:11px;width:16px;height:16px;color:var(--text-muted);pointer-events:none}
+.inf .ic{width:18px;height:18px}
+.inf{width:22px;height:22px;border:0;border-radius:50%;background:transparent;color:var(--text-muted);font-size:0}
+.inf:hover,.infw.open .inf{color:var(--text-primary);background:var(--bg-elevated)}
+.lk2w{position:relative;min-width:0;display:flex}
+.lk2w .lk2{flex:1;padding-right:30px}
+.lkinf{position:absolute;right:6px;top:6px}
+.lkinf .infp{left:auto;right:0}
+.so .grip,.row .grip{color:var(--text-muted);cursor:grab}
+.so .grip .ic,.row .grip .ic{width:15px;height:15px}
+.mr .ar .ic{width:14px;height:14px;display:inline-block;vertical-align:middle}
+.heart.on .ic{fill:currentColor}
+.det .x{display:inline-flex}
+.dh{justify-content:flex-start}.dh .ui-sel,.dh select{margin-left:auto}

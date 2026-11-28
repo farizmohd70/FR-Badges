@@ -22,7 +22,7 @@ function view(){const dv=document.getElementById('dv');if(!dv)return;let raw='',
  R4[cur].forEach(([t,id],i)=>{if(!id){raw+=esc(t);return}const k=cur+'-'+i,u=src(id);
   raw+=`<span class="tk" data-k="${k}" style="--c:${col(id)}">${esc(t)}</span>`;
   b+=`<img data-k="${k}" style="--c:${col(id)}" alt="${esc(D.n[id])}" src="${u}">`;
-  m+=`<li class="mr" data-k="${k}" style="--c:${col(id)}"><code>${esc(t)}</code><span class="ar" aria-hidden="true">&rarr;</span><span class="bn"><img alt="" src="${u}"><span>${esc(D.n[id])}</span></span></li>`});
+  m+=`<li class="mr" data-k="${k}" style="--c:${col(id)}"><code>${esc(t)}</code><span class="ar" aria-hidden="true">${window.ic?ic('arrow'):''}</span><span class="bn"><img alt="" src="${u}"><span>${esc(D.n[id])}</span></span></li>`});
  dv.innerHTML=`<div class="raw">${raw}</div><div class="bds" style="background:var(--bd)">${b}</div><ul class="dmap">${m}</ul>`;
  dv.querySelectorAll('[data-k]').forEach(e=>{const on=v=>dv.querySelectorAll('[data-k="'+e.dataset.k+'"]').forEach(x=>x.classList.toggle('hl',v));e.onmouseenter=()=>on(1);e.onmouseleave=()=>on(0)})}
 function seg(){const s=document.getElementById('seg');if(!s)return;s.innerHTML=ST.map(([id,n,d,b,an])=>`<option value="${id}" ${id===style?'selected':''}>${n}${an?' (animated)':''}</option>`).join('');s.onchange=()=>set(s.value)}
