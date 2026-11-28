@@ -1,83 +1,66 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<link rel="icon" href="favicon.ico" sizes="48x48"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="theme-color" content="#2d49f0">
+<link rel="icon" href="favicon.ico" sizes="48x48"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="theme-color" content="#0B0C0E" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#F5F6F8" media="(prefers-color-scheme: light)">
 <title>FR Badges</title>
-<meta name="description" content="Badges for Nuvio that turn messy release names into clear, readable tags. Make your own pack in three steps.">
+<meta name="description" content="Badges for Nuvio that turn raw release names into clear, readable tags. Build a pack in three steps.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=20261130">
-<style>.ap-m{display:none}@media(max-width:700px){.ap-d{display:none!important}.ap-m{display:block!important}}</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/site.css?v=20261201"><link rel="stylesheet" href="assets/app.css?v=20261201">
+<script>if(/[?&]embed=1/.test(location.search))document.documentElement.classList.add("embed")</script>
 </head><body>
-
-
-<div class="w">
- <div class="top"><a class="logo" href="#top"><i></i>FR Badges</a>
-  <nav><a href="#how">How it works</a><a href="community">Community</a><a class="keep" href="https://github.com/farizmohd70/FR-Badges" target="_blank" rel="noopener">GitHub</a></nav></div>
-</div>
-
+<header class="hdr"><div class="w">
+ <a class="wm" href="./">FR Badges <span class="tag" id="vtag"></span></a>
+ <button class="mbtn" id="mbtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="hnav"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button>
+ <nav class="hnav" id="hnav" aria-label="Main"><a href="library">Library</a><a href="make">Pack Builder</a><a href="community">Community</a><a class="gh" href="https://github.com/farizmohd70/FR-Badges" target="_blank" rel="noopener" aria-label="FR Badges on GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span class="ghl">GitHub</span></a></nav>
+</div></header>
+<main>
 <div class="w" id="top"><div class="hero">
  <div>
   <h1>Read every stream at a glance.</h1>
-  <p class="lede">Release names like <code style="font-family:var(--f-m);font-size:.88em">2160p.REMUX.DV.Atmos</code> are hard to scan. FR Badges turns them into small, clear badges inside Nuvio, so you pick the right stream in a second.</p>
-  <div class="cta"><a class="btn p" href="make">Make your pack</a><a class="btn" href="community">Community badges</a></div>
-  <p class="more">Also: <a href="create">make a single badge</a> · <a href="stylepack">make a style pack</a></p>
-  <ul class="facts"><li><b>1468</b>badges</li><li><b>20</b>looks</li><li><b>Free</b>and open source</li></ul>
+  <p class="lede">Release names like <code>2160p.REMUX.DV.Atmos.WEB-DL</code> are hard to scan. FR Badges matches the parts of the name and shows them as small, clear badges in Nuvio, so you pick the right stream in a second.</p>
+  <div class="cta"><a class="btn p" href="make">Build a pack</a><a class="btn" href="library">Browse badges</a></div>
+  <ul class="facts"><li><b data-meta="badges">&nbsp;</b>badges</li><li><b data-meta="looks">&nbsp;</b>looks</li><li><b>Free</b>open source</li></ul>
  </div>
  <div>
-  <div class="stage" aria-label="Example stream list">
-   <div class="sbar"><span class="t">Streams</span><select class="ssel" id="seg" aria-label="Badge look"></select></div>
-   <div id="rows"></div>
+  <div class="demo" aria-label="Release name parser">
+   <div class="dh"><span class="t" id="dlbl">Release name</span><select id="seg" aria-label="Badge look"></select></div>
+   <div class="rs-list" id="rs" role="group" aria-labelledby="dlbl"></div>
+   <div class="dview" id="dv"></div>
   </div>
-  <p class="cap">Hover a part of a name, or a badge, to see how they match.</p>
+  <p class="cap">Pick a release name and a look. Hover a part of the name, or a badge, to see how they match.</p>
  </div>
 </div></div>
 
-<div class="w"><section id="all-badges">
- <h2>All 1386 badges, all 18 looks.</h2>
- <p class="sec-l">Every badge in the pack, each shown in a different look. Scroll to look through them all.</p>
- <details class="fold"><summary>See every badge in one picture</summary>
-  <a class="ap-d" href="assets/all-badges.png?v=20261130" target="_blank" rel="noopener"><img class="allpic" loading="lazy" decoding="async" src="assets/all-badges.png?v=20261130" width="3000" height="6112" alt="Every FR Badges badge shown in a mix of the 18 looks"></a>
-  <div class="ap-m"><img class="allpic" loading="lazy" decoding="async" src="assets/all-badges-m1.png?v=20261130" width="780" alt="Every FR Badges badge in a mix of the 18 looks, part 1 of 6"><img class="allpic" loading="lazy" decoding="async" src="assets/all-badges-m2.png?v=20261130" width="780" alt="Every FR Badges badge in a mix of the 18 looks, part 2 of 6"><img class="allpic" loading="lazy" decoding="async" src="assets/all-badges-m3.png?v=20261130" width="780" alt="Every FR Badges badge in a mix of the 18 looks, part 3 of 6"><img class="allpic" loading="lazy" decoding="async" src="assets/all-badges-m4.png?v=20261130" width="780" alt="Every FR Badges badge in a mix of the 18 looks, part 4 of 6"><img class="allpic" loading="lazy" decoding="async" src="assets/all-badges-m5.png?v=20261130" width="780" alt="Every FR Badges badge in a mix of the 18 looks, part 5 of 6"><img class="allpic" loading="lazy" decoding="async" src="assets/all-badges-m6.png?v=20261130" width="780" alt="Every FR Badges badge in a mix of the 18 looks, part 6 of 6"></div></details>
-</section></div>
-
-<div class="w"><section id="whats-in-it">
- <h2>Everything a release name can say.</h2>
- <p class="sec-l">Picture, sound, source, edition, service and language. The Lite pack covers what most people want.</p>
- <details class="fold"><summary>Browse every badge type</summary><div class="idx" id="idx"></div></details>
-</section></div>
-
 <div class="w"><section id="how">
- <h2>Make a pack in three steps.</h2>
- <p class="sec-l">No code and nothing to install. Every step can be undone.</p>
- <div class="steps">
-  <div class="st"><span class="k">Step 1</span><h3>Pick a look</h3><p>Choose from 22 styles, then a starting set of badges.</p></div>
-  <div class="st"><span class="k">Step 2</span><h3>Choose badges</h3><p>Tap the ones you want, then set their order.</p></div>
-  <div class="st"><span class="k">Step 3</span><h3>Copy your link</h3><p>Paste it into Nuvio and clear the cache.</p></div>
- </div>
+ <div class="sechead"><div><h2>Build a pack in three steps</h2><p>No code and nothing to install. Every step can be undone.</p></div><a class="btn" href="make">Open the builder</a></div>
+ <ol class="olist">
+  <li><span class="k">STEP 1</span><div><h3>Pick a look</h3><p>Choose from <span data-meta="looks">&nbsp;</span> looks, then a starting set of badges.</p></div></li>
+  <li><span class="k">STEP 2</span><div><h3>Select and reorder badges</h3><p>Tap the ones you want, then set the order Nuvio shows them in.</p></div></li>
+  <li><span class="k">STEP 3</span><div><h3>Copy your URL</h3><p>Paste it into Nuvio and clear the cache.</p></div></li>
+ </ol>
  <p class="path"><b>Nuvio</b> › Profile › Layout › Streams › <b>Fusion badge URLs</b></p>
 </section></div>
 
-<div class="w"><section id="community">
- <h2>Made by the community</h2>
- <p class="sec-l">Badges shared by other people. Add any of them to your pack.</p>
- <div class="cm-grid" id="cmhome"></div>
- <div class="cta" style="margin-top:14px"><a class="btn" href="community">See all community badges</a></div>
+<div class="w"><section id="whats-in-it">
+ <div class="sechead"><div><h2>Everything a release name can say</h2><p>Picture, sound, source, edition, service and language. The Lite pack covers what most people want.</p></div><a class="btn" href="library">Browse all badges</a></div>
+ <div class="idx" id="idx"></div>
 </section></div>
 
-<div class="w"><div class="end">
- <div><h2>Ready to try it?</h2><p>Start with the Lite pack. Build your own when you are ready.</p></div>
- <div class="cta"><a class="btn p" href="make">Make your pack</a></div>
-</div>
-<footer><span>FR Badges</span><span>Not affiliated with Nuvio.</span><a href="https://github.com/farizmohd70/FR-Badges" target="_blank" rel="noopener">github.com/farizmohd70/FR-Badges</a></footer></div>
-
-<script src="assets/styles.js?v=20261130"></script>
-<script src="assets/landing.js?v=20261130"></script>
-<script src="assets/ui.js?v=20261130"></script>
-<script src="assets/config.js?v=20261130"></script>
+<div class="w"><section id="community">
+ <div class="sechead"><div><h2>Made by the community</h2><p>Badges shared by other people. Add any of them to your pack.</p></div><a class="btn" href="community">See all</a></div>
+ <div class="cm-mini" id="cmhome"><p class="hint" style="padding:14px;margin:0">Loading.</p></div>
+</section></div>
+</main>
+<footer class="site-foot"><div class="w" style="display:flex;gap:18px;flex-wrap:wrap"><span>FR Badges</span><span>Not affiliated with Nuvio.</span><a href="https://github.com/farizmohd70/FR-Badges" target="_blank" rel="noopener">github.com/farizmohd70/FR-Badges</a></div></footer>
+<script src="assets/styles.js?v=20261201"></script>
+<script src="assets/landing.js?v=20261201"></script>
+<script src="assets/ui.js?v=20261201"></script>
+<script src="assets/config.js?v=20261201"></script>
+<script src="assets/nav.js?v=20261201"></script>
 <script>(function(){var B=window.FR_COMMUNITY,L=document.getElementById('cmhome');if(!B||!L)return;
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-fetch(B+'index.json').then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){var l=(j.badges||[]).filter(function(b){return /^[0-9a-f]{12}$/.test(b.id)}).slice(0,4);
-if(!l.length){L.innerHTML='<p class="hint">No badges yet. Be the first to make one.</p>';return}
-L.innerHTML=l.map(function(b){return '<a class="cm-card" href="community" style="text-decoration:none;color:inherit"><div class="im"><img loading="lazy" src="'+B+'badges/'+b.id+'.png" alt="'+esc(b.n)+'"></div><div class="n">'+esc(b.n)+'</div></a>'}).join('')}).catch(function(){L.innerHTML='<p class="hint">The community list could not be loaded right now.</p>'})})();</script>
+fetch(B+'index.json').then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){var l=(j.badges||[]).filter(function(b){return /^[0-9a-f]{12}$/.test(b.id)}).slice(0,5);
+if(!l.length){L.innerHTML='<p class="hint" style="padding:14px;margin:0">No badges yet. Be the first to make one.</p>';return}
+L.innerHTML=l.map(function(b){return '<a href="community"><span class="im"><img loading="lazy" src="'+B+'badges/'+b.id+'.png" alt=""></span><span>'+esc(b.n)+'</span><span class="g">'+esc(b.g||'community')+'</span></a>'}).join('')}).catch(function(){L.innerHTML='<p class="hint" style="padding:14px;margin:0">The community list could not be loaded right now.</p>'})})();</script>
 </body></html>

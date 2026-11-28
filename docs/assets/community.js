@@ -25,8 +25,8 @@ function card(b){
   <label class="f">Pattern<textarea data-f="p" rows="3" spellcheck="false">${esc(b.p)}</textarea></label>
   <div class="bar"><button class="b2 sm pri" data-a="save">Save</button><button class="b2 sm" data-a="cancel">Cancel</button></div></div>`;
  const liked=ls('fr_liked','[]').includes(b.id),rep=ls('fr_reported','[]').includes(b.id);
- return `<div class="cm-card" data-id="${b.id}"><div class="im"><img loading="lazy" src="${BASE}badges/${b.id}.png" alt="${esc(b.n)}"></div><div class="n">${esc(b.n)}</div><div class="hint" style="margin:0">${esc(gn(b.g))}</div>${who(b)}<code title="${esc(b.p)}">${esc(b.p)}</code>
- <div class="bar"><button class="b2 sm pri" data-a="add">Add to my pack</button><button class="b2 sm" data-a="copy">Copy pattern</button><a class="b2 sm" href="create?remix=${b.id}" style="text-decoration:none">Remix</a></div>
+ return `<div class="cm-card" data-id="${b.id}"><div class="im"><img loading="lazy" src="${BASE}badges/${b.id}.png" alt="${esc(b.n)}"></div><div class="n">${esc(b.n)}</div><div class="hint" style="margin:0">${esc(gn(b.g))}</div><div class="mk2">Anonymous</div>${who(b)}<code title="${esc(b.p)}">${esc(b.p)}</code>
+ <div class="bar"><button class="b2 sm pri" data-a="add">Add to my pack</button><button class="b2 sm" data-a="copy">Copy pattern</button><a class="b2 sm" href="make?tab=badge&amp;remix=${b.id}" style="text-decoration:none">Remix</a></div>
  <div class="bar cm-sub">${hasStats?`<button class="b2 sm${liked?' on':''}" data-a="like"${liked?' disabled':''}>&#9829; ${likes(b)}</button>`:''}${can?`<button class="b2 sm" data-a="edit">Edit</button><button class="b2 sm" data-a="del">${arm==='del'+b.id?'Tap again to delete':'Delete'}</button>`:''}${hasStats&&!own?`<button class="lk" data-a="rep"${rep?' disabled':''}>${rep?'Reported':arm==='rep'+b.id?'Tap again to report':'Report'}</button>`:''}${ADMIN&&hasStats?`<span class="hint" style="margin:0">${reps(b)} reports</span>`:''}</div></div>`}
 
 function renderAdm(){if(!ADMIN)return;let el=document.getElementById('adm');if(!el){el=document.createElement('div');el.id='adm';el.className='hint';$('#note').insertAdjacentElement('beforebegin',el)}
@@ -55,8 +55,8 @@ $('#list').addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(
 const PLINK=id=>BASE+'packs/'+id+'/badges.json';
 function packCard(p){const own=!!owned()[p.id],can=own||!!ADMIN,liked=ls('fr_liked','[]').includes(p.id),rep=ls('fr_reported','[]').includes(p.id);
  return `<div class="cm-card pkc" data-id="${p.id}"><div class="pkstrip" data-a="pview" title="See the whole pack">${(p.prev||[]).map(f=>`<img loading="lazy" src="${BASE}packs/${p.id}/${esc(f)}" alt="">`).join('')}</div>
- <div class="n">${esc(p.n)}</div><div class="hint" style="margin:0">${p.c} badges. Style pack</div>${who(p)}
- <div class="bar"><button class="b2 sm pri" data-a="pview">See all badges</button><button class="b2 sm" data-a="plink">Copy pack link</button></div>
+ <div class="n">${esc(p.n)}</div><div class="hint" style="margin:0">${p.c} badges. Style pack</div><div class="mk2">Anonymous</div>${who(p)}
+ <div class="bar"><a class="b2 sm pri" href="make?load=${encodeURIComponent(PLINK(p.id))}" style="text-decoration:none">Load in Builder</a><button class="b2 sm" data-a="plink">Copy URL</button><button class="b2 sm" data-a="pview">Preview</button></div>
  <div class="bar cm-sub">${hasStats?`<button class="b2 sm${liked?' on':''}" data-a="like"${liked?' disabled':''}>&#9829; ${likes(p)}</button>`:''}${can?`<button class="b2 sm" data-a="pdel">${arm==='pdel'+p.id?'Tap again to delete':'Delete'}</button>`:''}${hasStats&&!own?`<button class="lk" data-a="rep"${rep?' disabled':''}>${rep?'Reported':arm==='rep'+p.id?'Tap again to report':'Report'}</button>`:''}${ADMIN&&hasStats?`<span class="hint" style="margin:0">${reps(p)} reports</span>`:''}</div></div>`}
 function drawPacks(){const q=$('#q').value.trim().toLowerCase(),so=$('#sort').value;
  let l=packs.filter(p=>(!q||p.n.toLowerCase().includes(q))&&(!maker||p.u===maker)&&(ADMIN||reps(p)<HIDE_AT));
@@ -71,7 +71,7 @@ $('#plist').addEventListener('click',e=>{const t=e.target.closest('[data-a]');if
   arm='';post('/report',{id}).then(j=>{S[id]=[j.l,j.r];const x=ls('fr_reported','[]');x.push(id);lset('fr_reported',x);drawPacks();toast('Thanks. We will look at it.')}).catch(er=>{drawPacks();toast(er.message)})}
  else if(a==='pdel'){if(arm!=='pdel'+id){arm='pdel'+id;drawPacks();setTimeout(()=>{if(arm==='pdel'+id){arm='';drawPacks()}},3000);return}
   arm='';post('/pack/delete',{id,k:ADMIN||owned()[id]}).then(()=>{packs=packs.filter(x=>x.id!==id);const o=owned();delete o[id];lset('fr_owned',o);drawPacks();toast('Deleted.')}).catch(er=>{drawPacks();toast(er.message)})}});
-function P_copy(t){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Pack link copied. Paste it into Nuvio.')).catch(()=>toast('Could not copy'))}
+function P_copy(t){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('URL copied. Paste it into Nuvio.')).catch(()=>toast('Could not copy'))}
 
 /* whole pack preview */
 let pk=null,pkv='all';
@@ -94,7 +94,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#pm').hidden)cl
 $('#pmq').oninput=pkRender;
 document.querySelectorAll('#pm [data-pv]').forEach(b=>b.onclick=()=>{pkv=b.dataset.pv;document.querySelectorAll('#pm [data-pv]').forEach(x=>x.classList.toggle('on',x===b));pkRender()});
 function setView(v2,pop){if(!pop&&v2!==view)FRNAV.push({view:v2});view=v2;$$('#vt [data-v]').forEach(b=>{const on=b.dataset.v===v2;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
- $('#list').hidden=v2!=='badges';$('#plist').hidden=v2!=='packs';const ui=$('#cat')._ui;if(ui)ui.hidden=v2!=='badges';
+ $('#list').hidden=v2!=='badges';{const h=$('#cth');h.className='ct-h'+(v2==='packs'?' pk':'');h.innerHTML=v2==='packs'?'<span>Sample strip</span><span>Pack</span><span>Creator</span><span></span>':'<span>Sample</span><span>Name</span><span>Matches</span><span>Creator</span><span></span>'}$('#plist').hidden=v2!=='packs';const ui=$('#cat')._ui;if(ui)ui.hidden=v2!=='badges';
  $('#q').placeholder=v2==='packs'?'Search packs':'Search badges';v2==='packs'?drawPacks():draw()}
 const $$=s=>[...document.querySelectorAll(s)];
 $$('#vt [data-v]').forEach(b=>b.onclick=()=>setView(b.dataset.v));

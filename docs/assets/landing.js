@@ -14,13 +14,18 @@ const EXT=Object.fromEntries(window.STYLES_DATA.filter(s=>s.ext).map(s=>[s.id,s.
 const src=(id,s)=>{const k=s||style,f=D.f[id];return RAW+FD[k]+'/'+(EXT[k]?f.replace(/\.png$/,'.'+EXT[k]):f)};
 const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const col=id=>D.c[id];
-function rows(){document.getElementById('rows').innerHTML=ROWS.map((r,ri)=>{
- let raw='',b='';r.forEach(([t,id],i)=>{if(id){const k=ri+'-'+i;raw+=`<span class="tk" data-k="${k}" style="--c:${col(id)}">${esc(t)}</span>`;b+=`<img data-k="${k}" style="--c:${col(id)}" alt="${esc(D.n[id])}" src="${src(id)}">`}else raw+=esc(t)});
- return`<div class="srow"><div class="raw">${raw}</div><div class="bds" style="background:${BG(style)}">${b}</div></div>`}).join('');
- document.querySelectorAll('#rows [data-k]').forEach(e=>{const on=v=>document.querySelectorAll('#rows [data-k="'+e.dataset.k+'"]').forEach(x=>x.classList.toggle('hl',v));e.onmouseenter=()=>on(1);e.onmouseleave=()=>on(0)})}
-function seg(){const s=document.getElementById('seg');s.innerHTML=ST.map(([id,n,d,b,an])=>`<option value="${id}" ${id===style?'selected':''}>${n}${an?' (animated)':''}</option>`).join('');s.onchange=()=>set(s.value)}
-function looks(){const g=document.getElementById('looks-g');if(!g)return;g.innerHTML=ST.map(([id,n,d,b,an],i)=>(an&&!ST[i-1][4]?'<h3 class="sec" style="grid-column:1/-1;margin:14px 0 0;font-size:15px">Animated</h3>':'')+`<button class="look" aria-pressed="${id===style}" data-s="${id}"><div class="im" style="background:${BG(id)}">${D.look.map(i=>`<img alt="${esc(D.n[i])}" src="${src(i,id)}">`).join('')}</div><div><b>${n}</b><span>${d}</span></div></button>`).join('');
- document.querySelectorAll('.look').forEach(b=>b.onclick=()=>{set(b.dataset.s);scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})})}
-function idx(){document.getElementById('idx').innerHTML=D.groups.map(g=>`<div class="ir" style="--c:${g.color}"><div class="n"><i></i><span>${esc(g.name)}</span><em>${g.n}</em></div><div class="s">${g.s.map(i=>`<img alt="${esc(D.n[i])}" src="${src(i)}">`).join('')}</div></div>`).join('')}
-function set(s){style=s;seg();rows();looks();idx()}
-set('glass');
+const R4=ROWS.slice(0,4);let cur=0;
+const rawOf=r=>r.map(x=>x[0]).join('');
+function strs(){const el=document.getElementById('rs');if(!el)return;el.innerHTML=R4.map((r,i)=>`<button type="button" class="rs" aria-pressed="${i===cur}" data-i="${i}">${esc(rawOf(r))}</button>`).join('');
+ el.querySelectorAll('.rs').forEach(b=>b.onclick=()=>{cur=+b.dataset.i;strs();view()})}
+function view(){const dv=document.getElementById('dv');if(!dv)return;let raw='',b='',m='';
+ R4[cur].forEach(([t,id],i)=>{if(!id){raw+=esc(t);return}const k=cur+'-'+i,u=src(id);
+  raw+=`<span class="tk" data-k="${k}" style="--c:${col(id)}">${esc(t)}</span>`;
+  b+=`<img data-k="${k}" style="--c:${col(id)}" alt="${esc(D.n[id])}" src="${u}">`;
+  m+=`<li class="mr" data-k="${k}" style="--c:${col(id)}"><code>${esc(t)}</code><span class="ar" aria-hidden="true">&rarr;</span><span class="bn"><img alt="" src="${u}"><span>${esc(D.n[id])}</span></span></li>`});
+ dv.innerHTML=`<div class="raw">${raw}</div><div class="bds" style="background:var(--bd)">${b}</div><ul class="dmap">${m}</ul>`;
+ dv.querySelectorAll('[data-k]').forEach(e=>{const on=v=>dv.querySelectorAll('[data-k="'+e.dataset.k+'"]').forEach(x=>x.classList.toggle('hl',v));e.onmouseenter=()=>on(1);e.onmouseleave=()=>on(0)})}
+function seg(){const s=document.getElementById('seg');if(!s)return;s.innerHTML=ST.map(([id,n,d,b,an])=>`<option value="${id}" ${id===style?'selected':''}>${n}${an?' (animated)':''}</option>`).join('');s.onchange=()=>set(s.value)}
+function idx(){const e=document.getElementById('idx');if(!e)return;e.innerHTML=D.groups.map(g=>`<div class="ir" style="--c:${g.color}"><div class="n"><i></i><span>${esc(g.name)}</span><em>${g.n}</em></div><div class="s">${g.s.map(i=>`<img alt="${esc(D.n[i])}" src="${src(i)}">`).join('')}</div></div>`).join('')}
+function set(s){style=s;seg();view();idx()}
+strs();set('glass');

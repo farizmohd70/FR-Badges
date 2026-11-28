@@ -13,7 +13,7 @@ CAT.badges.forEach((b,i)=>{b.i=CAT.all.indexOf(b);byId[b.id]=b;byGroup[b.g].push
  b.hay=(b.id+' '+b.n).toLowerCase();});
 const nodup=ids=>{if(ids.includes('res-4k'))ids=ids.filter(i=>i!=='hero-4k');const names=new Map();ids.forEach(i=>{const b=byId[i];if(b.g!=='hero')names.set(b.n.toLowerCase(),1)});return ids.filter(i=>{const b=byId[i];return b.g!=='hero'||!names.has(b.n.toLowerCase())})};
 const PRESETS={
- lite:{name:'Lite',desc:'The 290 badges of the main FR pack',ids:()=>CAT.lite},
+ lite:{name:'Lite',desc:'The main FR pack',ids:()=>CAT.lite},
  essentials:{name:'Essentials',desc:'Resolution, HDR, codecs and the hero tags',ids:()=>nodup(CAT.lite.filter(id=>['hero','resolution','dynamic-range','video-codec','audio-codec','source'].includes(byId[id].g)))},
  audiophile:{name:'Audiophile',desc:'Audio codecs, channels, Atmos and lossless tags',ids:()=>CAT.badges.filter(b=>['audio-codec','audio-channels'].includes(b.g)||b.id==='hero-dolby-atmos'||b.id==='hero-remux').map(b=>b.id)},
  streaming:{name:'Streaming + debrid',desc:'Services, debrid providers and resolution',ids:()=>CAT.badges.filter(b=>['streaming','debrid','resolution'].includes(b.g)||b.g==='hero').map(b=>b.id)},
@@ -23,10 +23,11 @@ const PRESETS={
  picture:{name:'Best picture',desc:'Resolution, HDR, Dolby Vision, codecs and sources',ids:()=>CAT.badges.filter(b=>['hero','resolution','dynamic-range','video-codec','video-format','source'].includes(b.g)).map(b=>b.id)},
  theater:{name:'Home theater',desc:'Picture and sound together, with speaker layouts',ids:()=>CAT.badges.filter(b=>['hero','resolution','dynamic-range','video-codec','source','audio-codec','audio-channels'].includes(b.g)).map(b=>b.id)},
  cinephile:{name:'Cinephile',desc:'Editions like IMAX and Criterion, plus quality tags',ids:()=>CAT.badges.filter(b=>['hero','editions','source','resolution','dynamic-range'].includes(b.g)).map(b=>b.id)},
- everything:{name:'Everything',desc:'All 473 badges, one version of each',ids:()=>CAT.badges.filter(b=>!['oneline','lang-code','lang-name','streaming-logo','streaming-intro'].includes(b.g)&&!/-1l$/.test(b.id)).map(b=>b.id)},
+ everything:{name:'Everything',desc:'Every badge, one version of each',ids:()=>CAT.badges.filter(b=>!['oneline','lang-code','lang-name','streaming-logo','streaming-intro'].includes(b.g)&&!/-1l$/.test(b.id)).map(b=>b.id)},
  empty:{name:'Blank',desc:'Start from nothing',ids:()=>[]}
 };
 ['audiophile','streaming','picture','theater','cinephile'].forEach(k=>{const f=PRESETS[k].ids;PRESETS[k].ids=()=>nodup(f())});
+Object.keys(PRESETS).forEach(k=>{try{PRESETS[k].n=PRESETS[k].ids().length}catch(e){PRESETS[k].n=0}});
 const S={name:'My FR Pack',style:'glass',sel:new Set(),over:{},pat:{},com:{},gord:CAT.groups.map(g=>g.id),bord:{},bg:'dark'};
 CAT.groups.forEach(g=>S.bord[g.id]=byGroup[g.id].map(b=>b.id));
 const SAMPLES=[
