@@ -22,6 +22,7 @@
   <button type="button" role="tab" id="tb-style" data-t="style" aria-selected="false" aria-controls="t-style">Make a style pack</button>
   <span class="sp"></span><button type="button" class="lnk" id="undo">Undo</button><button type="button" class="lnk" id="helpB">Help</button>
  </div>
+ <form class="strip" id="strip" aria-label="Open an existing pack"><label class="q" for="imp">Already have a pack?</label><input type="text" id="imp" class="mono" placeholder="Paste a pack URL, JSON or share code" autocomplete="off" spellcheck="false"><button type="submit" class="b2 pri" id="go">Open</button><span class="hint" id="msg" role="status"></span></form>
  <div id="t-build" class="wb" role="tabpanel" aria-labelledby="tb-build">
   <div class="wb-l">
    <section class="pn" id="p1"><div class="pn-h"><span class="sn">STEP 1</span><h2>Pick a look</h2></div><div class="pn-b"><div class="looks-row" id="look"></div></div></section>
@@ -29,10 +30,6 @@
     <div class="presets" id="presets" role="group" aria-label="Quick presets"></div>
     <div class="subtabs" id="sub" role="tablist" aria-label="Badge view"><button type="button" class="chip" role="tab" data-v="sel">Select</button><button type="button" class="chip" role="tab" data-v="ord">Reorder and edit</button></div>
     <div id="sel"></div><div id="ord" hidden></div>
-    <details class="imp"><summary>Already have a pack? Open it here</summary>
-     <p class="hint" style="margin:8px 0">Paste a pack link, its JSON or a share code to edit it here. Badges that are not in the FR catalog are skipped.</p>
-     <textarea id="imp" style="height:76px;width:100%" placeholder="https://raw.githubusercontent.com/.../badges.json" aria-label="Pack link, JSON or share code"></textarea>
-     <div class="bar" style="margin-top:8px"><button type="button" class="b2 pri" id="go">Open in editor</button><span class="hint" id="msg" style="margin:0" role="status"></span></div></details>
    </div></section>
   </div>
   <aside class="wb-r" id="side" aria-label="Pack preview and URL">

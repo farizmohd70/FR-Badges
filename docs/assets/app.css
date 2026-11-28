@@ -312,3 +312,7 @@ section.lib-g{padding-top:0}
 .so-list{max-height:176px;overflow-y:auto}
 .pvbox .s{padding:8px 0}
 .site-foot{display:block}
+.strip{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:8px;padding:8px 10px;margin-bottom:16px}
+.strip .q{font-size:14px;font-weight:500;white-space:nowrap}
+.strip input{flex:1;min-width:180px;font-size:12.5px}
+.strip .hint{margin:0;flex-basis:100%}.strip .hint:empty{display:none}

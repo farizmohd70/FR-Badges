@@ -12,7 +12,7 @@ function setTab(t){tab=t;
  document.querySelectorAll('#tabs [data-t]').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));
  ['build','badge','style'].forEach(k=>{$('#t-'+k).hidden=k!==t});
  const f=$('#t-'+t+' iframe');if(f&&!f.getAttribute('src')){const r=QS.get('remix');f.src=f.dataset.src+'?embed=1'+(t==='badge'&&r?'&remix='+encodeURIComponent(r):'')}
- $('#mbar').hidden=t!=='build';closeSide();
+ $('#mbar').hidden=t!=='build';$('#strip').hidden=t!=='build';closeSide();
  try{history.replaceState(history.state,'',t==='build'?location.pathname:location.pathname+'?tab='+t)}catch(e){}}
 document.querySelectorAll('#tabs [data-t]').forEach(b=>b.onclick=()=>setTab(b.dataset.t));
 
@@ -155,8 +155,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSide()});
 matchMedia('(min-width:1000px)').addEventListener('change',closeSide);
 
 /* ---- import, help, undo ---- */
-$('#go').onclick=async()=>{const b=$('#go');b.disabled=true;$('#msg').textContent='Loading...';const r=await P.importAny($('#imp').value);b.disabled=false;
- if(r.err){$('#msg').textContent=r.err;return}$('#msg').textContent='';P.toast('Loaded '+r.n+' badges'+(r.unknown?', skipped '+r.unknown+' not in the catalog':''));setSub('sel')};
+$('#strip').onsubmit=async e=>{e.preventDefault();if(!$('#imp').value.trim()){$('#msg').textContent='Paste a URL, JSON or share code first.';return}const b=$('#go');b.disabled=true;$('#msg').textContent='Loading...';const r=await P.importAny($('#imp').value);b.disabled=false;
+ if(r.err){$('#msg').textContent=r.err;return}$('#msg').textContent='';P.toast('Loaded '+r.n+' badges'+(r.unknown?', skipped '+r.unknown+' not in the catalog':''));$('#imp').value='';setSub('sel')};
 $('#undo').onclick=()=>P.undo();
 $('#helpB').onclick=()=>$('#help').showModal();$('#helpX').onclick=()=>$('#help').close();
 
