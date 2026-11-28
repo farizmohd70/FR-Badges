@@ -350,3 +350,11 @@ section.lib-g{padding-top:0}
 .heart.on .ic{fill:currentColor}
 .det .x{display:inline-flex}
 .dh{justify-content:flex-start}.dh .ui-sel,.dh select{margin-left:auto}
+.rs-cur{display:flex;align-items:center;gap:10px;color:var(--text-primary);background:var(--bg-elevated);box-shadow:inset 2px 0 0 var(--accent)}
+.rs-cur .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rs-cur .ic{color:var(--text-secondary);transition:transform .12s}
+.rs-cur[aria-expanded=true] .ic{transform:rotate(180deg)}
+.rs-all{border-top:1px solid var(--border-subtle)}
+.rs-all .rs{white-space:normal;word-break:break-all;overflow:visible;text-overflow:clip}
+.rs-all .rs[aria-pressed=true]{box-shadow:none;background:var(--bg-elevated);color:var(--text-primary)}
+.rs-list{border-bottom:1px solid var(--border-subtle)}

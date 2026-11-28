@@ -16,8 +16,13 @@ const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&qu
 const col=id=>D.c[id];
 const R4=ROWS.slice(0,4);let cur=0;
 const rawOf=r=>r.map(x=>x[0]).join('');
-function strs(){const el=document.getElementById('rs');if(!el)return;el.innerHTML=R4.map((r,i)=>`<button type="button" class="rs" aria-pressed="${i===cur}" data-i="${i}">${esc(rawOf(r))}</button>`).join('');
- el.querySelectorAll('.rs').forEach(b=>b.onclick=()=>{cur=+b.dataset.i;strs();view()})}
+let open=false;
+function strs(){const el=document.getElementById('rs');if(!el)return;
+ const ic2=n=>window.ic?ic(n):'';
+ el.innerHTML=`<button type="button" class="rs rs-cur" aria-expanded="${open}" aria-controls="rs-all"><span class="t">${esc(rawOf(R4[cur]))}</span>${ic2('chev')}</button>`+
+ (open?`<div id="rs-all" class="rs-all">${R4.map((r,i)=>`<button type="button" class="rs" aria-pressed="${i===cur}" data-i="${i}">${esc(rawOf(r))}</button>`).join('')}</div>`:'');
+ el.querySelector('.rs-cur').onclick=()=>{open=!open;strs()};
+ el.querySelectorAll('.rs-all .rs').forEach(b=>b.onclick=()=>{cur=+b.dataset.i;open=false;strs();view()})}
 function view(){const dv=document.getElementById('dv');if(!dv)return;let raw='',b='',m='';
  R4[cur].forEach(([t,id],i)=>{if(!id){raw+=esc(t);return}const k=cur+'-'+i,u=src(id);
   raw+=`<span class="tk" data-k="${k}" style="--c:${col(id)}">${esc(t)}</span>`;
