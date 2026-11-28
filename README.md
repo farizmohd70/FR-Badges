@@ -9,7 +9,7 @@
   <img src="https://img.shields.io/badge/languages-167-10b981?style=for-the-badge" alt="languages 167">
 </p>
 
-<p align="center"><b>Modern badge pack for Nuvio.</b><br>1468 badges in 20 styles: hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, streaming platforms, debrid services, 167 languages, 167 subtitle badges and dubbed and short-name versions for every language. Every style has a ready-to-use filter manifest, and the website lets you build your own pack.</p>
+<p align="center"><b>Modern badge pack for Nuvio.</b><br>1468 badges in 22 styles: hero badges, resolution, formats, dynamic range, codecs, audio, channels, sources, containers, editions, streaming platforms, debrid services, 167 languages, 167 subtitle badges and dubbed and short-name versions for every language. Every style has a ready-to-use filter manifest, and the website lets you build your own pack.</p>
 
 <p align="center"><a href="https://farizmohd70.github.io/FR-Badges/"><b>Website</b></a> · <a href="https://farizmohd70.github.io/FR-Badges/make.html"><b>Make your pack</b></a></p>
 
@@ -32,7 +32,7 @@
 The site shows every style live and lets you build a pack without editing any files.
 
 1. Open **[Make your pack](https://farizmohd70.github.io/FR-Badges/make.html)**.
-2. Pick a look (20 styles), then a starting set of badges. The Lite pack is a good start.
+2. Pick a look (22 styles), then a starting set of badges. The Lite pack is a good start.
 3. Tap the badges you want. You can search or browse by group, and mix styles per badge.
 4. Set the order. Nuvio shows badges in that order.
 5. Copy your link and paste it into Nuvio under **Fusion badge URLs**. Clear the cache afterwards.
@@ -50,6 +50,7 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 
 <table>
 <tr><td align="center"><a href="#midnight-teal"><img src="assets/gallery/midnight-teal.png" width="420" alt="Midnight Teal"></a><br><b>Midnight Teal</b> (animated)</td><td align="center"><a href="#shimmer"><img src="assets/gallery/shimmer.png" width="420" alt="Shimmer"></a><br><b>Shimmer</b> (animated)</td></tr>
+<tr><td align="center"><a href="#typewriter"><img src="assets/gallery/typewriter.png" width="420" alt="Typewriter"></a><br><b>Typewriter</b> (animated)</td><td align="center"><a href="#typewriter-icon"><img src="assets/gallery/typewriter-icon.png" width="420" alt="Typewriter Icon"></a><br><b>Typewriter Icon</b> (animated)</td></tr>
 </table>
 
 ## Styles
@@ -84,6 +85,8 @@ Tap a style to jump to its link and the full preview sheet. Every preview sheet 
 |---|---|---|---|
 | **Midnight Teal** | Animated liquid glass pills; streaming badges play the platform's intro blurred in the background | `Badges-Midnight-Teal` | `badges-midnight-teal.json` |
 | **Shimmer** | Animated shimmering text with no background; flag and brand colours | `Badges-Shimmer` | `badges-shimmer.json` |
+| **Typewriter** | Animated typewriter text with no background, neon colours; holds the full word for 5 seconds | `Badges-Typewriter` | `badges-typewriter.json` |
+| **Typewriter Icon** | Typewriter text with neon icons that flicker in first | `Badges-Typewriter-Icon` | `badges-typewriter-icon.json` |
 
 </details>
 
@@ -444,6 +447,52 @@ Animated GIF badges with no background. Text shimmers with a moving light sweep 
 
 ```
 https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-shimmer.json
+```
+
+#### Typewriter
+
+<p>
+<img src="Badges-Typewriter/4k.gif" height="56" alt="4K UHD">
+<img src="Badges-Typewriter/dv-hdr.gif" height="56" alt="DV+HDR">
+<img src="Badges-Typewriter/atmos.gif" height="56" alt="Dolby Atmos">
+<img src="Badges-Typewriter/netflix.gif" height="56" alt="Netflix">
+<img src="Badges-Typewriter/lang-fr.gif" height="56" alt="French">
+</p>
+
+<details>
+<summary>Preview</summary>
+
+Animated GIF badges with no background and the Neon colours. The text types out letter by letter, stays still for 5 seconds, then restarts; every badge starts at a different point so they never type in sync. The gallery images show the still frame; the badges animate in Nuvio.
+
+[![Typewriter preview](Previews/preview-typewriter.png)](Previews/preview-typewriter.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-typewriter.json
+```
+
+#### Typewriter Icon
+
+<p>
+<img src="Badges-Typewriter-Icon/4k.gif" height="56" alt="4K UHD">
+<img src="Badges-Typewriter-Icon/dv-hdr.gif" height="56" alt="DV+HDR">
+<img src="Badges-Typewriter-Icon/atmos.gif" height="56" alt="Dolby Atmos">
+<img src="Badges-Typewriter-Icon/netflix.gif" height="56" alt="Netflix">
+<img src="Badges-Typewriter-Icon/lang-fr.gif" height="56" alt="French">
+</p>
+
+<details>
+<summary>Preview</summary>
+
+Same typing animation with the Neon Icon artwork: the icon flickers in first, then the label types out and holds for 5 seconds.
+
+[![Typewriter Icon preview](Previews/preview-typewriter-icon.png)](Previews/preview-typewriter-icon.png)
+
+</details>
+
+```
+https://raw.githubusercontent.com/farizmohd70/FR-Badges/main/badges-typewriter-icon.json
 ```
 
 ## License

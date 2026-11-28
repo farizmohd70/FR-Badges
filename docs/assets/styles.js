@@ -21,7 +21,9 @@ window.STYLES_DATA=[
 {"id": "pixel", "name": "Pixel", "folder": "Badges-Pixel", "note": "Pixel-art blocks with chunky retro text", "bg": "dark"},
 {"id": "glow-bar", "name": "Glow Bar", "folder": "Badges-Glow-Bar", "note": "Bold text, no background, with a glowing accent line", "bg": "dark"},
 {"id": "midnight-teal", "name": "Midnight Teal", "folder": "Badges-Midnight-Teal", "note": "Animated liquid glass, streaming intros in the background", "bg": "dark", "ext": "gif", "animated": true},
-{"id": "shimmer", "name": "Shimmer", "folder": "Badges-Shimmer", "note": "Animated shimmering text, no background, flag and brand colours", "bg": "dark", "ext": "gif", "animated": true}
+{"id": "shimmer", "name": "Shimmer", "folder": "Badges-Shimmer", "note": "Animated shimmering text, no background, flag and brand colours", "bg": "dark", "ext": "gif", "animated": true},
+{"id": "typewriter", "name": "Typewriter", "folder": "Badges-Typewriter", "note": "Animated typewriter text, no background, neon colours", "bg": "dark", "ext": "gif", "animated": true},
+{"id": "typewriter-icon", "name": "Typewriter Icon", "folder": "Badges-Typewriter-Icon", "note": "Animated typewriter text with neon icons, no background", "bg": "dark", "ext": "gif", "animated": true}
 ];
-window.STYLE_ORDER=["glass", "glass-vibrant", "frost", "black-white", "white-black", "solid", "minimal", "pastel", "light", "icon-dark", "icon-light", "split", "text-white", "text-black", "neon", "neon-icon", "glow-bar", "pixel", "midnight-teal", "shimmer"];
+window.STYLE_ORDER=["glass", "glass-vibrant", "frost", "black-white", "white-black", "solid", "minimal", "pastel", "light", "icon-dark", "icon-light", "split", "text-white", "text-black", "neon", "neon-icon", "glow-bar", "pixel", "midnight-teal", "shimmer", "typewriter", "typewriter-icon"];
 window.STYLES_SHOW=window.STYLE_ORDER.map(i=>window.STYLES_DATA.find(s=>s.id===i)).filter(Boolean).concat(window.STYLES_DATA.filter(s=>!window.STYLE_ORDER.includes(s.id)));
